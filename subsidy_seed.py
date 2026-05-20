@@ -131,7 +131,7 @@ PUBLISHED_DATE = {
 }
 
 SOURCE_URL = {
-    "SKT":  "https://shop.tworld.co.kr/wireless/product/subsidy/main",
+    "SKT":  "https://shop.tworld.co.kr/notice",
     "KT":   "https://shop.kt.com/smart/supportAmtList.do",
     "LGU+": "https://www.lguplus.com/mobile/financing-model",
 }

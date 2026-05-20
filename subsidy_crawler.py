@@ -53,7 +53,11 @@ DEFAULT_PLANS = {
 }
 
 SOURCE_URLS = {
-    "SKT":  "https://shop.tworld.co.kr/wireless/product/subsidy/main",
+    # SKT 공시지원금 안내 페이지 (T 다이렉트샵 /notice)
+    # 페이지 구조 (사용자 확인 + 라이브 검증, 2026-05-21):
+    #   상품명 / 공시일 / 출시 가격 / 공통지원금 / 추가지원금 / 구매가격 / 추천 할인 / 신청
+    #   가입유형 드롭다운 (신규가입 / 번호이동 / 기기변경)
+    "SKT":  "https://shop.tworld.co.kr/notice",
     "KT":   "https://shop.kt.com/smart/supportAmtList.do",
     "LGU+": "https://www.lguplus.com/mobile/financing-model",
 }
