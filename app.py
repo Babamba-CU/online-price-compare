@@ -21,7 +21,7 @@ DB_NAME     = os.getenv("DB_NAME")
 
 # === 정적 파일 서빙 ============================================================
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-INDEX_FILE = "통합대시보드.html"
+INDEX_FILE = "index.html"
 
 # 화이트리스트: 외부에 노출 가능한 정적 자원 확장자
 ALLOWED_EXTENSIONS = {".html", ".js", ".css", ".map", ".png", ".jpg", ".jpeg",
