@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>온라인 단가비교 — 3사 공시지원금 + 성지폰</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --color-skt: #0084FF;
+      --color-kt:  #004687;
+      --color-lg:  #1DB446;
+      --color-border:        #E5E5E5;
+      --color-border-light:  #EEEEEE;
+      --color-bg:            #FAFAFA;
+      --color-bg-soft:       #F7F8FA;
+      --color-text:          #1A1A1A;
+      --color-text-strong:   #111111;
+      --color-text-light:    #555555;
+      --color-text-muted:    #9AA0A6;
+      --color-table-head:    #F4F5F7;
+      --color-row-alt:       #FBFBFC;
+      --color-best-bg:       #FFF8E1;
+      --color-best-border:   #B58900;
+      --color-best-text:     #6B5300;
+      --spacing-xs: 8px;
+      --spacing-sm: 12px;
+      --spacing-md: 16px;
+      --spacing-lg: 24px;
+      --spacing-xl: 32px;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+      background: white;
+      color: var(--color-text);
+      line-height: 1.5;
+    }
+    header {
+      padding: var(--spacing-lg) var(--spacing-xl);
+      border-bottom: 1px solid var(--color-border);
+    }
+    h1 { font-size: 28px; font-weight: 700; margin-bottom: var(--spacing-sm); }
+    .subtitle { font-size: 14px; color: var(--color-text-light); }
+    .meta-bar {
+      display: flex; gap: var(--spacing-lg); margin-top: var(--spacing-md);
+      font-size: 12px; color: var(--color-text-light); flex-wrap: wrap;
+    }
+    .meta-bar b { color: var(--color-text); }
+
+    /* ===== 상단 탭 네비 ===== */
+    .tabs-bar {
+      padding: var(--spacing-md) var(--spacing-xl);
+      border-bottom: 1px solid var(--color-border);
+      background: white;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .tabs {
+      display: inline-flex;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      overflow: hidden;
+      background: white;
+    }
+    .tabs button {
+      padding: 10px 22px;
+      font-size: 14px; font-weight: 600;
+      background: white; color: var(--color-text);
+      border: none; cursor: pointer;
+      letter-spacing: -0.2px;
+      border-right: 1px solid var(--color-border);
+    }
+    .tabs button:last-child { border-right: none; }
+    .tabs button:hover { background: var(--color-bg-soft); }
+    .tabs button.active {
+      background: var(--color-skt);
+      color: white;
+    }
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ===== 공통 필터 ===== */
+    .filters-section {
+      padding: var(--spacing-xl); background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .filter-group { margin-bottom: var(--spacing-lg); }
+    .filter-group:last-child { margin-bottom: 0; }
+    .filter-label {
+      display: block; font-size: 12px; font-weight: 600;
+      text-transform: uppercase; color: var(--color-text-light);
+      margin-bottom: var(--spacing-sm); letter-spacing: 0.5px;
+    }
+    .filter-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-md);
+    }
+    .filter-input-group { display: flex; flex-direction: column; position: relative; }
+    .filter-input-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      color: #666; margin-bottom: 6px; letter-spacing: 0.5px;
+    }
+    select, input[type="date"], input[type="text"] {
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-border); border-radius: 4px;
+      font-size: 14px; font-family: inherit; background: white;
+      color: var(--color-text);
+    }
+    select:focus, input:focus {
+      outline: none; border-color: var(--color-skt);
+      box-shadow: 0 0 0 2px rgba(0, 132, 255, 0.12);
+    }
+
+    /* ===== 멀티셀렉트 (공시 측) ===== */
+    .multiselect { position: relative; width: 100%; }
+    .multiselect-toggle {
+      width: 100%; padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-border); border-radius: 4px;
+      background: white; cursor: pointer; text-align: left;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 14px;
+    }
+    .multiselect-toggle:hover { border-color: #999; }
+    .multiselect-menu {
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: white; border: 1px solid var(--color-border);
+      border-top: none; border-radius: 0 0 4px 4px;
+      max-height: 360px; overflow-y: auto; z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+    }
+    .multiselect-menu.hidden { display: none; }
+    .multiselect-menu .search-box {
+      padding: 8px 10px; border-bottom: 1px solid var(--color-border-light);
+      position: sticky; top: 0; background: white;
+    }
+    .multiselect-menu .search-box input {
+      width: 100%; padding: 6px 8px; font-size: 12px;
+    }
+    .multiselect-item {
+      padding: 6px 12px; display: flex; align-items: center;
+      gap: 8px; cursor: pointer; user-select: none; font-size: 13px;
+    }
+    .multiselect-item:hover { background: var(--color-bg-soft); }
+    .multiselect-item.group-header {
+      font-weight: 700; background: var(--color-bg);
+      border-top: 1px solid var(--color-border-light);
+      color: var(--color-text-light); font-size: 11px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 6px 12px;
+    }
+    .multiselect-actions {
+      display: flex; gap: 6px;
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--color-border-light);
+      background: white;
+      position: sticky; top: 0; z-index: 1;
+    }
+    .multiselect-actions button {
+      flex: 1; padding: 5px 8px;
+      font-size: 11px; font-weight: 600;
+      border: 1px solid var(--color-border);
+      background: white; color: var(--color-text);
+      border-radius: 3px; cursor: pointer;
+    }
+    .multiselect-actions button:hover {
+      background: var(--color-bg-soft); border-color: var(--color-text-light);
+    }
+    .download-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px; font-size: 12px; font-weight: 600;
+      border: 1px solid var(--color-text);
+      background: white; color: var(--color-text);
+      border-radius: 3px; cursor: pointer;
+      letter-spacing: -0.2px;
+    }
+    .download-btn:hover { background: var(--color-bg); }
+
+    /* 성지폰 단말기 드롭다운 (단일 멀티 — 단순한 버전) */
+    .checkbox-dropdown { position: relative; width: 100%; }
+    .dropdown-toggle {
+      width: 100%; padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-border); border-radius: 4px;
+      background: white; cursor: pointer; text-align: left;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 14px;
+    }
+    .dropdown-toggle:hover { border-color: #999; }
+    .dropdown-menu {
+      position: absolute; top: 100%; left: 0; right: 0;
+      background: white; border: 1px solid var(--color-border);
+      border-top: none; border-radius: 0 0 4px 4px;
+      max-height: 320px; overflow-y: auto; z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .dropdown-menu.hidden { display: none; }
+    .checkbox-item {
+      padding: 8px 12px; display: flex; align-items: center;
+      gap: 8px; cursor: pointer; user-select: none;
+    }
+    .checkbox-item:hover { background: var(--color-bg-soft); }
+
+    /* ===== KPI ===== */
+    .kpi-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--spacing-md);
+      padding: var(--spacing-xl);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .kpi-card {
+      border: 1px solid var(--color-border); border-radius: 6px;
+      padding: var(--spacing-md); background: white;
+    }
+    .kpi-label { font-size: 12px; color: var(--color-text-light); margin-bottom: 6px; }
+    .kpi-value { font-size: 22px; font-weight: 700; }
+    .kpi-sub { font-size: 12px; color: var(--color-text-light); margin-top: 4px; }
+
+    /* ===== 차트 ===== */
+    .chart-section { padding: var(--spacing-xl); }
+    .chart-title {
+      font-size: 16px; font-weight: 600; margin-bottom: var(--spacing-md);
+      display: flex; align-items: center; gap: var(--spacing-md); flex-wrap: wrap;
+    }
+    .chart-metric-toggle {
+      display: inline-flex; border: 1px solid var(--color-border);
+      border-radius: 4px; overflow: hidden; font-size: 12px;
+    }
+    .chart-metric-toggle button {
+      padding: 4px 10px; background: white; cursor: pointer;
+      border: none; color: var(--color-text); font-weight: 500;
+      border-right: 1px solid var(--color-border);
+    }
+    .chart-metric-toggle button:last-child { border-right: none; }
+    .chart-metric-toggle button.active {
+      background: var(--color-text); color: white; font-weight: 700;
+    }
+    .chart-help {
+      font-size: 12px; color: var(--color-text-light);
+      margin-bottom: var(--spacing-md); line-height: 1.6;
+    }
+    .chart-help code {
+      background: var(--color-bg); padding: 1px 5px;
+      border-radius: 3px; font-size: 11px;
+    }
+    .legend { display: flex; gap: var(--spacing-lg); margin-bottom: var(--spacing-md); flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+    .legend-box { width: 14px; height: 14px; border-radius: 2px; }
+    .legend-box.skt { background: var(--color-skt); }
+    .legend-box.kt  { background: var(--color-kt); }
+    .legend-box.lg  { background: var(--color-lg); }
+    .chart-scroll-container {
+      overflow-x: auto; overflow-y: hidden;
+      border: 1px solid var(--color-border); border-radius: 4px;
+      background: white;
+    }
+    #compareCanvas, #sjBoxCanvas { display: block; min-width: 100%; cursor: default; }
+    .box-tooltip {
+      position: fixed; background: rgba(0, 0, 0, 0.92);
+      color: white; padding: 12px 14px; border-radius: 6px;
+      font-size: 12px; z-index: 10000; pointer-events: none;
+      display: none; line-height: 1.65; white-space: nowrap;
+    }
+
+    /* ===== 표 ===== */
+    .table-section { padding: 0 var(--spacing-xl) var(--spacing-xl); }
+    .table-title {
+      font-size: 18px; font-weight: 700;
+      padding-bottom: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+      border-bottom: 2px solid var(--color-text);
+      display: flex; align-items: baseline; gap: var(--spacing-md); flex-wrap: wrap;
+    }
+    .table-title .sub-note {
+      font-size: 12px; font-weight: 400;
+      color: var(--color-text-light);
+    }
+    .table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      background: white;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      background: white;
+    }
+    thead {
+      background: var(--color-table-head);
+      color: var(--color-text);
+      font-weight: 600;
+      border-bottom: 2px solid var(--color-border);
+    }
+    th {
+      padding: 14px var(--spacing-md);
+      text-align: center;
+      font-weight: 600;
+      font-size: 12.5px;
+      letter-spacing: -0.2px;
+      border-right: 1px solid var(--color-border);
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+    th:last-child { border-right: none; }
+    td {
+      padding: 12px var(--spacing-md);
+      border-bottom: 1px solid var(--color-border-light);
+      border-right: 1px solid var(--color-border-light);
+      vertical-align: middle;
+    }
+    td:last-child { border-right: none; }
+    tbody tr.row-group-start td { border-top: 1px solid #D7DAE0; }
+    tbody tr:hover td { background: var(--color-row-alt); }
+
+    td.mfr-cell {
+      font-size: 12px; font-weight: 500; color: var(--color-text-light);
+      vertical-align: middle; background: white !important;
+      white-space: nowrap;
+    }
+    td.model-cell {
+      font-weight: 700; background: white !important;
+      font-size: 13.5px; line-height: 1.4; vertical-align: middle;
+    }
+    .model-name { display: block; }
+    .model-storage {
+      display: inline-block; font-size: 11px; font-weight: 600;
+      color: var(--color-text); background: var(--color-bg-soft);
+      border: 1px solid var(--color-border);
+      padding: 1px 7px; border-radius: 9px; margin-top: 4px;
+    }
+    .model-released {
+      display: block; font-size: 11px; font-weight: 400;
+      color: var(--color-text-muted); margin-top: 2px;
+    }
+
+    .price-cell {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum";
+      color: var(--color-text);
+    }
+    .price-cell .won-suffix {
+      font-size: 11px; color: var(--color-text-muted); margin-left: 2px;
+    }
+    .subsidy-cell { color: var(--color-text-strong); font-weight: 600; }
+    .net-cell     { color: var(--color-text-strong); font-weight: 700; }
+    .zero-cell    { color: var(--color-text-muted); }
+    .rb-cell      { color: var(--color-text-strong); font-weight: 700; }
+    .rb-clipped {
+      color: var(--color-text-muted); font-weight: 400;
+      font-size: 11.5px; font-style: normal;
+    }
+
+    .best-cell {
+      background: var(--color-best-bg);
+      box-shadow: inset 0 0 0 1px var(--color-best-border);
+      border-radius: 2px; position: relative;
+    }
+    .best-cell::after {
+      content: "최저"; position: absolute; top: 4px; right: 6px;
+      font-size: 9px; color: var(--color-best-text);
+      font-weight: 700; letter-spacing: -0.2px;
+    }
+
+    .carrier-skt, .carrier-kt, .carrier-lg {
+      color: white; padding: 3px 10px; border-radius: 3px;
+      font-weight: 600; display: inline-block; font-size: 11px;
+      letter-spacing: -0.2px;
+    }
+    .carrier-skt { background: var(--color-skt); }
+    .carrier-kt  { background: var(--color-kt); }
+    .carrier-lg  { background: var(--color-lg); }
+    tbody tr.row-skt td.carrier-col { background: rgba(0, 132, 255, 0.030); }
+    tbody tr.row-kt  td.carrier-col { background: rgba(0, 70, 135, 0.030); }
+    tbody tr.row-lg  td.carrier-col { background: rgba(29, 180, 70, 0.030); }
+
+    .plan-cell { text-align: left; font-size: 12.5px; }
+    .plan-name { display: block; font-weight: 500; color: var(--color-text); }
+    .plan-fee {
+      display: block; font-size: 11px;
+      color: var(--color-text-light); margin-top: 2px;
+      font-variant-numeric: tabular-nums;
+    }
+    .versus-cell {
+      text-align: left; font-size: 12px; line-height: 1.45;
+      max-width: 240px; color: var(--color-text);
+    }
+    .versus-winner-public { color: var(--color-text-strong); font-weight: 700; }
+    .versus-winner-select { color: var(--color-text-strong); font-weight: 700; }
+    .versus-tie { color: var(--color-text-light); }
+    .versus-detail {
+      display: block; font-size: 11px;
+      color: var(--color-text-muted); margin-top: 2px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* 성지폰 표 전용 */
+    .source-badge {
+      display: inline-block; padding: 2px 6px; border-radius: 3px;
+      background: var(--color-bg); color: var(--color-text-light);
+      font-size: 11px; font-weight: 500;
+    }
+
+    .empty-state {
+      padding: 60px var(--spacing-xl); text-align: center;
+      color: var(--color-text-light); font-size: 14px;
+    }
+    .empty-state code {
+      display: inline-block; padding: 2px 6px;
+      background: var(--color-bg); border: 1px solid var(--color-border);
+      border-radius: 3px; font-size: 12px;
+    }
+
+    @media (max-width: 768px) {
+      header, .tabs-bar, .filters-section, .chart-section, .table-section, .kpi-section {
+        padding: var(--spacing-md);
+      }
+      h1 { font-size: 22px; }
+      table { font-size: 12px; }
+      th, td { padding: 8px var(--spacing-sm); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>온라인 단가비교</h1>
+    <p class="subtitle">3사 공시지원금 + 6개 성지폰 사이트 일단위 통합 모니터링</p>
+  </header>
+
+  <nav class="tabs-bar">
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab active" data-view="subsidy" role="tab">공시지원금 비교</button>
+      <button type="button" class="tab"        data-view="seongji" role="tab">성지폰 단가 비교</button>
+    </div>
+  </nav>
+
+  <!-- =============================================================
+       VIEW 1 : 공시지원금 비교
+       ============================================================= -->
+  <section id="view-subsidy" class="view active">
+    <div style="padding: var(--spacing-md) var(--spacing-xl) 0; font-size: 12px; color: var(--color-text-light); display: flex; gap: var(--spacing-lg); flex-wrap: wrap;" id="subsidyMetaBar">
+      <span>데이터 로딩 중…</span>
+    </div>
+
+    <div class="filters-section">
+      <div class="filter-row">
+        <div class="filter-input-group">
+          <label class="filter-input-label">기준일</label>
+          <input type="date" id="filterDate" onchange="subsidyRender()">
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">가입유형</label>
+          <select id="filterSub" onchange="subsidyRender()">
+            <option value="MNP" selected>MNP</option>
+            <option value="010신규">010신규</option>
+            <option value="기변">기변</option>
+          </select>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">제조사</label>
+          <select id="filterMfr" onchange="subsidyRender()">
+            <option value="">전체</option>
+            <option value="삼성전자(주)">삼성전자(주)</option>
+            <option value="Apple">Apple</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">정렬</label>
+          <select id="filterSort" onchange="subsidyRender()">
+            <option value="released_desc" selected>최신 출시순</option>
+            <option value="subsidy_desc">총 지원금 큰 순</option>
+            <option value="net_asc">구매가격 낮은 순</option>
+            <option value="retail_desc">출고가 높은 순</option>
+          </select>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">단말</label>
+          <div class="multiselect" onclick="event.stopPropagation()">
+            <button type="button" class="multiselect-toggle" id="modelToggle">
+              <span id="modelToggleLabel">전체 단말</span>
+              <span style="color:#999">▾</span>
+            </button>
+            <div class="multiselect-menu hidden" id="modelMenu"></div>
+          </div>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">용량</label>
+          <div class="multiselect" onclick="event.stopPropagation()">
+            <button type="button" class="multiselect-toggle" id="storageToggle">
+              <span id="storageToggleLabel">전체 용량</span>
+              <span style="color:#999">▾</span>
+            </button>
+            <div class="multiselect-menu hidden" id="storageMenu"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-section" id="kpiSection"></div>
+
+    <div class="chart-section">
+      <div class="chart-title">📊 단말·용량별 3사 지원금 비교 (그룹 바차트)</div>
+      <div class="chart-help">
+        각 단말+용량 컬럼마다 <code>공통지원금</code>(짙은) + <code>추가지원금</code>(연한, 위로 쌓임) =
+        <code>총 지원금</code>으로 SKT/KT/LGU+ 3사를 나란히 비교합니다.
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-box skt"></span>SKT</div>
+        <div class="legend-item"><span class="legend-box kt"></span>KT</div>
+        <div class="legend-item"><span class="legend-box lg"></span>LGU+</div>
+      </div>
+      <div class="chart-scroll-container">
+        <canvas id="compareCanvas" height="520"></canvas>
+      </div>
+    </div>
+
+    <div class="table-section">
+      <div class="table-title">
+        단말별 3사 공시지원금 상세
+        <span class="sub-note">단말·용량별로 분리 · 미판매 통신사는 표시되지 않음 · 노란 셀 = 3사 중 구매가격 최저</span>
+        <button type="button" id="downloadExcel" class="download-btn"
+                style="margin-left:auto" title="현재 표시중인 표를 .xlsx 로 다운로드">
+          ⬇ 엑셀 다운로드
+        </button>
+      </div>
+      <div class="table-wrapper">
+        <table id="compareTable">
+          <thead>
+            <tr>
+              <th>제조사</th>
+              <th>단말</th>
+              <th>통신사</th>
+              <th>가입유형</th>
+              <th>출고가</th>
+              <th>요금제 (월)</th>
+              <th>공통지원금</th>
+              <th>추가지원금</th>
+              <th>구매가격</th>
+              <th>선약비교</th>
+            </tr>
+          </thead>
+          <tbody id="compareTbody"></tbody>
+        </table>
+      </div>
+      <div id="subsidyEmpty" class="empty-state" style="display:none">
+        적재된 데이터가 없습니다.<br>
+        <code>python subsidy_seed.py</code> 또는
+        <code>python subsidy_crawler.py</code> → <code>python subsidy_build.py</code>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       VIEW 2 : 성지폰 단가 비교 (+ 공시지원금 컬럼 4개 + 차트 토글)
+       ============================================================= -->
+  <section id="view-seongji" class="view">
+    <div class="meta-bar" id="sjMetaBar" style="padding: var(--spacing-md) var(--spacing-xl) 0;">
+      <span>데이터 로딩 중…</span>
+    </div>
+
+    <div class="filters-section">
+      <div class="filter-row">
+        <div class="filter-input-group">
+          <label class="filter-input-label">기준일 (상세 테이블)</label>
+          <input type="date" id="sjFilterDate" onchange="seongjiRender()">
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">통신사</label>
+          <select id="sjFilterCarrier" onchange="seongjiRender()">
+            <option value="">전체</option>
+            <option value="SKT">SKT</option>
+            <option value="KT">KT</option>
+            <option value="LGU+">LGU+</option>
+          </select>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">가입유형</label>
+          <select id="sjFilterSub" onchange="seongjiRender()">
+            <option value="">전체</option>
+            <option value="MNP" selected>MNP</option>
+            <option value="010신규">010신규</option>
+            <option value="기변">기변</option>
+          </select>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">최소 신뢰도</label>
+          <select id="sjFilterConf" onchange="seongjiRender()">
+            <option value="0">0.0 (전체)</option>
+            <option value="0.5" selected>0.5 (보통 이상)</option>
+            <option value="0.7">0.7 (높음)</option>
+          </select>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">단말기 (다중선택)</label>
+          <div class="checkbox-dropdown" onclick="event.stopPropagation()">
+            <button class="dropdown-toggle" id="sjDropdownToggle" type="button">단말기 선택</button>
+            <div class="dropdown-menu hidden" id="sjDropdownMenu"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-section" id="sjKpiSection"></div>
+
+    <div class="chart-section">
+      <div class="chart-title">
+        📊 3사 성지 단가 비교 (최근 <span id="sjBoxWindowLabel">14</span>일)
+        <span class="chart-metric-toggle" id="sjMetricToggle">
+          <button type="button" class="active" data-metric="cash_price">현금완납가 분포</button>
+          <button type="button" data-metric="seongji_rb">성지RB 분포</button>
+        </span>
+      </div>
+      <div class="chart-help">
+        각 단말 컬럼에 통신사별 마커 3개 (<code>● Max</code> · <code>━ 상위30%</code> · <code>● 평균</code>) 를 점선으로 연결.
+        <span id="sjMetricHelp">현금완납가 분포 — 성지에서 일시불로 살 때 가격대.</span>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-box skt"></span>SKT</div>
+        <div class="legend-item"><span class="legend-box kt"></span>KT</div>
+        <div class="legend-item"><span class="legend-box lg"></span>LGU+</div>
+      </div>
+      <div class="chart-scroll-container">
+        <canvas id="sjBoxCanvas" height="480"></canvas>
+      </div>
+    </div>
+
+    <div class="table-section">
+      <div class="table-title">
+        📋 최신일자 사이트별 단가 상세 (정렬: 현금완납가 오름차순)
+        <span class="sub-note">출고가·공통/추가지원금은 공시지원금 DB 와 join · 성지RB = 출고가−공통−추가−현금완납가</span>
+      </div>
+      <div class="table-wrapper">
+        <table id="sjDetailTable">
+          <thead>
+            <tr>
+              <th>모델</th>
+              <th>통신사</th>
+              <th>가입유형</th>
+              <th>약정</th>
+              <th>용량</th>
+              <th>출고가</th>
+              <th>공통지원금</th>
+              <th>추가지원금</th>
+              <th>성지RB</th>
+              <th>현금완납가</th>
+              <th>월 납부</th>
+              <th>요금제</th>
+              <th>유지</th>
+              <th>게시글</th>
+            </tr>
+          </thead>
+          <tbody id="sjDetailTbody"></tbody>
+        </table>
+      </div>
+      <div id="sjEmptyState" class="empty-state" style="display:none">
+        아직 적재된 데이터가 없습니다.<br>
+        <code>python seongji_crawler.py</code> → <code>python seongji_build.py</code> 순서로 실행하세요.
+      </div>
+    </div>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="subsidy_data.js"></script>
+  <script src="seongji_data.js"></script>
+
+  <!-- ===== 탭 전환 ===== -->
+  <script>
+    document.querySelectorAll('.tabs button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const view = btn.dataset.view;
+        document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('active', b === btn));
+        document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === `view-${view}`));
+        // 차트 폭 재계산
+        if (view === 'subsidy' && typeof subsidyRender === 'function') subsidyRender();
+        if (view === 'seongji' && typeof seongjiRender === 'function') seongjiRender();
+      });
+    });
+  </script>
+
+  <!-- ===== 공시지원금 view 로직 (IIFE) ===== -->
+  <script>
+  (function () {
+    const CARRIERS = ["SKT", "KT", "LGU+"];
+    const COLORS = { "SKT": "#0084FF", "KT": "#004687", "LGU+": "#1DB446" };
+    const CARRIER_CLASS = { "SKT": "carrier-skt", "KT": "carrier-kt", "LGU+": "carrier-lg" };
+    const ROW_CLASS     = { "SKT": "row-skt",     "KT": "row-kt",     "LGU+": "row-lg" };
+    const KNOWN_MFRS = ["삼성전자(주)", "Apple"];
+    const selectedModels   = new Set();
+    const selectedStorages = new Set();
+
+    const DATA = window.SUBSIDY_DATA || {
+      generatedAt: "-", latestSnapshot: "-",
+      carriers: CARRIERS, deviceVariants: [], offers: [], changes: [], runs: []
+    };
+
+    const fmt = v => (v == null ? "-" : Number(v).toLocaleString());
+    const fmtWon = v => (v == null ? "-" : Number(v).toLocaleString() + "원");
+
+    function calcVersus(o) {
+      const pub  = o.subsidy_public     || 0;
+      const add  = o.subsidy_additional || 0;
+      const plan = o.plan_monthly_fee   || 0;
+      const selectDiscount24mo = Math.round(plan * 0.25 * 24);
+      const publicBenefit = pub + add;
+      const selectBenefit = add + selectDiscount24mo;
+      const diff = publicBenefit - selectBenefit;
+      return { publicBenefit, selectBenefit, selectDiscount24mo, diff, absDiff: Math.abs(diff) };
+    }
+
+    /* === 멀티셀렉트 헬퍼 === */
+    function buildMultiselect(opts) {
+      const menu = document.getElementById(opts.menuId);
+      const toggle = document.getElementById(opts.toggleId);
+      menu.innerHTML = "";
+      const actions = document.createElement("div");
+      actions.className = "multiselect-actions";
+      actions.innerHTML = `<button type="button" data-action="all">전체선택</button>
+                           <button type="button" data-action="none">전체해제</button>`;
+      menu.appendChild(actions);
+      if (opts.searchPlaceholder) {
+        const search = document.createElement("div");
+        search.className = "search-box";
+        search.innerHTML = `<input type="text" placeholder="${opts.searchPlaceholder}">`;
+        menu.appendChild(search);
+        search.querySelector("input").addEventListener("input", e => {
+          const q = e.target.value.toLowerCase().trim();
+          menu.querySelectorAll(".multiselect-item[data-search]").forEach(it => {
+            it.style.display = it.dataset.search.includes(q) ? "" : "none";
+          });
+        });
+      }
+      const renderItems = (items) => {
+        if (!opts.groupBy) { items.forEach(it => menu.appendChild(makeItemLabel(it, opts))); return; }
+        const groups = {};
+        items.forEach(it => { const g = opts.groupBy(it) || "기타"; (groups[g] = groups[g] || []).push(it); });
+        Object.keys(groups).sort().forEach(g => {
+          const h = document.createElement("div");
+          h.className = "multiselect-item group-header"; h.textContent = g;
+          menu.appendChild(h);
+          groups[g].forEach(it => menu.appendChild(makeItemLabel(it, opts)));
+        });
+      };
+      renderItems(opts.items);
+      toggle.addEventListener("click", () => menu.classList.toggle("hidden"));
+      document.addEventListener("click", e => {
+        if (!menu.contains(e.target) && e.target !== toggle) menu.classList.add("hidden");
+      });
+      menu.addEventListener("click", e => {
+        const btn = e.target.closest("button[data-action]");
+        if (!btn) return;
+        const all = btn.dataset.action === "all";
+        menu.querySelectorAll(`input[data-role="${opts.menuId}-cb"]`).forEach(cb => cb.checked = all);
+        commitChange();
+      });
+      menu.addEventListener("change", e => {
+        if (e.target.dataset.role === `${opts.menuId}-cb`) commitChange();
+      });
+      function commitChange() {
+        opts.selectedSet.clear();
+        menu.querySelectorAll(`input[data-role="${opts.menuId}-cb"]:checked`).forEach(cb => {
+          opts.selectedSet.add(opts.parseValue ? opts.parseValue(cb.value) : cb.value);
+        });
+        updateLabel(); opts.onChange && opts.onChange();
+      }
+      function updateLabel() {
+        const total = menu.querySelectorAll(`input[data-role="${opts.menuId}-cb"]`).length;
+        const sel = opts.selectedSet.size;
+        const lbl = document.getElementById(opts.labelId);
+        lbl.textContent = (sel === 0) ? "선택 없음" :
+                          (sel === total) ? `${opts.labelTotalText} (${total}개)` :
+                                            `${sel} / ${total}개 선택`;
+      }
+      commitChange();
+    }
+    function makeItemLabel(item, opts) {
+      const lbl = document.createElement("label");
+      lbl.className = "multiselect-item";
+      const display = opts.displayKey(item);
+      const value   = opts.valueKey(item);
+      lbl.dataset.search = String(display).toLowerCase();
+      lbl.innerHTML = `<input type="checkbox" data-role="${opts.menuId}-cb" value="${value}" checked>
+                       <span>${display}</span>`;
+      return lbl;
+    }
+    function classifyMfr(mfr) { return KNOWN_MFRS.includes(mfr) ? mfr : "기타"; }
+
+    function initFilters() {
+      const seenModel = new Map();
+      DATA.deviceVariants.forEach(v => {
+        if (!seenModel.has(v.model_name)) {
+          seenModel.set(v.model_name, {
+            model_name: v.model_name, manufacturer: v.manufacturer, released_at: v.released_at,
+          });
+        }
+      });
+      const models = Array.from(seenModel.values())
+        .sort((a, b) => (b.released_at || "").localeCompare(a.released_at || ""));
+      buildMultiselect({
+        menuId: "modelMenu", toggleId: "modelToggle", labelId: "modelToggleLabel",
+        items: models, selectedSet: selectedModels,
+        searchPlaceholder: "단말명 검색…",
+        displayKey: m => `${m.model_name} <span style="color:#999;font-size:11px">· ${m.released_at || ""}</span>`,
+        valueKey:   m => m.model_name,
+        groupBy:    m => classifyMfr(m.manufacturer),
+        labelTotalText: "전체 단말", onChange: subsidyRender,
+      });
+      const storages = Array.from(new Set(DATA.deviceVariants.map(v => v.storage_gb)))
+        .filter(s => s != null).sort((a, b) => a - b);
+      buildMultiselect({
+        menuId: "storageMenu", toggleId: "storageToggle", labelId: "storageToggleLabel",
+        items: storages, selectedSet: selectedStorages,
+        displayKey: s => `${s}GB`, valueKey: s => String(s),
+        parseValue: v => parseInt(v, 10),
+        labelTotalText: "전체 용량", onChange: subsidyRender,
+      });
+    }
+
+    function variantStat(v, offersByVarCar) {
+      const offs = Object.values(offersByVarCar[v.variant_key] || {});
+      const maxSub = Math.max(0, ...offs.map(o => o.subsidy_total || 0));
+      const minNet = offs.length ? Math.min(...offs.map(o => o.net_buy_price ?? Infinity)) : Infinity;
+      const maxRet = Math.max(0, ...offs.map(o => o.retail_price || 0));
+      return { maxSub, minNet, maxRet };
+    }
+    function sortVariants(variants, mode, offersByVarCar) {
+      const arr = [...variants];
+      arr.sort((a, b) => {
+        const sa = variantStat(a, offersByVarCar), sb = variantStat(b, offersByVarCar);
+        if (mode === "subsidy_desc") return sb.maxSub - sa.maxSub;
+        if (mode === "net_asc")      return sa.minNet - sb.minNet;
+        if (mode === "retail_desc")  return sb.maxRet - sa.maxRet;
+        const dc = (b.released_at || "").localeCompare(a.released_at || "");
+        if (dc !== 0) return dc;
+        return (a.storage_gb || 0) - (b.storage_gb || 0);
+      });
+      return arr;
+    }
+    function filterVariants(offersByVarCar) {
+      const mfr  = document.getElementById("filterMfr").value;
+      const sort = document.getElementById("filterSort").value;
+      if (selectedModels.size === 0 || selectedStorages.size === 0) return [];
+      let list = DATA.deviceVariants
+        .filter(v => selectedModels.has(v.model_name))
+        .filter(v => selectedStorages.has(v.storage_gb));
+      if (mfr) {
+        if (mfr === "기타") list = list.filter(v => !KNOWN_MFRS.includes(v.manufacturer));
+        else list = list.filter(v => v.manufacturer === mfr);
+      }
+      list = list.filter(v => Object.keys(offersByVarCar[v.variant_key] || {}).length > 0);
+      return sortVariants(list, sort, offersByVarCar);
+    }
+
+    function renderMeta() {
+      const el = document.getElementById("subsidyMetaBar");
+      const runs = (DATA.runs || []).map(r => {
+        const cls = CARRIER_CLASS[r.carrier] || "";
+        return `<span><span class="${cls}">${r.carrier}</span> ${r.upserted || 0}건 · 마지막 ${(r.finished_at || "").slice(0, 16)}</span>`;
+      }).join("");
+      const hasPlaceholder = (DATA.offers || []).some(o => {
+        const p = o.raw_payload_obj || ((() => { try { return JSON.parse(o.raw_payload || "null"); } catch(e) { return null; } })());
+        return p && p.is_placeholder;
+      });
+      const ph = hasPlaceholder
+        ? `<span style="color:#B58900"><b>⚠ 010신규/기변 placeholder</b> · 실제 크롤러 실행 후 덮어쓰임</span>` : "";
+      el.innerHTML = `
+        <span>최종 빌드: <b>${DATA.generatedAt}</b></span>
+        <span>최신 스냅샷: <b>${DATA.latestSnapshot}</b></span>
+        <span>단말·용량 ${DATA.deviceVariants.length}종</span>
+        <span>약정 24개월 / 요금제 = 각 사이트 디폴트</span>
+        ${ph} ${runs}
+      `;
+    }
+
+    function renderKpi(snapshot) {
+      const k = document.getElementById("kpiSection");
+      const byCarrier = {};
+      snapshot.forEach(o => {
+        if (!CARRIERS.includes(o.carrier)) return;
+        if (!byCarrier[o.carrier] || (o.subsidy_total || 0) > (byCarrier[o.carrier].subsidy_total || 0))
+          byCarrier[o.carrier] = o;
+      });
+      const cards = CARRIERS.map(c => {
+        const o = byCarrier[c];
+        const sub = o ? `${o.model_name} ${o.storage_gb||"?"}GB · 공통 ${fmt(o.subsidy_public)} + 추가 ${fmt(o.subsidy_additional)}` : "데이터 없음";
+        return `<div class="kpi-card">
+          <div class="kpi-label">${c} 최대 지원금</div>
+          <div class="kpi-value" style="color:${COLORS[c]}">${o ? fmt(o.subsidy_total) + "원" : "-"}</div>
+          <div class="kpi-sub">${sub}</div></div>`;
+      }).join("");
+
+      const byVar = {};
+      snapshot.forEach(o => {
+        const k = `${o.model_name}__${o.storage_gb}`;
+        (byVar[k] = byVar[k] || {})[o.carrier] = o;
+      });
+      let gapBest = null;
+      Object.values(byVar).forEach(triple => {
+        const skt = triple.SKT; if (!skt) return;
+        ["KT", "LGU+"].forEach(comp => {
+          const co = triple[comp]; if (!co) return;
+          const gap = (skt.subsidy_total || 0) - (co.subsidy_total || 0);
+          const abs = Math.abs(gap);
+          if (!gapBest || abs > gapBest.gap) {
+            gapBest = { gap: abs, model: skt.model_name, storage: skt.storage_gb,
+                        competitor: comp, sktHigher: gap > 0 };
+          }
+        });
+      });
+      const gapCard = gapBest
+        ? `<div class="kpi-card">
+            <div class="kpi-label">SKT vs 경쟁사 최대 Gap</div>
+            <div class="kpi-value" style="color:${COLORS.SKT}">${fmt(gapBest.gap)}원</div>
+            <div class="kpi-sub">${gapBest.model} ${gapBest.storage}GB · vs ${gapBest.competitor} · SKT가 ${gapBest.sktHigher ? "더 많음" : "적음"}</div>
+          </div>`
+        : `<div class="kpi-card">
+            <div class="kpi-label">SKT vs 경쟁사 최대 Gap</div>
+            <div class="kpi-value">-</div><div class="kpi-sub">데이터 부족</div></div>`;
+      k.innerHTML = cards + gapCard;
+    }
+
+    let chartMarkers = [];
+    function drawCompareChart(variants, offersByVarCar) {
+      const cvs = document.getElementById("compareCanvas");
+      const dpr = window.devicePixelRatio || 1;
+      const containerW = cvs.parentElement.offsetWidth;
+      const height = 520, minColumnW = 150;
+      const width = Math.max(containerW, variants.length * minColumnW);
+      cvs.width = width * dpr; cvs.height = height * dpr;
+      cvs.style.width  = width  + "px"; cvs.style.height = height + "px";
+      const ctx = cvs.getContext("2d");
+      ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr, dpr);
+      ctx.fillStyle = "white"; ctx.fillRect(0, 0, width, height);
+      const padT = 30, padB = 130, padL = 95, padR = 30;
+      const innerW = width - padL - padR, innerH = height - padT - padB;
+      if (variants.length === 0) {
+        ctx.fillStyle = "#999"; ctx.font = "14px sans-serif"; ctx.textAlign = "center";
+        ctx.fillText("표시할 단말이 없습니다.", width / 2, height / 2);
+        chartMarkers = []; return;
+      }
+      let maxV = 1;
+      variants.forEach(v => {
+        const offs = offersByVarCar[v.variant_key] || {};
+        CARRIERS.forEach(c => { const o = offs[c]; if (!o) return; maxV = Math.max(maxV, o.subsidy_total || 0); });
+      });
+      const tickStep = Math.max(50000, Math.ceil(maxV / 5 / 50000) * 50000);
+      const maxAxis = Math.ceil(maxV / tickStep) * tickStep;
+      const yScale = innerH / maxAxis;
+      ctx.strokeStyle = "#eee"; ctx.lineWidth = 1;
+      ctx.fillStyle = "#999"; ctx.font = "11px sans-serif";
+      ctx.textAlign = "right"; ctx.textBaseline = "middle";
+      const steps = maxAxis / tickStep;
+      for (let i = 0; i <= steps; i++) {
+        const y = padT + innerH * (1 - i / steps);
+        ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(width - padR, y); ctx.stroke();
+        ctx.fillText((tickStep * i).toLocaleString(), padL - 8, y);
+      }
+      ctx.strokeStyle = "#333"; ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + innerH);
+      ctx.lineTo(width - padR, padT + innerH); ctx.stroke();
+      ctx.save();
+      ctx.fillStyle = "#333"; ctx.font = "bold 12px sans-serif";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.translate(22, padT + innerH / 2); ctx.rotate(-Math.PI / 2);
+      ctx.fillText("지원금 (원)", 0, 0); ctx.restore();
+      chartMarkers = [];
+      const colW = innerW / variants.length, groupGap = 14;
+      const slotW = (colW - groupGap) / CARRIERS.length, barW = slotW * 0.7;
+      variants.forEach((v, di) => {
+        const groupX = padL + colW * di;
+        ctx.save();
+        ctx.fillStyle = "#222"; ctx.font = "bold 11px sans-serif";
+        ctx.textAlign = "right"; ctx.textBaseline = "middle";
+        ctx.translate(groupX + colW / 2, padT + innerH + 14); ctx.rotate(-Math.PI / 4);
+        ctx.fillText(v.display_name, 0, 0); ctx.restore();
+        ctx.save();
+        ctx.fillStyle = "#999"; ctx.font = "10px sans-serif";
+        ctx.textAlign = "right"; ctx.textBaseline = "middle";
+        ctx.translate(groupX + colW / 2, padT + innerH + 14); ctx.rotate(-Math.PI / 4);
+        ctx.fillText("    " + (v.released_at || ""), 0, 14); ctx.restore();
+        if (di > 0) {
+          ctx.strokeStyle = "#f4f4f4"; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(groupX, padT); ctx.lineTo(groupX, padT + innerH); ctx.stroke();
+        }
+        CARRIERS.forEach((carrier, ci) => {
+          const o = (offersByVarCar[v.variant_key] || {})[carrier];
+          if (!o) return;
+          const x = groupX + groupGap / 2 + slotW * ci + (slotW - barW) / 2;
+          const yBase = padT + innerH;
+          const pub = o.subsidy_public || 0, add = o.subsidy_additional || 0;
+          const yPub = yBase - pub * yScale, yAdd = yPub - add * yScale;
+          ctx.fillStyle = COLORS[carrier]; ctx.fillRect(x, yPub, barW, yBase - yPub);
+          ctx.fillStyle = COLORS[carrier] + "55"; ctx.fillRect(x, yAdd, barW, yPub - yAdd);
+          if (pub + add > 0) {
+            ctx.fillStyle = "#222"; ctx.font = "bold 10px sans-serif";
+            ctx.textAlign = "center"; ctx.textBaseline = "bottom";
+            ctx.fillText((pub + add).toLocaleString(), x + barW / 2, yAdd - 2);
+          }
+          chartMarkers.push({ offer: o, color: COLORS[carrier],
+                              rect: { x, y: yAdd, w: barW, h: yBase - yAdd } });
+        });
+      });
+    }
+    function setupChartHover() {
+      const cvs = document.getElementById("compareCanvas");
+      let tip = document.querySelector(".box-tooltip");
+      if (!tip) { tip = document.createElement("div"); tip.className = "box-tooltip"; document.body.appendChild(tip); }
+      cvs.onmousemove = (e) => {
+        const r = cvs.getBoundingClientRect();
+        const mx = e.clientX - r.left, my = e.clientY - r.top;
+        let hit = null;
+        for (const m of chartMarkers) {
+          const a = m.rect;
+          if (mx >= a.x && mx <= a.x + a.w && my >= a.y && my <= a.y + a.h) { hit = m; break; }
+        }
+        if (hit) {
+          const o = hit.offer, v = calcVersus(o);
+          const versus = v.diff > 0
+            ? `<span style="color:#fff;font-weight:bold">공통지원금이 ${v.absDiff.toLocaleString()}원 더 유리</span>`
+            : v.diff < 0
+              ? `<span style="color:#fff;font-weight:bold">선택약정이 ${v.absDiff.toLocaleString()}원 더 유리</span>`
+              : `<span style="color:#bbb">동일</span>`;
+          tip.innerHTML = `
+            <div style="color:${hit.color};font-weight:bold;margin-bottom:4px">
+              ${o.model_name} ${o.storage_gb||"?"}GB / ${o.carrier}
+            </div>
+            <div style="border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:4px">
+              요금제: ${o.plan_name || "-"} (${fmtWon(o.plan_monthly_fee)})
+            </div>
+            <div>출고가: ${fmtWon(o.retail_price)}</div>
+            <div>공통지원금: ${fmtWon(o.subsidy_public)}</div>
+            <div>추가지원금: ${fmtWon(o.subsidy_additional)}</div>
+            <div style="font-weight:bold">총 지원금: ${fmtWon(o.subsidy_total)}</div>
+            <div style="border-top:1px solid rgba(255,255,255,.3);margin-top:4px;padding-top:4px">
+              구매가격: ${fmtWon(o.net_buy_price)}<br>선약비교: ${versus}
+            </div>`;
+          tip.style.display = "block";
+          tip.style.left = (e.clientX + 12) + "px"; tip.style.top  = (e.clientY - 10) + "px";
+          cvs.style.cursor = "pointer";
+        } else { tip.style.display = "none"; cvs.style.cursor = "default"; }
+      };
+      cvs.onmouseleave = () => { tip.style.display = "none"; cvs.style.cursor = "default"; };
+    }
+
+    function renderTable(variants, offersByVarCar) {
+      const tbody = document.getElementById("compareTbody");
+      const empty = document.getElementById("subsidyEmpty");
+      if (variants.length === 0) { tbody.innerHTML = ""; empty.style.display = "block"; return; }
+      empty.style.display = "none";
+      const html = variants.map(v => {
+        const offs = offersByVarCar[v.variant_key] || {};
+        const availableCarriers = CARRIERS.filter(c => offs[c]);
+        if (availableCarriers.length === 0) return "";
+        const nets = availableCarriers.map(c => offs[c].net_buy_price).filter(v => v != null);
+        const minNet = nets.length ? Math.min(...nets) : null;
+        return availableCarriers.map((c, i) => {
+          const o = offs[c];
+          const isBestNet = (minNet != null) && (o.net_buy_price === minNet);
+          const vs = calcVersus(o);
+          let versusHtml;
+          if (vs.diff > 0) {
+            versusHtml = `<span class="versus-winner-public">공통지원금이 ${vs.absDiff.toLocaleString()}원 더 유리</span>
+              <span class="versus-detail">공통혜택 ${vs.publicBenefit.toLocaleString()} vs 선약혜택 ${vs.selectBenefit.toLocaleString()}</span>`;
+          } else if (vs.diff < 0) {
+            versusHtml = `<span class="versus-winner-select">선택약정이 ${vs.absDiff.toLocaleString()}원 더 유리</span>
+              <span class="versus-detail">공통혜택 ${vs.publicBenefit.toLocaleString()} vs 선약혜택 ${vs.selectBenefit.toLocaleString()}</span>`;
+          } else {
+            versusHtml = `<span class="versus-tie">동일</span>
+              <span class="versus-detail">양쪽 모두 ${vs.publicBenefit.toLocaleString()}원</span>`;
+          }
+          const addCls = (o.subsidy_additional === 0) ? "zero-cell" : "subsidy-cell";
+          return `<tr class="${ROW_CLASS[c]} ${i === 0 ? "row-group-start" : ""}">
+            ${i === 0 ? `<td rowspan="${availableCarriers.length}" class="mfr-cell">${v.manufacturer || "-"}</td>` : ""}
+            ${i === 0 ? `<td rowspan="${availableCarriers.length}" class="model-cell">
+                <span class="model-name">${v.model_name}</span>
+                <span class="model-storage">${v.storage_gb||"?"}GB</span>
+                <span class="model-released">${v.released_at || ""}</span></td>` : ""}
+            <td class="carrier-col" style="text-align:center"><span class="${CARRIER_CLASS[c]}">${c}</span></td>
+            <td style="text-align:center;font-size:12px">${o.subscription_type || "-"}</td>
+            <td class="price-cell">${fmt(o.retail_price)}<span class="won-suffix">원</span></td>
+            <td class="plan-cell">
+              <span class="plan-name">${o.plan_name || "-"}</span>
+              <span class="plan-fee">${fmt(o.plan_monthly_fee)}원/월</span></td>
+            <td class="price-cell subsidy-cell">${fmt(o.subsidy_public)}<span class="won-suffix">원</span></td>
+            <td class="price-cell ${addCls}">${fmt(o.subsidy_additional)}<span class="won-suffix">원</span></td>
+            <td class="price-cell net-cell ${isBestNet ? "best-cell" : ""}">${fmt(o.net_buy_price)}<span class="won-suffix">원</span></td>
+            <td class="versus-cell">${versusHtml}</td></tr>`;
+        }).join("");
+      }).join("");
+      tbody.innerHTML = html;
+    }
+
+    function downloadExcel() {
+      if (typeof XLSX === "undefined") { alert("엑셀 라이브러리 로딩 실패"); return; }
+      const refDate = document.getElementById("filterDate").value || DATA.latestSnapshot;
+      const subType = document.getElementById("filterSub").value || "MNP";
+      const offers = DATA.offers.filter(o => o.snapshot_date === refDate && (o.subscription_type || "MNP") === subType);
+      const oByV = {};
+      offers.forEach(o => { const k = `${o.model_name}__${o.storage_gb}`; (oByV[k] = oByV[k] || {})[o.carrier] = o; });
+      const variants = filterVariants(oByV);
+      const header = ["제조사", "단말명", "용량(GB)", "출시일", "통신사", "가입유형",
+        "출고가(원)", "요금제명", "요금제 월정액(원)",
+        "공통지원금(원)", "추가지원금(원)", "총 지원금(원)",
+        "구매가격(원)", "선약 24개월 총 할인(원)",
+        "선약비교 결과", "차액(원)", "공시일자", "데이터 출처"];
+      const rows = [header];
+      variants.forEach(v => {
+        const offs = oByV[v.variant_key] || {};
+        CARRIERS.forEach(c => {
+          const o = offs[c]; if (!o) return;
+          const vs = calcVersus(o);
+          let verdict = "동일";
+          if (vs.diff > 0) verdict = `공통지원금이 ${vs.absDiff.toLocaleString()}원 더 유리`;
+          else if (vs.diff < 0) verdict = `선택약정이 ${vs.absDiff.toLocaleString()}원 더 유리`;
+          rows.push([
+            v.manufacturer || "", v.model_name, v.storage_gb, v.released_at || "", c, o.subscription_type || "",
+            o.retail_price ?? "", o.plan_name || "", o.plan_monthly_fee ?? "",
+            o.subsidy_public ?? "", o.subsidy_additional ?? "", o.subsidy_total ?? "",
+            o.net_buy_price ?? "", o.select_discount_24mo ?? "", verdict, vs.diff,
+            (o.raw_payload_obj && o.raw_payload_obj.published_date) || "", o.source_url || "",
+          ]);
+        });
+      });
+      const ws = XLSX.utils.aoa_to_sheet(rows);
+      ws["!cols"] = [{wch:12},{wch:22},{wch:8},{wch:11},{wch:8},{wch:10},{wch:13},{wch:22},{wch:14},
+        {wch:13},{wch:13},{wch:13},{wch:13},{wch:16},{wch:34},{wch:11},{wch:11},{wch:45}];
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "3사 공시지원금");
+      XLSX.writeFile(wb, `공시지원금_3사비교_${refDate}.xlsx`);
+    }
+
+    function render() {
+      const refDate = document.getElementById("filterDate").value || DATA.latestSnapshot;
+      const subType = document.getElementById("filterSub").value || "MNP";
+      const offers = DATA.offers.filter(o => o.snapshot_date === refDate && (o.subscription_type || "MNP") === subType);
+      const offersByVarCar = {};
+      offers.forEach(o => {
+        const key = `${o.model_name}__${o.storage_gb}`;
+        if (!offersByVarCar[key]) offersByVarCar[key] = {};
+        offersByVarCar[key][o.carrier] = o;
+      });
+      const variants = filterVariants(offersByVarCar);
+      renderKpi(offers);
+      drawCompareChart(variants, offersByVarCar);
+      setupChartHover();
+      renderTable(variants, offersByVarCar);
+    }
+    window.subsidyRender = render;
+
+    function init() {
+      document.getElementById("filterDate").value = DATA.latestSnapshot !== "-" ? DATA.latestSnapshot : "";
+      initFilters();
+      document.getElementById("downloadExcel").addEventListener("click", downloadExcel);
+      renderMeta();
+      render();
+      window.addEventListener("resize", () => {
+        if (document.getElementById("view-subsidy").classList.contains("active")) render();
+      });
+    }
+    init();
+  })();
+  </script>
+
+  <!-- ===== 성지폰 view 로직 (IIFE) ===== -->
+  <script>
+  (function () {
+    // 성지폰 탭은 3사로 제한 (알뜰 제외)
+    const CARRIERS = ["SKT", "KT", "LGU+"];
+    const CARRIER_COLORS = { "SKT": "#0084FF", "KT": "#004687", "LGU+": "#1DB446" };
+    const CARRIER_CLASS  = { "SKT": "carrier-skt", "KT": "carrier-kt", "LGU+": "carrier-lg" };
+
+    // 성지폰 "신규" → 공시 측 "010신규" 정규화
+    const SUB_MAP_SEONGJI_TO_SUBSIDY = { "신규": "010신규", "MNP": "MNP", "기변": "기변" };
+
+    const DATA = window.SEONGJI_DATA || {
+      generatedAt: "-", latestSnapshot: "-", days: 30,
+      models: [], daily: [], detail: [], boxStats: [], runs: [], boxWindowDays: 14
+    };
+    const SUBSIDY = window.SUBSIDY_DATA || { offers: [], latestSnapshot: null };
+
+    let chartMetric = "cash_price";   // or "seongji_rb"
+    let boxMarkers = [];
+
+    /* === subsidy lookup === */
+    // (carrier, model_name, storage_gb, normalized_sub_type) → offer
+    function subsidyKey(carrier, model_name, storage_gb, sub_type_seongji) {
+      const sub = SUB_MAP_SEONGJI_TO_SUBSIDY[sub_type_seongji] || sub_type_seongji || "MNP";
+      return `${carrier}__${model_name}__${storage_gb || ""}__${sub}`;
+    }
+    let subsidyIndex = null;
+    function buildSubsidyIndex() {
+      if (subsidyIndex) return subsidyIndex;
+      subsidyIndex = new Map();
+      const latest = SUBSIDY.latestSnapshot;
+      (SUBSIDY.offers || []).forEach(o => {
+        if (latest && o.snapshot_date !== latest) return;
+        const k = subsidyKey(o.carrier, o.model_name, o.storage_gb, o.subscription_type);
+        subsidyIndex.set(k, o);
+      });
+      return subsidyIndex;
+    }
+    function lookupSubsidy(r) {
+      buildSubsidyIndex();
+      // 1) (carrier, model, storage, sub) 정확매칭
+      let hit = subsidyIndex.get(subsidyKey(r.carrier, r.model_name, r.storage_gb, r.subscription_type));
+      if (hit) return hit;
+      // 2) storage 무시 폴백
+      for (const o of subsidyIndex.values()) {
+        if (o.carrier === r.carrier
+            && o.model_name === r.model_name
+            && (SUB_MAP_SEONGJI_TO_SUBSIDY[r.subscription_type] || "MNP") === (o.subscription_type || "MNP")) {
+          return o;
+        }
+      }
+      return null;
+    }
+
+    /* === 성지RB 계산 === */
+    function calcSeongjiRB(seongjiRow, subsidyOffer) {
+      if (!subsidyOffer || seongjiRow.cash_price == null) {
+        return { value: null, clipped: false, rawNegative: null };
+      }
+      const raw = (subsidyOffer.retail_price || 0)
+                - (subsidyOffer.subsidy_public || 0)
+                - (subsidyOffer.subsidy_additional || 0)
+                - (seongjiRow.cash_price || 0);
+      // 음수는 0 으로 클립
+      return { value: Math.max(raw, 0), clipped: raw < 0, rawValue: raw };
+    }
+
+    /* === 단말 멀티셀렉트 === */
+    function initModelDropdown() {
+      const menu = document.getElementById("sjDropdownMenu");
+      const toggle = document.getElementById("sjDropdownToggle");
+      menu.innerHTML = "";
+      const all = document.createElement("label");
+      all.className = "checkbox-item";
+      all.style.borderBottom = "1px solid #eee";
+      all.innerHTML = `<input type="checkbox" id="sjModelAll" checked><span><b>전체 선택</b></span>`;
+      menu.appendChild(all);
+      DATA.models.forEach(m => {
+        const lbl = document.createElement("label");
+        lbl.className = "checkbox-item";
+        lbl.innerHTML = `<input type="checkbox" class="sj-model-cb" value="${m}" checked><span>${m}</span>`;
+        menu.appendChild(lbl);
+      });
+      toggle.addEventListener("click", () => menu.classList.toggle("hidden"));
+      document.addEventListener("click", e => {
+        if (!menu.contains(e.target) && e.target !== toggle) menu.classList.add("hidden");
+      });
+      menu.addEventListener("change", e => {
+        if (e.target.id === "sjModelAll") {
+          document.querySelectorAll(".sj-model-cb").forEach(cb => cb.checked = e.target.checked);
+        }
+        updateToggleLabel();
+        render();
+      });
+      updateToggleLabel();
+    }
+    function updateToggleLabel() {
+      const cbs = document.querySelectorAll(".sj-model-cb");
+      const sel = Array.from(cbs).filter(c => c.checked);
+      document.getElementById("sjDropdownToggle").textContent =
+        sel.length === cbs.length ? `전체 ${cbs.length}개 선택` : `${sel.length} / ${cbs.length}개 선택`;
+    }
+    function selectedModels() {
+      return new Set(Array.from(document.querySelectorAll(".sj-model-cb:checked")).map(c => c.value));
+    }
+
+    function renderMeta() {
+      const m = document.getElementById("sjMetaBar");
+      const runs = (DATA.runs || []).map(r =>
+        `<span><b>${r.source}</b>: ${r.parsed || 0}건 (${(r.finished_at || "").slice(0, 16)})</span>`
+      ).join("");
+      m.innerHTML = `
+        <span>최종 빌드: <b>${DATA.generatedAt}</b></span>
+        <span>최신 스냅샷: <b>${DATA.latestSnapshot}</b></span>
+        <span>모델 ${DATA.models.length}종</span>
+        <span>3사 한정 (알뜰 제외)</span>
+        ${runs}`;
+    }
+
+    function renderKpi(filtered) {
+      const k = document.getElementById("sjKpiSection");
+      const carriers = {};
+      filtered.forEach(r => {
+        if (!r.carrier || !CARRIERS.includes(r.carrier) || r.cash_price == null) return;
+        if (!carriers[r.carrier] || r.cash_price < carriers[r.carrier].cash_price)
+          carriers[r.carrier] = r;
+      });
+      const cards = CARRIERS.map(c => {
+        const row = carriers[c];
+        const price = row ? `${(row.cash_price / 10000).toLocaleString()}만` : "-";
+        const sub = row ? `${row.model_name} · ${row.source}` : "데이터 없음";
+        return `<div class="kpi-card">
+          <div class="kpi-label">${c} 최저가</div>
+          <div class="kpi-value" style="color:${CARRIER_COLORS[c]}">${price}</div>
+          <div class="kpi-sub">${sub}</div></div>`;
+      }).join("");
+      k.innerHTML = cards;
+    }
+
+    /* === 박스플롯 — 현금완납가 또는 성지RB === */
+    function buildBuckets(filtered, modelsToShow) {
+      // (model, carrier) → { count, min, max, avg, p70 }
+      // metric = cash_price : 기존 boxStats 활용
+      // metric = seongji_rb : detail 행을 lookup 해서 RB 계산
+      const byMC = {};
+      modelsToShow.forEach(m => { byMC[m] = {}; });
+      if (chartMetric === "cash_price") {
+        // boxStats 합산 (가입유형 필터 무시 — 풀로 통합)
+        (DATA.boxStats || []).forEach(s => {
+          if (!byMC[s.model_name]) return;
+          if (!CARRIERS.includes(s.carrier)) return;
+          // 필터에 subType 이 지정돼 있으면 그것만
+          if (filtered.subTypeFilter && s.subscription_type !== filtered.subTypeFilter) return;
+          const cur = byMC[s.model_name][s.carrier];
+          if (!cur) { byMC[s.model_name][s.carrier] = {...s}; }
+          else {
+            cur.max = Math.max(cur.max, s.max);
+            cur.min = Math.min(cur.min, s.min);
+            cur.p70 = Math.round((cur.p70 * cur.count + s.p70 * s.count) / (cur.count + s.count));
+            cur.avg = Math.round((cur.avg * cur.count + s.avg * s.count) / (cur.count + s.count));
+            cur.count += s.count;
+          }
+        });
+      } else {
+        // seongji_rb: detail 행마다 RB 계산, bucket 누적 후 통계
+        const acc = {};
+        filtered.detailRows.forEach(r => {
+          if (!CARRIERS.includes(r.carrier) || r.cash_price == null) return;
+          if (!byMC[r.model_name]) return;
+          const subOffer = lookupSubsidy(r);
+          const rb = calcSeongjiRB(r, subOffer);
+          if (rb.value == null) return;
+          const key = `${r.model_name}__${r.carrier}`;
+          (acc[key] = acc[key] || []).push(rb.value);
+        });
+        Object.keys(acc).forEach(k => {
+          const [model, carrier] = k.split("__");
+          const vals = acc[k].sort((a,b) => a - b);
+          const pct = (q) => {
+            const idx = q * (vals.length - 1);
+            const lo = Math.floor(idx), hi = Math.min(lo + 1, vals.length - 1);
+            return Math.round(vals[lo] * (1 - (idx - lo)) + vals[hi] * (idx - lo));
+          };
+          byMC[model][carrier] = {
+            model_name: model, carrier,
+            count: vals.length,
+            min: vals[0], max: vals[vals.length - 1],
+            avg: Math.round(vals.reduce((s, x) => s + x, 0) / vals.length),
+            p70: pct(0.70),
+          };
+        });
+      }
+      return byMC;
+    }
+
+    function drawBoxPlot(filtered, modelsToShow) {
+      const cvs = document.getElementById("sjBoxCanvas");
+      const dpr = window.devicePixelRatio || 1;
+      const containerW = cvs.parentElement.offsetWidth;
+      const height = 480, minColumnWidth = 120;
+      const width = Math.max(containerW, modelsToShow.length * minColumnWidth);
+      cvs.width = width * dpr; cvs.height = height * dpr;
+      cvs.style.width = width + "px"; cvs.style.height = height + "px";
+      const ctx = cvs.getContext("2d");
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.scale(dpr, dpr);
+      ctx.fillStyle = "white"; ctx.fillRect(0, 0, width, height);
+
+      const padT = 30, padB = 100, padL = 80, padR = 40;
+      const innerW = width - padL - padR, innerH = height - padT - padB;
+
+      const byMC = buildBuckets(filtered, modelsToShow);
+      let allMax = 0;
+      modelsToShow.forEach(m => CARRIERS.forEach(c => {
+        const s = byMC[m] && byMC[m][c]; if (s && s.max > allMax) allMax = s.max;
+      }));
+      if (allMax === 0) {
+        ctx.fillStyle = "#999"; ctx.font = "14px sans-serif"; ctx.textAlign = "center";
+        ctx.fillText("표시할 분포 데이터가 없습니다.", width / 2, height / 2);
+        boxMarkers = []; return;
+      }
+      const maxManwon = Math.ceil((allMax / 10000) / 10) * 10;
+      const priceScale = innerH / (maxManwon * 10000);
+      ctx.strokeStyle = "#eee"; ctx.lineWidth = 1;
+      ctx.fillStyle = "#999"; ctx.font = "11px sans-serif";
+      ctx.textAlign = "right"; ctx.textBaseline = "middle";
+      const steps = 6;
+      for (let i = 0; i <= steps; i++) {
+        const y = padT + innerH * (1 - i / steps);
+        ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(width - padR, y); ctx.stroke();
+        ctx.fillText(`${Math.round(maxManwon * i / steps)}만`, padL - 8, y);
+      }
+      ctx.strokeStyle = "#333"; ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + innerH);
+      ctx.lineTo(width - padR, padT + innerH); ctx.stroke();
+      ctx.save();
+      ctx.fillStyle = "#333"; ctx.font = "bold 12px sans-serif";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.translate(18, padT + innerH / 2); ctx.rotate(-Math.PI / 2);
+      const axisTitle = chartMetric === "cash_price" ? "현금완납가 (만원)" : "성지RB (만원, 0 이상)";
+      ctx.fillText(axisTitle, 0, 0); ctx.restore();
+      boxMarkers = [];
+      const columnW = innerW / modelsToShow.length;
+      const markerR = 4, tickLen = 9;
+      const slotSpacing = Math.min(26, columnW / 4);
+      modelsToShow.forEach((model, mi) => {
+        const groupX = padL + columnW * mi + columnW / 2;
+        ctx.fillStyle = "#222"; ctx.font = "bold 11px sans-serif";
+        ctx.textAlign = "center"; ctx.textBaseline = "top";
+        ctx.save();
+        ctx.translate(groupX, padT + innerH + 12); ctx.rotate(-Math.PI / 4);
+        ctx.fillText(model, 0, 0); ctx.restore();
+        if (mi > 0) {
+          ctx.strokeStyle = "#f4f4f4"; ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(padL + columnW * mi, padT); ctx.lineTo(padL + columnW * mi, padT + innerH);
+          ctx.stroke();
+        }
+        CARRIERS.forEach((carrier, ci) => {
+          const s = byMC[model] && byMC[model][carrier]; if (!s) return;
+          const offset = (ci - 1) * slotSpacing, x = groupX + offset;
+          const yBase = padT + innerH;
+          const yMax = yBase - s.max * priceScale;
+          const yP70 = yBase - s.p70 * priceScale;
+          const yAvg = yBase - s.avg * priceScale;
+          const color = CARRIER_COLORS[carrier];
+          ctx.strokeStyle = color; ctx.lineWidth = 1.5;
+          ctx.setLineDash([3, 3]);
+          ctx.beginPath(); ctx.moveTo(x, yMax); ctx.lineTo(x, yAvg); ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.fillStyle = color;
+          ctx.beginPath(); ctx.arc(x, yMax, markerR, 0, Math.PI * 2); ctx.fill();
+          ctx.strokeStyle = color; ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(x - tickLen, yP70); ctx.lineTo(x + tickLen, yP70); ctx.stroke();
+          ctx.fillStyle = color;
+          ctx.beginPath(); ctx.arc(x, yAvg, markerR, 0, Math.PI * 2); ctx.fill();
+          boxMarkers.push({
+            model, carrier, stats: s, color,
+            pts: [
+              { x, y: yMax, label: "Max", value: s.max },
+              { x, y: yP70, label: "상위30%", value: s.p70 },
+              { x, y: yAvg, label: "평균", value: s.avg },
+            ],
+            extra: { min: s.min, count: s.count },
+          });
+        });
+      });
+    }
+
+    function setupBoxPlotHover() {
+      const cvs = document.getElementById("sjBoxCanvas");
+      let tip = document.querySelector(".box-tooltip");
+      if (!tip) { tip = document.createElement("div"); tip.className = "box-tooltip"; document.body.appendChild(tip); }
+      cvs.onmousemove = (e) => {
+        const r = cvs.getBoundingClientRect();
+        const mx = e.clientX - r.left, my = e.clientY - r.top;
+        let hit = null;
+        for (const m of boxMarkers) {
+          for (const p of m.pts) {
+            if (Math.hypot(mx - p.x, my - p.y) < 10) { hit = { marker: m, point: p }; break; }
+          }
+          if (hit) break;
+        }
+        if (hit) {
+          const m = hit.marker, s = m.stats;
+          const man = v => (v / 10000).toFixed(1).replace(/\.0$/, "") + "만";
+          const metricLabel = chartMetric === "cash_price" ? "현금완납가" : "성지RB";
+          tip.innerHTML = `
+            <div style="color:${m.color};font-weight:bold;margin-bottom:4px">
+              ${m.model} / ${m.carrier} · ${metricLabel}
+            </div>
+            <div style="border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:4px">
+              관측치 ${s.count}건 (최근 ${(window.SEONGJI_DATA?.boxWindowDays ?? 14)}일)
+            </div>
+            <div>Max: ${man(s.max)}</div>
+            <div>상위30%: ${man(s.p70)}</div>
+            <div>평균: ${man(s.avg)}</div>
+            <div>Min: ${man(s.min)}</div>`;
+          tip.style.display = "block";
+          tip.style.left = (e.clientX + 12) + "px"; tip.style.top  = (e.clientY - 10) + "px";
+          cvs.style.cursor = "pointer";
+        } else { tip.style.display = "none"; cvs.style.cursor = "default"; }
+      };
+      cvs.onmouseleave = () => { tip.style.display = "none"; cvs.style.cursor = "default"; };
+    }
+
+    /* === 디테일 테이블 === */
+    function renderDetailTable(rows) {
+      const tbody = document.getElementById("sjDetailTbody");
+      const empty = document.getElementById("sjEmptyState");
+      if (rows.length === 0) { tbody.innerHTML = ""; empty.style.display = "block"; return; }
+      empty.style.display = "none";
+      const html = rows.slice(0, 300).map(r => {
+        const carrier = r.carrier || "?";
+        if (!CARRIERS.includes(carrier)) return "";   // 알뜰 행 숨김
+        const cls = CARRIER_CLASS[carrier] || "";
+        const cash = r.cash_price != null
+          ? `<span class="net-cell">${(r.cash_price / 10000).toLocaleString()}만</span>` : "-";
+        const monthly = r.monthly_fee ? `${r.monthly_fee.toLocaleString()}원` : "-";
+        const sub = lookupSubsidy(r);
+        const rb = calcSeongjiRB(r, sub);
+        const cellRet = sub ? `${sub.retail_price.toLocaleString()}` : "-";
+        const cellPub = sub ? `${(sub.subsidy_public || 0).toLocaleString()}` : "-";
+        const cellAdd = sub ? `${(sub.subsidy_additional || 0).toLocaleString()}` : "-";
+        let cellRB;
+        if (rb.value == null)        cellRB = `<span class="zero-cell">-</span>`;
+        else if (rb.clipped)         cellRB = `<span class="rb-clipped">0 이하 (공시 경로 유리)</span>`;
+        else                         cellRB = `<span class="rb-cell">${rb.value.toLocaleString()}</span><span class="won-suffix">원</span>`;
+        return `<tr>
+          <td><b>${r.model_name}</b></td>
+          <td style="text-align:center"><span class="${cls}">${carrier}</span></td>
+          <td style="text-align:center">${r.subscription_type || "-"}</td>
+          <td style="text-align:center">${r.contract_type || "-"}</td>
+          <td style="text-align:center">${r.storage_gb ? r.storage_gb + "GB" : "-"}</td>
+          <td class="price-cell">${cellRet}${sub ? '<span class="won-suffix">원</span>' : ''}</td>
+          <td class="price-cell subsidy-cell">${cellPub}${sub ? '<span class="won-suffix">원</span>' : ''}</td>
+          <td class="price-cell">${cellAdd}${sub ? '<span class="won-suffix">원</span>' : ''}</td>
+          <td class="price-cell">${cellRB}</td>
+          <td class="price-cell">${cash}</td>
+          <td class="price-cell">${monthly}</td>
+          <td>${r.plan_name || "-"}</td>
+          <td style="text-align:center">${r.plan_duration_mo ? r.plan_duration_mo + "M" : "-"}</td>
+          <td><a href="${r.url}" target="_blank" rel="noopener noreferrer">${(r.title || "열기").slice(0, 30)}…</a></td>
+        </tr>`;
+      }).join("");
+      tbody.innerHTML = html;
+    }
+
+    function render() {
+      const sel = selectedModels();
+      const refDate = document.getElementById("sjFilterDate").value || DATA.latestSnapshot;
+      const carrier = document.getElementById("sjFilterCarrier").value;
+      const sub = document.getElementById("sjFilterSub").value;
+      const minConf = parseFloat(document.getElementById("sjFilterConf").value);
+
+      // 박스플롯 데이터
+      const subTypeFilter = sub || null;
+      // detail 행 (RB 모드용 + 차트 모델 후보)
+      const filteredDetail = DATA.detail.filter(r => {
+        if (r.snapshot_date !== refDate && r.snapshot_date !== DATA.latestSnapshot) return false;
+        if (!CARRIERS.includes(r.carrier)) return false;  // 알뜰 제외
+        if (sel.size && !sel.has(r.model_name)) return false;
+        if (carrier && r.carrier !== carrier) return false;
+        if (sub && r.subscription_type !== sub) return false;
+        if ((r.confidence || 0) < minConf) return false;
+        return true;
+      });
+
+      const modelOrder = DATA.models.filter(m => sel.size === 0 || sel.has(m));
+      let modelsInData;
+      if (chartMetric === "cash_price") {
+        modelsInData = new Set((DATA.boxStats || []).filter(s => CARRIERS.includes(s.carrier)).map(s => s.model_name));
+      } else {
+        modelsInData = new Set(filteredDetail.map(r => r.model_name));
+      }
+      const modelsToShow = modelOrder.filter(m => modelsInData.has(m));
+      drawBoxPlot({ subTypeFilter, detailRows: filteredDetail }, modelsToShow);
+      setupBoxPlotHover();
+
+      renderKpi(filteredDetail);
+      renderDetailTable(filteredDetail);
+    }
+    window.seongjiRender = render;
+
+    function initMetricToggle() {
+      const tg = document.getElementById("sjMetricToggle");
+      tg.addEventListener("click", e => {
+        const btn = e.target.closest("button[data-metric]"); if (!btn) return;
+        chartMetric = btn.dataset.metric;
+        tg.querySelectorAll("button").forEach(b => b.classList.toggle("active", b === btn));
+        const h = document.getElementById("sjMetricHelp");
+        h.textContent = chartMetric === "cash_price"
+          ? "현금완납가 분포 — 성지에서 일시불로 살 때 가격대."
+          : "성지RB 분포 — 사이트 공시 경로 대비 성지가 얼마나 더 싼지 (0 이상). 음수는 0으로 클립.";
+        render();
+      });
+    }
+
+    function init() {
+      document.getElementById("sjFilterDate").value = DATA.latestSnapshot !== "-" ? DATA.latestSnapshot : "";
+      const boxLabel = document.getElementById("sjBoxWindowLabel");
+      if (boxLabel && DATA.boxWindowDays) boxLabel.textContent = DATA.boxWindowDays;
+      initModelDropdown();
+      initMetricToggle();
+      renderMeta();
+      render();
+      window.addEventListener("resize", () => {
+        if (document.getElementById("view-seongji").classList.contains("active")) render();
+      });
+    }
+    init();
+  })();
+  </script>
+</body>
+</html>

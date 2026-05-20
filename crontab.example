@@ -1,0 +1,15 @@
+# 성지폰 단가 일단위 크롤링 — crontab 예시
+#
+# 설치:
+#   crontab -e   →   아래 줄 복사
+#
+# 매일 새벽 4:30 KST 에 실행 (성지폰 게시글은 보통 야간에 집중)
+# 30 4 * * * /Users/taeholee/Documents/대시보드/성지폰/run_daily.sh >> /Users/taeholee/Documents/대시보드/성지폰/logs/cron.log 2>&1
+
+# 하루에 2번 (오전/오후) 돌리고 싶을 때
+# 30 4 * * *  /Users/taeholee/Documents/대시보드/성지폰/run_daily.sh >> /Users/taeholee/Documents/대시보드/성지폰/logs/cron.log 2>&1
+# 30 14 * * * /Users/taeholee/Documents/대시보드/성지폰/run_daily.sh >> /Users/taeholee/Documents/대시보드/성지폰/logs/cron.log 2>&1
+
+# Supabase 동기화 사용 시 — crontab 에 env 를 직접 박거나 ~/.zprofile 등에서 export
+# SUPABASE_URL=https://xxxx.supabase.co
+# SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOi...

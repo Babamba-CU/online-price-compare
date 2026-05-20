@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+.claude/
+
+# 로컬 환경변수
+.env
+.env.*
+
+# 로컬 SQLite DB (배포 환경에서는 외부 DB 사용)
+# 시드/크롤 결과는 빌드 시점에 생성하므로 repo 에 포함하지 않음
+*.db
+*.sqlite
+*.sqlite3
+
+# 크롤러 실행 로그
+logs/
+*.log
