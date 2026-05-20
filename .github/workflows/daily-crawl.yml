@@ -38,7 +38,8 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
+          # 배포용 (flask) + 크롤러 전용 의존성 모두 설치
+          python -m pip install -r requirements.txt -r requirements-crawler.txt
 
       - name: Install Playwright Chromium
         run: |

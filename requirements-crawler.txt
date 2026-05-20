@@ -1,0 +1,13 @@
+# 크롤러/시드/Supabase sync 전용 의존성 (.github/workflows/daily-crawl.yml 에서만 사용)
+# 배포 컨테이너에는 .dockerignore 로 제외되어 들어가지 않음
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+python-dateutil>=2.8.0
+supabase>=2.4.0
+
+# 3사 공시지원금 사이트 크롤링 (SPA/봇차단)
+playwright>=1.43.0
+
+# SKT 공시 PDF 파싱용 (후속)
+pdfminer.six>=20231228

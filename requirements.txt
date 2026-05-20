@@ -1,16 +1,3 @@
-# 배포 컨테이너 (Polaris Colab) 의존성
-# - Flask 는 정적 HTML 서빙 + /health 엔드포인트용
-# - 나머지는 크롤러용 (배포 컨테이너에서 실행 안 함, 별도 Routine/cron 에서 사용)
+# Polaris Colab 배포 컨테이너 의존성 (정적 HTML 서빙 + /health 만)
+# 크롤러 의존성은 requirements-crawler.txt 로 분리 — 배포 이미지에서 제외 (.dockerignore)
 flask>=3.0.0
-
-# === 크롤러/시드 전용 (.dockerignore 로 컨테이너 빌드에서는 제외) ==============
-requests>=2.31.0
-beautifulsoup4>=4.12.0
-lxml>=4.9.0
-python-dateutil>=2.8.0
-supabase>=2.4.0
-
-# 3사 공시지원금 사이트 크롤링 (SPA/봇차단)
-playwright>=1.43.0
-# SKT 공시 PDF 파싱용 (후속)
-pdfminer.six>=20231228
