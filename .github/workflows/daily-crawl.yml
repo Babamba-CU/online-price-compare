@@ -91,7 +91,32 @@ jobs:
           print(f"KT 가입유형 일관성 위반: {violations} 행 (정상=0)")
           PY
 
+      - name: Guard — require minimum offers before commit
+        id: guard
+        run: |
+          # 추출된 오늘자 offers 가 임계값 미만이면 commit skip (정답값 보호)
+          COUNT=$(python - <<'PY'
+          import sqlite3, datetime
+          db = sqlite3.connect("subsidy_offers.db")
+          today = datetime.date.today().isoformat()
+          print(db.execute(
+              "SELECT COUNT(*) FROM subsidy_offers WHERE snapshot_date=?",
+              (today,),
+          ).fetchone()[0])
+          PY
+          )
+          echo "today_offers=$COUNT"
+          MIN_OFFERS=50
+          if [ "$COUNT" -lt "$MIN_OFFERS" ]; then
+            echo "::warning::Only $COUNT offers extracted (< $MIN_OFFERS). Skipping commit to protect existing subsidy_data.js."
+            echo "skip_commit=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::$COUNT offers extracted — proceeding to commit."
+            echo "skip_commit=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Commit & push subsidy_data.js
+        if: steps.guard.outputs.skip_commit != 'true'
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
