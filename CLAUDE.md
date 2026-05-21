@@ -82,12 +82,18 @@ open("/data/file.csv", "w")        # 재시작 시 소멸, /tmp만 사용
 
 ```dockerfile
 FROM python:3.12-slim
+
 WORKDIR /app
+
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . .
+
 EXPOSE 8080
+
 USER 1000
+
 CMD ["python", "app.py"]
 ```
 
@@ -95,12 +101,18 @@ CMD ["python", "app.py"]
 
 ```dockerfile
 FROM node:20-slim
+
 WORKDIR /app
+
 COPY package.json package-lock.json ./
 RUN npm ci --only=production
+
 COPY . .
+
 EXPOSE 8080
+
 USER 1000
+
 CMD ["node", "index.js"]
 ```
 
