@@ -1,3 +1,4 @@
-# Polaris Colab 배포 컨테이너 의존성 (정적 HTML 서빙 + /health 만)
+# Polaris Colab 배포 컨테이너 의존성 (정적 HTML 서빙 + /health + 내장 일일 스케줄러)
 # 크롤러 의존성은 requirements-crawler.txt 로 분리 — 배포 이미지에서 제외 (.dockerignore)
 flask>=3.0.0
+APScheduler>=3.10.0

@@ -7553,21 +7553,21 @@ window.SUBSIDY_DATA = {
   "runs": [
     {
       "carrier": "KT",
-      "finished_at": "2026-05-31T16:43:57.170209+00:00",
+      "finished_at": "2026-05-31T17:41:09.290464+00:00",
       "upserted": 1260,
       "changed": 0,
       "errors": 0
     },
     {
       "carrier": "LGU+",
-      "finished_at": "2026-05-31T16:43:57.170224+00:00",
+      "finished_at": "2026-05-31T17:41:09.290480+00:00",
       "upserted": 1260,
       "changed": 0,
       "errors": 0
     },
     {
       "carrier": "SKT",
-      "finished_at": "2026-05-31T16:43:57.169953+00:00",
+      "finished_at": "2026-05-31T17:41:09.290215+00:00",
       "upserted": 1260,
       "changed": 0,
       "errors": 0

@@ -20,21 +20,20 @@ logs/
 # 크롤러 전용 의존성 — 배포 이미지에 들어가면 안 됨 (이미지 슬림화)
 requirements-crawler.txt
 
-# 크롤러/시드 스크립트는 배포 컨테이너에서 사용 안 함 (별도 Routine/cron 으로 실행)
+# 외부 크롤러/Supabase 동기화 스크립트는 배포 컨테이너에서 사용 안 함
+# (내장 스케줄러는 seed+build 만 사용하므로 크롤러 계열만 제외)
 seongji_crawler.py
 seongji_parser.py
-seongji_db.py
-seongji_build.py
 seongji_supabase_sync.py
-seed_sample.py
 subsidy_crawler.py
-subsidy_db.py
-subsidy_build.py
-subsidy_seed.py
 subsidy_supabase_sync.py
 model_codes.py
-schema.sql
-subsidy_schema.sql
 run_daily.sh
 run_subsidy_daily.sh
 crontab.example
+
+# 내장 일일 스케줄러(app.py refresh_data)가 사용하는 시드/빌드 스크립트 + 스키마는
+# 반드시 이미지에 포함되어야 함 → .dockerignore 에서 제외하지 않음:
+#   seongji_db.py seongji_build.py seed_sample.py
+#   subsidy_db.py subsidy_build.py subsidy_seed.py
+#   schema.sql subsidy_schema.sql
