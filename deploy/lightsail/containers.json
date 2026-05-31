@@ -1,0 +1,10 @@
+{
+  "app": {
+    "image": ":seongji-price-monitor.app.LATEST_TAG",
+    "command": [],
+    "environment": {},
+    "ports": {
+      "8080": "HTTP"
+    }
+  }
+}
