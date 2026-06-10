@@ -2,3 +2,4 @@
 # 크롤러 의존성은 requirements-crawler.txt 로 분리 — 배포 이미지에서 제외 (.dockerignore)
 flask>=3.0.0
 APScheduler>=3.10.0
+requests>=2.31.0

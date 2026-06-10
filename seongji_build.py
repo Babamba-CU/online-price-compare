@@ -134,6 +134,27 @@ def build() -> dict:
             )
         ]
 
+        # 6) 실시간 수집 피드 — Naver 출처 최근 30건 (게시글당 최고신뢰 가격 1건 첨부)
+        feed = [
+            dict(r) for r in conn.execute(
+                """
+                SELECT po.source, po.url, po.title,
+                       COALESCE(po.posted_at, po.crawled_at) AS posted_at,
+                       p.model_name, p.carrier, p.subscription_type,
+                       p.cash_price, p.confidence
+                FROM seongji_posts po
+                LEFT JOIN seongji_prices p ON p.id = (
+                    SELECT p2.id FROM seongji_prices p2
+                    WHERE p2.post_id = po.id
+                    ORDER BY p2.confidence DESC, p2.cash_price IS NULL, p2.id
+                    LIMIT 1)
+                WHERE po.source LIKE 'naver%'
+                ORDER BY posted_at DESC, po.id DESC
+                LIMIT 30
+                """
+            )
+        ]
+
     return {
         "generatedAt":     date.today().isoformat(),
         "latestSnapshot":  latest,
@@ -146,6 +167,7 @@ def build() -> dict:
         "boxStats":        box_stats,
         "detail":          detail,
         "runs":            runs,
+        "feed":            feed,
     }
 
 
@@ -158,7 +180,8 @@ def main() -> None:
     OUT_PATH.write_text(js, encoding="utf-8")
     print(
         f"wrote {OUT_PATH}  "
-        f"(daily={len(payload['daily'])}, box={len(payload['boxStats'])}, detail={len(payload['detail'])})"
+        f"(daily={len(payload['daily'])}, box={len(payload['boxStats'])}, "
+        f"detail={len(payload['detail'])}, feed={len(payload['feed'])})"
     )
 
 

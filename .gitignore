@@ -14,6 +14,7 @@ venv/
 # 로컬 환경변수
 .env
 .env.*
+!.env.example
 
 # 로컬 SQLite DB (배포 환경에서는 외부 DB 사용)
 # 시드/크롤 결과는 빌드 시점에 생성하므로 repo 에 포함하지 않음

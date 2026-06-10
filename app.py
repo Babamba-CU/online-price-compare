@@ -63,6 +63,12 @@ def refresh_data() -> None:
         import seongji_db, seed_sample, seongji_build
         seongji_db.DB_PATH.unlink(missing_ok=True)
         seed_sample.seed()        # init_db + 최근 15일치 샘플 시드 (오늘 기준)
+        try:
+            import seongji_naver
+            r = seongji_naver.collect()   # Naver 카페·웹문서 실측 수집 (키 없으면 내부 skip)
+            log(f"Naver 수집: {r}")
+        except Exception as e:  # noqa: BLE001
+            log(f"Naver 수집 실패 — 합성 데이터로 계속: {e!r}")
         seongji_build.main()      # seongji_data.js 빌드
         log("성지폰 단가 갱신 완료")
     except Exception as e:  # noqa: BLE001

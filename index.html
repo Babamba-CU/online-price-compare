@@ -4,25 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>온라인 단가비교 — 3사 공시지원금 + 성지폰</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --color-skt: #0084FF;
-      --color-kt:  #004687;
-      --color-lg:  #1DB446;
-      --color-border:        #E5E5E5;
-      --color-border-light:  #EEEEEE;
-      --color-bg:            #FAFAFA;
-      --color-bg-soft:       #F7F8FA;
-      --color-text:          #1A1A1A;
-      --color-text-strong:   #111111;
-      --color-text-light:    #555555;
-      --color-text-muted:    #9AA0A6;
-      --color-table-head:    #F4F5F7;
-      --color-row-alt:       #FBFBFC;
-      --color-best-bg:       #FFF8E1;
-      --color-best-border:   #B58900;
-      --color-best-text:     #6B5300;
+      /* === MAMF Design System v3.1 — light mode tokens === */
+      --bg:            #FFFFFF;
+      --bg-subtle:     #F7F7FA;
+      --bg-inset:      #F0F0F4;
+      --border:        #E4E4EA;
+      --border-strong: #C9C9D2;
+      --ink:           #0E0E12;
+      --ink2:          #52525C;
+      --ink3:          #9494A0;
+      --brand:         #3617CE;   /* SKT T Blue */
+      --brand-surface: #EEEBFB;
+      --brand-border:  #C9BEF5;
+      --accent:        #EA002C;
+      --font-mono: 'JetBrains Mono', 'SF Mono', ui-monospace, monospace;
+
+      /* 통신사 매핑 (사용자 지정): SKT=Brand / KT=Surface / LG=Accent */
+      --color-skt:     var(--brand);
+      --color-kt-line: var(--ink2);   /* surface 는 선으로 못 그림 → ink2 대체 */
+      --color-lg:      var(--accent);
+
+      /* 레거시 별칭 — MAMF 토큰으로 재지정 (기존 var() 사용처 자동 반영) */
+      --color-border:        var(--border);
+      --color-border-light:  var(--bg-inset);
+      --color-bg:            var(--bg-subtle);
+      --color-bg-soft:       var(--bg-inset);
+      --color-text:          var(--ink);
+      --color-text-strong:   var(--ink);
+      --color-text-light:    var(--ink2);
+      --color-text-muted:    var(--ink3);
+      --color-table-head:    transparent;
+      --color-row-alt:       var(--bg-subtle);
+      --color-best-bg:       var(--brand-surface);
+      --color-best-border:   var(--brand-border);
+      --color-best-text:     var(--brand);
       --spacing-xs: 8px;
       --spacing-sm: 12px;
       --spacing-md: 16px;
@@ -30,8 +50,8 @@
       --spacing-xl: 32px;
     }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
-      background: white;
+      font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
       color: var(--color-text);
       line-height: 1.5;
     }
@@ -72,7 +92,7 @@
     .tabs button:last-child { border-right: none; }
     .tabs button:hover { background: var(--color-bg-soft); }
     .tabs button.active {
-      background: var(--color-skt);
+      background: var(--ink);   /* brand 는 SKT 데이터색으로 예약 — 크롬은 뉴트럴 */
       color: white;
     }
     .view { display: none; }
@@ -87,7 +107,8 @@
     .filter-group:last-child { margin-bottom: 0; }
     .filter-label {
       display: block; font-size: 12px; font-weight: 600;
-      text-transform: uppercase; color: var(--color-text-light);
+      font-family: var(--font-mono);
+      text-transform: uppercase; color: var(--ink3);
       margin-bottom: var(--spacing-sm); letter-spacing: 0.5px;
     }
     .filter-row {
@@ -97,8 +118,9 @@
     }
     .filter-input-group { display: flex; flex-direction: column; position: relative; }
     .filter-input-label {
-      font-size: 11px; font-weight: 700; text-transform: uppercase;
-      color: #666; margin-bottom: 6px; letter-spacing: 0.5px;
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      font-family: var(--font-mono);
+      color: var(--ink3); margin-bottom: 6px; letter-spacing: 0.5px;
     }
     select, input[type="date"], input[type="text"] {
       padding: var(--spacing-sm) var(--spacing-md);
@@ -107,8 +129,8 @@
       color: var(--color-text);
     }
     select:focus, input:focus {
-      outline: none; border-color: var(--color-skt);
-      box-shadow: 0 0 0 2px rgba(0, 132, 255, 0.12);
+      outline: none; border-color: var(--brand);
+      box-shadow: 0 0 0 2px rgba(54, 23, 206, 0.12);
     }
 
     /* ===== 멀티셀렉트 (공시 측) ===== */
@@ -120,7 +142,7 @@
       display: flex; align-items: center; justify-content: space-between;
       font-size: 14px;
     }
-    .multiselect-toggle:hover { border-color: #999; }
+    .multiselect-toggle:hover { border-color: var(--border-strong); }
     .multiselect-menu {
       position: absolute; top: 100%; left: 0; right: 0;
       background: white; border: 1px solid var(--color-border);
@@ -184,7 +206,7 @@
       display: flex; align-items: center; justify-content: space-between;
       font-size: 14px;
     }
-    .dropdown-toggle:hover { border-color: #999; }
+    .dropdown-toggle:hover { border-color: var(--border-strong); }
     .dropdown-menu {
       position: absolute; top: 100%; left: 0; right: 0;
       background: white; border: 1px solid var(--color-border);
@@ -208,11 +230,15 @@
       border-bottom: 1px solid var(--color-border);
     }
     .kpi-card {
-      border: 1px solid var(--color-border); border-radius: 6px;
-      padding: var(--spacing-md); background: white;
+      border: 1px solid var(--color-border); border-radius: 14px;
+      padding: var(--spacing-md) var(--spacing-lg); background: var(--bg);
     }
-    .kpi-label { font-size: 12px; color: var(--color-text-light); margin-bottom: 6px; }
-    .kpi-value { font-size: 22px; font-weight: 700; }
+    .kpi-label {
+      font-size: 11px; color: var(--ink3); margin-bottom: 6px;
+      font-family: var(--font-mono); font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.06em;
+    }
+    .kpi-value { font-size: 24px; font-weight: 700; font-family: var(--font-mono); letter-spacing: -0.02em; }
     .kpi-sub { font-size: 12px; color: var(--color-text-light); margin-top: 4px; }
 
     /* ===== 차트 ===== */
@@ -246,28 +272,29 @@
     .legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; }
     .legend-box { width: 14px; height: 14px; border-radius: 2px; }
     .legend-box.skt { background: var(--color-skt); }
-    .legend-box.kt  { background: var(--color-kt); }
+    .legend-box.kt  { background: var(--bg); border: 1px solid var(--border-strong); } /* KT = surface */
     .legend-box.lg  { background: var(--color-lg); }
     .chart-scroll-container {
       overflow-x: auto; overflow-y: hidden;
-      border: 1px solid var(--color-border); border-radius: 4px;
-      background: white;
+      border: 1px solid var(--color-border); border-radius: 14px;
+      background: var(--bg);
     }
     #compareCanvas, #sjBoxCanvas { display: block; min-width: 100%; cursor: default; }
     .box-tooltip {
-      position: fixed; background: rgba(0, 0, 0, 0.92);
-      color: white; padding: 12px 14px; border-radius: 6px;
+      position: fixed; background: rgba(14, 14, 18, 0.94);
+      color: white; padding: 12px 14px; border-radius: 8px;
       font-size: 12px; z-index: 10000; pointer-events: none;
       display: none; line-height: 1.65; white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
 
     /* ===== 표 ===== */
     .table-section { padding: 0 var(--spacing-xl) var(--spacing-xl); }
     .table-title {
-      font-size: 18px; font-weight: 700;
+      font-size: 18px; font-weight: 700; letter-spacing: -0.01em;
       padding-bottom: var(--spacing-sm);
       margin-bottom: var(--spacing-md);
-      border-bottom: 2px solid var(--color-text);
+      border-bottom: 1.5px solid var(--border-strong);
       display: flex; align-items: baseline; gap: var(--spacing-md); flex-wrap: wrap;
     }
     .table-title .sub-note {
@@ -277,49 +304,48 @@
     .table-wrapper {
       overflow-x: auto;
       border: 1px solid var(--color-border);
-      border-radius: 4px;
-      background: white;
+      border-radius: 14px;
+      background: var(--bg);
     }
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 13px;
-      background: white;
+      background: var(--bg);
     }
+    /* MAMF 표 철학: 세로선 제거, 헤더 mono 대문자, 하단 borderStrong */
     thead {
-      background: var(--color-table-head);
-      color: var(--color-text);
+      background: transparent;
+      color: var(--ink3);
       font-weight: 600;
-      border-bottom: 2px solid var(--color-border);
+      border-bottom: 1.5px solid var(--border-strong);
     }
     th {
       padding: 14px var(--spacing-md);
       text-align: center;
       font-weight: 600;
-      font-size: 12.5px;
-      letter-spacing: -0.2px;
-      border-right: 1px solid var(--color-border);
+      font-size: 11.5px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.04em;
       line-height: 1.4;
       white-space: nowrap;
     }
-    th:last-child { border-right: none; }
     td {
       padding: 12px var(--spacing-md);
       border-bottom: 1px solid var(--color-border-light);
-      border-right: 1px solid var(--color-border-light);
       vertical-align: middle;
     }
-    td:last-child { border-right: none; }
-    tbody tr.row-group-start td { border-top: 1px solid #D7DAE0; }
-    tbody tr:hover td { background: var(--color-row-alt); }
+    tbody tr:nth-child(even) td { background: var(--bg-subtle); }
+    tbody tr.row-group-start td { border-top: 1px solid var(--border-strong); }
+    tbody tr:hover td { background: var(--bg-inset); }
 
     td.mfr-cell {
       font-size: 12px; font-weight: 500; color: var(--color-text-light);
-      vertical-align: middle; background: white !important;
+      vertical-align: middle; background: var(--bg) !important;
       white-space: nowrap;
     }
     td.model-cell {
-      font-weight: 700; background: white !important;
+      font-weight: 700; background: var(--bg) !important;
       font-size: 13.5px; line-height: 1.4; vertical-align: middle;
     }
     .model-name { display: block; }
@@ -336,6 +362,8 @@
 
     .price-cell {
       text-align: right;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
       font-variant-numeric: tabular-nums;
       font-feature-settings: "tnum";
       color: var(--color-text);
@@ -363,17 +391,21 @@
       font-weight: 700; letter-spacing: -0.2px;
     }
 
+    /* 통신사 칩 — SKT=brand 채움 / KT=surface(아웃라인) / LG=accent 채움 */
     .carrier-skt, .carrier-kt, .carrier-lg {
-      color: white; padding: 3px 10px; border-radius: 3px;
+      color: white; padding: 3px 10px; border-radius: 6px;
       font-weight: 600; display: inline-block; font-size: 11px;
       letter-spacing: -0.2px;
     }
     .carrier-skt { background: var(--color-skt); }
-    .carrier-kt  { background: var(--color-kt); }
+    .carrier-kt  {
+      background: var(--bg); color: var(--ink);
+      border: 1px solid var(--border-strong); padding: 2px 9px;
+    }
     .carrier-lg  { background: var(--color-lg); }
-    tbody tr.row-skt td.carrier-col { background: rgba(0, 132, 255, 0.030); }
-    tbody tr.row-kt  td.carrier-col { background: rgba(0, 70, 135, 0.030); }
-    tbody tr.row-lg  td.carrier-col { background: rgba(29, 180, 70, 0.030); }
+    tbody tr.row-skt td.carrier-col { background: rgba(54, 23, 206, 0.030); }
+    tbody tr.row-kt  td.carrier-col { background: rgba(82, 82, 92, 0.030); }
+    tbody tr.row-lg  td.carrier-col { background: rgba(234, 0, 44, 0.030); }
 
     .plan-cell { text-align: left; font-size: 12.5px; }
     .plan-name { display: block; font-weight: 500; color: var(--color-text); }
@@ -397,10 +429,41 @@
 
     /* 성지폰 표 전용 */
     .source-badge {
-      display: inline-block; padding: 2px 6px; border-radius: 3px;
-      background: var(--color-bg); color: var(--color-text-light);
+      display: inline-block; padding: 2px 6px; border-radius: 6px;
+      background: var(--bg-inset); color: var(--ink2);
       font-size: 11px; font-weight: 500;
+      font-family: var(--font-mono);
     }
+    .source-badge.naver {
+      background: var(--brand-surface); color: var(--brand);
+      border: 1px solid var(--brand-border);
+    }
+
+    /* ===== 실시간 수집 피드 (Naver Search API) ===== */
+    .feed-list {
+      border: 1px solid var(--border); border-radius: 14px;
+      background: var(--bg); overflow: hidden;
+    }
+    .feed-item {
+      display: flex; gap: 12px; align-items: baseline;
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--color-border-light);
+      font-size: 13px;
+    }
+    .feed-item:last-child { border-bottom: none; }
+    .feed-item:nth-child(even) { background: var(--bg-subtle); }
+    .feed-date {
+      font-family: var(--font-mono); font-size: 11px;
+      color: var(--ink3); white-space: nowrap;
+    }
+    .feed-title {
+      flex: 1; min-width: 0;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .feed-title a { color: var(--ink); text-decoration: none; }
+    .feed-title a:hover { color: var(--brand); }
+    .feed-parse { font-family: var(--font-mono); font-size: 12px; white-space: nowrap; }
+    .feed-parse .nohit { color: var(--ink3); font-weight: 400; }
 
     .empty-state {
       padding: 60px var(--spacing-xl); text-align: center;
@@ -425,7 +488,7 @@
 <body>
   <header>
     <h1>온라인 단가비교</h1>
-    <p class="subtitle">3사 공시지원금 + 6개 성지폰 사이트 일단위 통합 모니터링</p>
+    <p class="subtitle">3사 공시지원금 + 성지폰 단가 일단위 통합 모니터링 · Naver 카페/웹문서 실측 수집</p>
   </header>
 
   <nav class="tabs-bar">
@@ -480,7 +543,7 @@
           <div class="multiselect" onclick="event.stopPropagation()">
             <button type="button" class="multiselect-toggle" id="modelToggle">
               <span id="modelToggleLabel">전체 단말</span>
-              <span style="color:#999">▾</span>
+              <span style="color:var(--ink3)">▾</span>
             </button>
             <div class="multiselect-menu hidden" id="modelMenu"></div>
           </div>
@@ -490,7 +553,7 @@
           <div class="multiselect" onclick="event.stopPropagation()">
             <button type="button" class="multiselect-toggle" id="storageToggle">
               <span id="storageToggleLabel">전체 용량</span>
-              <span style="color:#999">▾</span>
+              <span style="color:var(--ink3)">▾</span>
             </button>
             <div class="multiselect-menu hidden" id="storageMenu"></div>
           </div>
@@ -501,7 +564,7 @@
     <div class="kpi-section" id="kpiSection"></div>
 
     <div class="chart-section">
-      <div class="chart-title">📊 단말·용량별 3사 지원금 비교 (그룹 바차트)</div>
+      <div class="chart-title">단말·용량별 3사 지원금 비교 (그룹 바차트)</div>
       <div class="chart-help">
         각 단말+용량 컬럼마다 <code>공통지원금</code>(짙은) + <code>추가지원금</code>(연한, 위로 쌓임) =
         <code>총 지원금</code>으로 SKT/KT/LGU+ 3사를 나란히 비교합니다.
@@ -519,7 +582,7 @@
     <div class="table-section">
       <div class="table-title">
         단말별 3사 공시지원금 상세
-        <span class="sub-note">단말·용량별로 분리 · 미판매 통신사는 표시되지 않음 · 노란 셀 = 3사 중 구매가격 최저</span>
+        <span class="sub-note">단말·용량별로 분리 · 미판매 통신사는 표시되지 않음 · 보라 셀 = 3사 중 구매가격 최저</span>
         <button type="button" id="downloadExcel" class="download-btn"
                 style="margin-left:auto" title="현재 표시중인 표를 .xlsx 로 다운로드">
           ⬇ 엑셀 다운로드
@@ -606,7 +669,7 @@
 
     <div class="chart-section">
       <div class="chart-title">
-        📊 3사 성지 단가 비교 (최근 <span id="sjBoxWindowLabel">14</span>일)
+        3사 성지 단가 비교 (최근 <span id="sjBoxWindowLabel">14</span>일)
         <span class="chart-metric-toggle" id="sjMetricToggle">
           <button type="button" class="active" data-metric="cash_price">현금완납가 분포</button>
           <button type="button" data-metric="seongji_rb">성지RB 분포</button>
@@ -626,9 +689,17 @@
       </div>
     </div>
 
+    <div class="table-section" id="sjFeedSection" style="display:none">
+      <div class="table-title">
+        실시간 수집 피드
+        <span class="sub-note">Naver Search API (카페·웹문서) · 최근 30건 · 매일 07:00 KST 자동 수집</span>
+      </div>
+      <div class="feed-list" id="sjFeedList"></div>
+    </div>
+
     <div class="table-section">
       <div class="table-title">
-        📋 최신일자 사이트별 단가 상세 (정렬: 현금완납가 오름차순)
+        최신일자 사이트별 단가 상세 (정렬: 현금완납가 오름차순)
         <span class="sub-note">출고가·공통/추가지원금은 공시지원금 DB 와 join · 성지RB = 출고가−공통−추가−현금완납가</span>
       </div>
       <div class="table-wrapper">
@@ -683,7 +754,8 @@
   <script>
   (function () {
     const CARRIERS = ["SKT", "KT", "LGU+"];
-    const COLORS = { "SKT": "#0084FF", "KT": "#004687", "LGU+": "#1DB446" };
+    // MAMF 매핑: SKT=brand / KT=ink2(surface 대체) / LG=accent — :root 토큰과 동기 유지
+    const COLORS = { "SKT": "#3617CE", "KT": "#52525C", "LGU+": "#EA002C" };
     const CARRIER_CLASS = { "SKT": "carrier-skt", "KT": "carrier-kt", "LGU+": "carrier-lg" };
     const ROW_CLASS     = { "SKT": "row-skt",     "KT": "row-kt",     "LGU+": "row-lg" };
     const KNOWN_MFRS = ["삼성전자(주)", "Apple"];
@@ -801,7 +873,7 @@
         menuId: "modelMenu", toggleId: "modelToggle", labelId: "modelToggleLabel",
         items: models, selectedSet: selectedModels,
         searchPlaceholder: "단말명 검색…",
-        displayKey: m => `${m.model_name} <span style="color:#999;font-size:11px">· ${m.released_at || ""}</span>`,
+        displayKey: m => `${m.model_name} <span style="color:var(--ink3);font-size:11px">· ${m.released_at || ""}</span>`,
         valueKey:   m => m.model_name,
         groupBy:    m => classifyMfr(m.manufacturer),
         labelTotalText: "전체 단말", onChange: subsidyRender,
@@ -863,7 +935,7 @@
         return p && p.is_placeholder;
       });
       const ph = hasPlaceholder
-        ? `<span style="color:#B58900"><b>⚠ 010신규/기변 placeholder</b> · 실제 크롤러 실행 후 덮어쓰임</span>` : "";
+        ? `<span style="color:#F59E0B"><b>⚠ 010신규/기변 placeholder</b> · 실제 크롤러 실행 후 덮어쓰임</span>` : "";
       el.innerHTML = `
         <span>최종 빌드: <b>${DATA.generatedAt}</b></span>
         <span>최신 스냅샷: <b>${DATA.latestSnapshot}</b></span>
@@ -935,7 +1007,7 @@
       const padT = 30, padB = 130, padL = 95, padR = 30;
       const innerW = width - padL - padR, innerH = height - padT - padB;
       if (variants.length === 0) {
-        ctx.fillStyle = "#999"; ctx.font = "14px sans-serif"; ctx.textAlign = "center";
+        ctx.fillStyle = "#9494A0"; ctx.font = "14px Pretendard, sans-serif"; ctx.textAlign = "center";
         ctx.fillText("표시할 단말이 없습니다.", width / 2, height / 2);
         chartMarkers = []; return;
       }
@@ -947,8 +1019,8 @@
       const tickStep = Math.max(50000, Math.ceil(maxV / 5 / 50000) * 50000);
       const maxAxis = Math.ceil(maxV / tickStep) * tickStep;
       const yScale = innerH / maxAxis;
-      ctx.strokeStyle = "#eee"; ctx.lineWidth = 1;
-      ctx.fillStyle = "#999"; ctx.font = "11px sans-serif";
+      ctx.strokeStyle = "#E4E4EA"; ctx.lineWidth = 1;
+      ctx.fillStyle = "#9494A0"; ctx.font = "11px 'JetBrains Mono', monospace";
       ctx.textAlign = "right"; ctx.textBaseline = "middle";
       const steps = maxAxis / tickStep;
       for (let i = 0; i <= steps; i++) {
@@ -956,12 +1028,12 @@
         ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(width - padR, y); ctx.stroke();
         ctx.fillText((tickStep * i).toLocaleString(), padL - 8, y);
       }
-      ctx.strokeStyle = "#333"; ctx.lineWidth = 2;
+      ctx.strokeStyle = "#0E0E12"; ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + innerH);
       ctx.lineTo(width - padR, padT + innerH); ctx.stroke();
       ctx.save();
-      ctx.fillStyle = "#333"; ctx.font = "bold 12px sans-serif";
+      ctx.fillStyle = "#0E0E12"; ctx.font = "bold 12px Pretendard, sans-serif";
       ctx.textAlign = "center"; ctx.textBaseline = "middle";
       ctx.translate(22, padT + innerH / 2); ctx.rotate(-Math.PI / 2);
       ctx.fillText("지원금 (원)", 0, 0); ctx.restore();
@@ -971,17 +1043,17 @@
       variants.forEach((v, di) => {
         const groupX = padL + colW * di;
         ctx.save();
-        ctx.fillStyle = "#222"; ctx.font = "bold 11px sans-serif";
+        ctx.fillStyle = "#0E0E12"; ctx.font = "bold 11px Pretendard, sans-serif";
         ctx.textAlign = "right"; ctx.textBaseline = "middle";
         ctx.translate(groupX + colW / 2, padT + innerH + 14); ctx.rotate(-Math.PI / 4);
         ctx.fillText(v.display_name, 0, 0); ctx.restore();
         ctx.save();
-        ctx.fillStyle = "#999"; ctx.font = "10px sans-serif";
+        ctx.fillStyle = "#9494A0"; ctx.font = "10px 'JetBrains Mono', monospace";
         ctx.textAlign = "right"; ctx.textBaseline = "middle";
         ctx.translate(groupX + colW / 2, padT + innerH + 14); ctx.rotate(-Math.PI / 4);
         ctx.fillText("    " + (v.released_at || ""), 0, 14); ctx.restore();
         if (di > 0) {
-          ctx.strokeStyle = "#f4f4f4"; ctx.lineWidth = 1;
+          ctx.strokeStyle = "#F0F0F4"; ctx.lineWidth = 1;
           ctx.beginPath(); ctx.moveTo(groupX, padT); ctx.lineTo(groupX, padT + innerH); ctx.stroke();
         }
         CARRIERS.forEach((carrier, ci) => {
@@ -994,7 +1066,7 @@
           ctx.fillStyle = COLORS[carrier]; ctx.fillRect(x, yPub, barW, yBase - yPub);
           ctx.fillStyle = COLORS[carrier] + "55"; ctx.fillRect(x, yAdd, barW, yPub - yAdd);
           if (pub + add > 0) {
-            ctx.fillStyle = "#222"; ctx.font = "bold 10px sans-serif";
+            ctx.fillStyle = "#0E0E12"; ctx.font = "bold 10px 'JetBrains Mono', monospace";
             ctx.textAlign = "center"; ctx.textBaseline = "bottom";
             ctx.fillText((pub + add).toLocaleString(), x + barW / 2, yAdd - 2);
           }
@@ -1168,7 +1240,8 @@
   (function () {
     // 성지폰 탭은 3사로 제한 (알뜰 제외)
     const CARRIERS = ["SKT", "KT", "LGU+"];
-    const CARRIER_COLORS = { "SKT": "#0084FF", "KT": "#004687", "LGU+": "#1DB446" };
+    // MAMF 매핑: SKT=brand / KT=ink2(surface 대체) / LG=accent — :root 토큰과 동기 유지
+    const CARRIER_COLORS = { "SKT": "#3617CE", "KT": "#52525C", "LGU+": "#EA002C" };
     const CARRIER_CLASS  = { "SKT": "carrier-skt", "KT": "carrier-kt", "LGU+": "carrier-lg" };
 
     // 성지폰 "신규" → 공시 측 "010신규" 정규화
@@ -1237,7 +1310,7 @@
       menu.innerHTML = "";
       const all = document.createElement("label");
       all.className = "checkbox-item";
-      all.style.borderBottom = "1px solid #eee";
+      all.style.borderBottom = "1px solid var(--border)";
       all.innerHTML = `<input type="checkbox" id="sjModelAll" checked><span><b>전체 선택</b></span>`;
       menu.appendChild(all);
       DATA.models.forEach(m => {
@@ -1274,12 +1347,39 @@
       const runs = (DATA.runs || []).map(r =>
         `<span><b>${r.source}</b>: ${r.parsed || 0}건 (${(r.finished_at || "").slice(0, 16)})</span>`
       ).join("");
+      const hasNaver = (DATA.feed || []).length > 0;
+      const mix = hasNaver
+        ? `<span><b>샘플 기준선</b> + 당일 Naver 실측 혼합</span>` : "";
       m.innerHTML = `
         <span>최종 빌드: <b>${DATA.generatedAt}</b></span>
         <span>최신 스냅샷: <b>${DATA.latestSnapshot}</b></span>
         <span>모델 ${DATA.models.length}종</span>
         <span>3사 한정 (알뜰 제외)</span>
-        ${runs}`;
+        ${mix} ${runs}`;
+    }
+
+    /* === 실시간 수집 피드 (Naver Search API) === */
+    const escHtml = s => String(s ?? "").replace(/[&<>"']/g, c =>
+      ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    function renderFeed() {
+      const sec = document.getElementById("sjFeedSection");
+      const feed = DATA.feed || [];
+      if (!feed.length) { sec.style.display = "none"; return; }
+      sec.style.display = "";
+      document.getElementById("sjFeedList").innerHTML = feed.map(f => {
+        const src = f.source === "naver_cafe" ? "카페" : "웹";
+        const chip = f.carrier && CARRIERS.includes(f.carrier)
+          ? `<span class="${CARRIER_CLASS[f.carrier]}">${f.carrier}</span> ` : "";
+        const parsed = f.cash_price != null
+          ? `${chip}${escHtml(f.model_name)} · <b>${(f.cash_price / 10000).toLocaleString()}만</b>`
+          : `<span class="nohit">가격 미확인</span>`;
+        return `<div class="feed-item">
+          <span class="source-badge naver">${src}</span>
+          <span class="feed-title"><a href="${escHtml(f.url)}" target="_blank" rel="noopener noreferrer">${escHtml(f.title)}</a></span>
+          <span class="feed-parse">${parsed}</span>
+          <span class="feed-date">${(f.posted_at || "").slice(0, 16).replace("T", " ")}</span>
+        </div>`;
+      }).join("");
     }
 
     function renderKpi(filtered) {
@@ -1379,14 +1479,14 @@
         const s = byMC[m] && byMC[m][c]; if (s && s.max > allMax) allMax = s.max;
       }));
       if (allMax === 0) {
-        ctx.fillStyle = "#999"; ctx.font = "14px sans-serif"; ctx.textAlign = "center";
+        ctx.fillStyle = "#9494A0"; ctx.font = "14px Pretendard, sans-serif"; ctx.textAlign = "center";
         ctx.fillText("표시할 분포 데이터가 없습니다.", width / 2, height / 2);
         boxMarkers = []; return;
       }
       const maxManwon = Math.ceil((allMax / 10000) / 10) * 10;
       const priceScale = innerH / (maxManwon * 10000);
-      ctx.strokeStyle = "#eee"; ctx.lineWidth = 1;
-      ctx.fillStyle = "#999"; ctx.font = "11px sans-serif";
+      ctx.strokeStyle = "#E4E4EA"; ctx.lineWidth = 1;
+      ctx.fillStyle = "#9494A0"; ctx.font = "11px 'JetBrains Mono', monospace";
       ctx.textAlign = "right"; ctx.textBaseline = "middle";
       const steps = 6;
       for (let i = 0; i <= steps; i++) {
@@ -1394,12 +1494,12 @@
         ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(width - padR, y); ctx.stroke();
         ctx.fillText(`${Math.round(maxManwon * i / steps)}만`, padL - 8, y);
       }
-      ctx.strokeStyle = "#333"; ctx.lineWidth = 2;
+      ctx.strokeStyle = "#0E0E12"; ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + innerH);
       ctx.lineTo(width - padR, padT + innerH); ctx.stroke();
       ctx.save();
-      ctx.fillStyle = "#333"; ctx.font = "bold 12px sans-serif";
+      ctx.fillStyle = "#0E0E12"; ctx.font = "bold 12px Pretendard, sans-serif";
       ctx.textAlign = "center"; ctx.textBaseline = "middle";
       ctx.translate(18, padT + innerH / 2); ctx.rotate(-Math.PI / 2);
       const axisTitle = chartMetric === "cash_price" ? "현금완납가 (만원)" : "성지RB (만원, 0 이상)";
@@ -1410,13 +1510,13 @@
       const slotSpacing = Math.min(26, columnW / 4);
       modelsToShow.forEach((model, mi) => {
         const groupX = padL + columnW * mi + columnW / 2;
-        ctx.fillStyle = "#222"; ctx.font = "bold 11px sans-serif";
+        ctx.fillStyle = "#0E0E12"; ctx.font = "bold 11px Pretendard, sans-serif";
         ctx.textAlign = "center"; ctx.textBaseline = "top";
         ctx.save();
         ctx.translate(groupX, padT + innerH + 12); ctx.rotate(-Math.PI / 4);
         ctx.fillText(model, 0, 0); ctx.restore();
         if (mi > 0) {
-          ctx.strokeStyle = "#f4f4f4"; ctx.lineWidth = 1;
+          ctx.strokeStyle = "#F0F0F4"; ctx.lineWidth = 1;
           ctx.beginPath();
           ctx.moveTo(padL + columnW * mi, padT); ctx.lineTo(padL + columnW * mi, padT + innerH);
           ctx.stroke();
@@ -1526,7 +1626,8 @@
           <td class="price-cell">${monthly}</td>
           <td>${r.plan_name || "-"}</td>
           <td style="text-align:center">${r.plan_duration_mo ? r.plan_duration_mo + "M" : "-"}</td>
-          <td><a href="${r.url}" target="_blank" rel="noopener noreferrer">${(r.title || "열기").slice(0, 30)}…</a></td>
+          <td><span class="source-badge${(r.source || "").startsWith("naver") ? " naver" : ""}">${r.source || "-"}</span>
+              <a href="${r.url}" target="_blank" rel="noopener noreferrer">${(r.title || "열기").slice(0, 30)}…</a></td>
         </tr>`;
       }).join("");
       tbody.innerHTML = html;
@@ -1589,6 +1690,7 @@
       initModelDropdown();
       initMetricToggle();
       renderMeta();
+      renderFeed();
       render();
       window.addEventListener("resize", () => {
         if (document.getElementById("view-seongji").classList.contains("active")) render();

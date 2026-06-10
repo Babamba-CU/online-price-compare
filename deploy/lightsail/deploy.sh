@@ -27,6 +27,15 @@ IMAGE_LABEL="${IMAGE_LABEL:-app}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
+# --- NAVER API 자격증명 (커밋 금지 — gitignored .env 또는 셸 환경변수) ----------
+if [ -f "$SCRIPT_DIR/.env" ]; then
+  set -a; source "$SCRIPT_DIR/.env"; set +a
+fi
+if [ -z "${NAVER_CLIENT_ID:-}" ] || [ -z "${NAVER_CLIENT_SECRET:-}" ]; then
+  echo "[경고] NAVER_CLIENT_ID/SECRET 미설정 — 컨테이너는 합성 데이터만 생성합니다."
+  echo "       설정: $SCRIPT_DIR/.env 에 키 작성 (.env.example 참고)"
+fi
+
 echo "================================================="
 echo " Lightsail 배포: $SERVICE_NAME ($REGION, $POWER x$SCALE)"
 echo "================================================="
@@ -88,13 +97,19 @@ echo "  → 이미지 참조: $IMAGE_REF"
 # --- 4. 배포 명세 생성 (이미지 참조 치환) ------------------------------------
 echo "[4/5] 배포 명세 생성..."
 TMP_CONTAINERS=$(mktemp)
-python3 - "$SCRIPT_DIR/containers.json" "$IMAGE_REF" > "$TMP_CONTAINERS" <<'PYEOF'
+python3 - "$SCRIPT_DIR/containers.json" "$IMAGE_REF" \
+  "${NAVER_CLIENT_ID:-}" "${NAVER_CLIENT_SECRET:-}" > "$TMP_CONTAINERS" <<'PYEOF'
 import json, sys
-src, image_ref = sys.argv[1], sys.argv[2]
+src, image_ref, nid, nsec = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 with open(src, encoding="utf-8") as f:
     data = json.load(f)
 for name, spec in data.items():
     spec["image"] = image_ref
+    env = spec.setdefault("environment", {})
+    # 자격증명은 배포 명세(mktemp)에만 — 커밋되는 containers.json 은 {} 유지
+    if nid and nsec:
+        env["NAVER_CLIENT_ID"] = nid
+        env["NAVER_CLIENT_SECRET"] = nsec
 print(json.dumps(data, ensure_ascii=False))
 PYEOF
 
