@@ -438,6 +438,10 @@
       background: var(--brand-surface); color: var(--brand);
       border: 1px solid var(--brand-border);
     }
+    .source-badge.kakao {
+      background: #FFF8DB; color: #8A6D00;
+      border: 1px solid #EFE0A3;
+    }
 
     /* ===== 실시간 수집 피드 (Naver Search API) ===== */
     .feed-list {
@@ -641,8 +645,8 @@
         <div class="filter-input-group">
           <label class="filter-input-label">가입유형</label>
           <select id="sjFilterSub" onchange="seongjiRender()">
-            <option value="">전체</option>
-            <option value="MNP" selected>MNP</option>
+            <option value="" selected>전체</option>
+            <option value="MNP">MNP</option>
             <option value="010신규">010신규</option>
             <option value="기변">기변</option>
           </select>
@@ -692,7 +696,7 @@
     <div class="table-section" id="sjFeedSection" style="display:none">
       <div class="table-title">
         실시간 수집 피드
-        <span class="sub-note">Naver Search API (카페·웹문서) · 최근 30건 · 매일 07:00 KST 자동 수집</span>
+        <span class="sub-note">성지점 카카오 채널 342개 + Naver Search API (카페·웹문서) · 최근 50건 · 매일 07:00 KST 자동 수집</span>
       </div>
       <div class="feed-list" id="sjFeedList"></div>
     </div>
@@ -707,6 +711,7 @@
           <thead>
             <tr>
               <th>모델</th>
+              <th>지역</th>
               <th>통신사</th>
               <th>가입유형</th>
               <th>약정</th>
@@ -1367,15 +1372,20 @@
       if (!feed.length) { sec.style.display = "none"; return; }
       sec.style.display = "";
       document.getElementById("sjFeedList").innerHTML = feed.map(f => {
-        const src = f.source === "naver_cafe" ? "카페" : "웹";
+        const isKakao = f.source === "kakao";
+        const src = isKakao ? "카카오" : (f.source === "naver_cafe" ? "카페" : "웹");
+        const badgeCls = isKakao ? "kakao" : "naver";
         const chip = f.carrier && CARRIERS.includes(f.carrier)
           ? `<span class="${CARRIER_CLASS[f.carrier]}">${f.carrier}</span> ` : "";
         const parsed = f.cash_price != null
           ? `${chip}${escHtml(f.model_name)} · <b>${(f.cash_price / 10000).toLocaleString()}만</b>`
           : `<span class="nohit">가격 미확인</span>`;
+        const label = isKakao && f.author
+          ? `<b>${escHtml(f.author)}</b> · ${escHtml(f.title)}`
+          : escHtml(f.title);
         return `<div class="feed-item">
-          <span class="source-badge naver">${src}</span>
-          <span class="feed-title"><a href="${escHtml(f.url)}" target="_blank" rel="noopener noreferrer">${escHtml(f.title)}</a></span>
+          <span class="source-badge ${badgeCls}">${src}</span>
+          <span class="feed-title"><a href="${escHtml(f.url)}" target="_blank" rel="noopener noreferrer">${label}</a></span>
           <span class="feed-parse">${parsed}</span>
           <span class="feed-date">${(f.posted_at || "").slice(0, 16).replace("T", " ")}</span>
         </div>`;
@@ -1598,7 +1608,7 @@
       empty.style.display = "none";
       const html = rows.slice(0, 300).map(r => {
         const carrier = r.carrier || "?";
-        if (!CARRIERS.includes(carrier)) return "";   // 알뜰 행 숨김
+        if (r.carrier && !CARRIERS.includes(carrier)) return "";   // 알뜰 행 숨김 (미상은 표시)
         const cls = CARRIER_CLASS[carrier] || "";
         const cash = r.cash_price != null
           ? `<span class="net-cell">${(r.cash_price / 10000).toLocaleString()}만</span>` : "-";
@@ -1612,9 +1622,15 @@
         if (rb.value == null)        cellRB = `<span class="zero-cell">-</span>`;
         else if (rb.clipped)         cellRB = `<span class="rb-clipped">0 이하 (공시 경로 유리)</span>`;
         else                         cellRB = `<span class="rb-cell">${rb.value.toLocaleString()}</span><span class="won-suffix">원</span>`;
+        const regionCell = r.region
+          ? `<span style="white-space:nowrap">${r.region}</span>${r.author ? `<br><span style="font-size:11px;color:var(--ink3);white-space:nowrap">${r.author}</span>` : ""}`
+          : "-";
+        const carrierChip = cls ? `<span class="${cls}">${carrier}</span>`
+                                : `<span style="color:var(--ink3)">-</span>`;
         return `<tr>
           <td><b>${r.model_name}</b></td>
-          <td style="text-align:center"><span class="${cls}">${carrier}</span></td>
+          <td style="font-size:12px">${regionCell}</td>
+          <td style="text-align:center">${carrierChip}</td>
           <td style="text-align:center">${r.subscription_type || "-"}</td>
           <td style="text-align:center">${r.contract_type || "-"}</td>
           <td style="text-align:center">${r.storage_gb ? r.storage_gb + "GB" : "-"}</td>
@@ -1626,7 +1642,7 @@
           <td class="price-cell">${monthly}</td>
           <td>${r.plan_name || "-"}</td>
           <td style="text-align:center">${r.plan_duration_mo ? r.plan_duration_mo + "M" : "-"}</td>
-          <td><span class="source-badge${(r.source || "").startsWith("naver") ? " naver" : ""}">${r.source || "-"}</span>
+          <td><span class="source-badge${(r.source || "").startsWith("naver") ? " naver" : r.source === "kakao" ? " kakao" : ""}">${r.source || "-"}</span>
               <a href="${r.url}" target="_blank" rel="noopener noreferrer">${(r.title || "열기").slice(0, 30)}…</a></td>
         </tr>`;
       }).join("");
@@ -1645,7 +1661,7 @@
       // detail 행 (RB 모드용 + 차트 모델 후보)
       const filteredDetail = DATA.detail.filter(r => {
         if (r.snapshot_date !== refDate && r.snapshot_date !== DATA.latestSnapshot) return false;
-        if (!CARRIERS.includes(r.carrier)) return false;  // 알뜰 제외
+        if (r.carrier && !CARRIERS.includes(r.carrier)) return false;  // 알뜰 제외 (미상은 허용)
         if (sel.size && !sel.has(r.model_name)) return false;
         if (carrier && r.carrier !== carrier) return false;
         if (sub && r.subscription_type !== sub) return false;

@@ -42,22 +42,23 @@ CONTRACT_MAP = {
 }
 
 # 모델 정규화. (정규식 패턴, 정규화명, 기본 저장용량)
+# 성지 약어(S26U, ZF7, 아17프맥 등) 포함 — 구체적 패턴이 먼저 오도록 순서 유지.
 MODEL_PATTERNS: list[tuple[re.Pattern, str, Optional[int]]] = [
-    (re.compile(r"(?i)\b(iphone|아이폰)\s*17\s*pro\s*max\b"),       "iPhone 17 Pro Max", 256),
-    (re.compile(r"(?i)\b(iphone|아이폰)\s*17\s*pro\b"),             "iPhone 17 Pro",     256),
+    (re.compile(r"(?i)\b(iphone|아이폰)\s*17\s*pro\s*max\b|아\s*17\s*(?:프로\s*맥스|프맥)|17\s*프로\s*맥스|17\s*프맥"), "iPhone 17 Pro Max", 256),
+    (re.compile(r"(?i)\b(iphone|아이폰)\s*17\s*pro\b|아\s*17\s*프로|17\s*프로(?!\s*맥)"), "iPhone 17 Pro",     256),
     (re.compile(r"(?i)\b(iphone|아이폰)\s*17\s*plus\b"),            "iPhone 17 Plus",    128),
-    (re.compile(r"(?i)\b(iphone|아이폰)\s*17\b"),                   "iPhone 17",         128),
+    (re.compile(r"(?i)\b(iphone|아이폰)\s*17\b|\b아17\b"),           "iPhone 17",         128),
     (re.compile(r"(?i)\b(iphone|아이폰)\s*16\s*pro\s*max\b"),       "iPhone 16 Pro Max", 256),
     (re.compile(r"(?i)\b(iphone|아이폰)\s*16\s*pro\b"),             "iPhone 16 Pro",     128),
     (re.compile(r"(?i)\b(iphone|아이폰)\s*16\b"),                   "iPhone 16",         128),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s26\s*ultra\b"),          "Galaxy S26 Ultra",  256),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s26\s*\+|s26\s*plus"),     "Galaxy S26+",       256),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s26\b"),                   "Galaxy S26",        256),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s25\s*ultra\b"),          "Galaxy S25 Ultra",  256),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s25\b"),                   "Galaxy S25",        256),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*fold\s*7\b|폴드\s*7"),  "Galaxy Z Fold 7",   256),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*flip\s*7\b|플립\s*7"),  "Galaxy Z Flip 7",   256),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*fold\s*6\b|폴드\s*6"),  "Galaxy Z Fold 6",   256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s26\s*ultra\b|\bS26\s*(?:U|울트라|울트)\b|S26\s*울트라"), "Galaxy S26 Ultra", 256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s26\s*\+|s26\s*plus|S26\s*플러스|\bS26\+"), "Galaxy S26+",       256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s26\b|\bS26\b"),           "Galaxy S26",        256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s25\s*ultra\b|\bS25\s*(?:U|울트라)\b"), "Galaxy S25 Ultra",  256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s25\b|\bS25\b"),           "Galaxy S25",        256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*fold\s*7\b|폴드\s*7|\bZF\s*7\b|\bZ폴드7"),  "Galaxy Z Fold 7",   256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*flip\s*7\b|플립\s*7|\bZ플립7"),  "Galaxy Z Flip 7",   256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*fold\s*6\b|폴드\s*6|\bZF\s*6\b"),  "Galaxy Z Fold 6",   256),
     (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*flip\s*6\b|플립\s*6"),  "Galaxy Z Flip 6",   256),
 ]
 
@@ -100,14 +101,25 @@ def _first(text: str, mapping: dict[str, list[str]]) -> Optional[str]:
 
 
 def _extract_models(text: str) -> list[tuple[str, str, Optional[int]]]:
-    """본문에서 검출된 모델들 [(normalized, raw_match, default_storage)]."""
+    """본문에서 검출된 모델들 [(normalized, raw_match, default_storage)].
+
+    패턴은 구체적인 것부터 평가하며, 이미 매칭된 스팬과 겹치는 매칭은 버린다
+    ("S26 울트라"가 S26 Ultra 와 S26 둘 다로 잡히는 중복 방지).
+    """
     hits: list[tuple[str, str, Optional[int]]] = []
     seen: set[str] = set()
+    spans: list[tuple[int, int]] = []
     for pat, norm, default_storage in MODEL_PATTERNS:
-        m = pat.search(text)
-        if m and norm not in seen:
+        if norm in seen:
+            continue
+        for m in pat.finditer(text):
+            s, e = m.span()
+            if any(s < pe and ps < e for ps, pe in spans):
+                continue   # 더 구체적인 패턴이 이미 차지한 영역
             hits.append((norm, m.group(0), default_storage))
             seen.add(norm)
+            spans.append((s, e))
+            break
     return hits
 
 
@@ -184,6 +196,88 @@ def parse_post_text(title: str, body: str) -> list[ParsedPrice]:
                 raw_text=text[:500],
             )
         )
+    return out
+
+
+# ------------------------------------------------------------------
+# 라인 단위 시세표 파서 (카카오 채널 게시글용)
+# ------------------------------------------------------------------
+# 성지 시세표는 "S26U👉54", "플립7 30 (번이)" 처럼 한 줄에 모델+가격이 붙고,
+# 통신사/가입유형은 섹션 헤더 줄("[ SK ] 번호이동")에서 내려오는 구조가 많다.
+# 줄마다 모델+가격을 짝지어 추출하고, 헤더에서 갱신된 컨텍스트를 상속한다.
+# 주의: "👉 211,000" 같은 콤마 원단위 숫자(상품권 금액표 등)는 만원으로 오인하지
+# 않도록 콤마를 차단한다. 원단위는 현완/현금가 키워드가 붙은 경우만 채택.
+LINE_PRICE_RES: list[tuple[re.Pattern, int]] = [
+    # (패턴, 곱셈단위) — group(1) * 단위 = 원
+    (re.compile(r"👉🏻?\s*(-?\d{1,3}(?:\.\d)?)(?![\d,])"), 10000),   # S26U👉54
+    (re.compile(r"(?:현완|현금가|현금완납|일시불)\s*[:：]?\s*(-?\d{1,3}(?:\.\d)?)\s*만"), 10000),
+    (re.compile(r"(?:현완|현금가|현금완납|일시불)\s*[:：]?\s*(\d{1,3}(?:,\d{3})+)\s*원"), 1),
+    (re.compile(r"(-?\d{1,3}(?:\.\d)?)\s*만\s*원?(?!\s*원\s*대)"), 10000),  # 54만 / 54만원
+]
+
+
+def parse_seongji_lines(title: str, body: str) -> list[ParsedPrice]:
+    """게시글을 줄 단위로 훑어 모델+가격 쌍을 추출 (시세표 텍스트용).
+
+    - 통신사/가입유형/약정은 해당 줄에 없으면 직전 헤더 줄의 컨텍스트를 상속
+    - 모델과 가격이 같은 줄에 있어야 채택 (전체 텍스트 1가격 방식보다 정밀)
+    - confidence: 모델+가격 0.6, +통신사 0.1, +가입유형 0.1 (최대 0.8)
+    """
+    text = (title or "") + "\n" + (body or "")
+    ctx_carrier: Optional[str] = None
+    ctx_sub: Optional[str] = None
+    ctx_contract: Optional[str] = None
+    out: list[ParsedPrice] = []
+
+    for line in text.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        # 컨텍스트 헤더 갱신 (가격 유무와 무관)
+        c = _first(line, CARRIER_MAP)
+        s = _first(line, SUB_MAP)
+        k = _first(line, CONTRACT_MAP)
+        models = _extract_models(line)
+
+        if not models:
+            # 모델 없는 줄 — 섹션 헤더로 보고 컨텍스트만 갱신
+            if c: ctx_carrier = c
+            if s: ctx_sub = s
+            if k: ctx_contract = k
+            continue
+
+        price = None
+        for r, unit in LINE_PRICE_RES:
+            m = r.search(line)
+            if m:
+                try:
+                    price = int(float(m.group(1).replace(",", "")) * unit)
+                except ValueError:
+                    continue
+                break
+        if price is None:
+            continue   # 모델만 있고 가격 없는 줄은 스킵
+
+        carrier  = c or ctx_carrier
+        sub      = s or ctx_sub
+        contract = k or ctx_contract
+        confidence = 0.6
+        if carrier: confidence += 0.1
+        if sub:     confidence += 0.1
+
+        storage = _extract_storage(line)
+        for norm, raw, default_storage in models:
+            out.append(ParsedPrice(
+                model_name=norm,
+                model_raw=raw,
+                carrier=carrier,
+                subscription_type=sub,
+                contract_type=contract,
+                storage_gb=storage or default_storage,
+                cash_price=price,
+                confidence=min(confidence, 0.8),
+                raw_text=line[:200],
+            ))
     return out
 
 

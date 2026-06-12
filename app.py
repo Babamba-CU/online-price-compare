@@ -69,6 +69,12 @@ def refresh_data() -> None:
             log(f"Naver 수집: {r}")
         except Exception as e:  # noqa: BLE001
             log(f"Naver 수집 실패 — 합성 데이터로 계속: {e!r}")
+        try:
+            import seongji_kakao
+            r = seongji_kakao.collect()   # 성지점 카카오 채널 실측 수집 (sources.json 기반)
+            log(f"카카오 수집: {r}")
+        except Exception as e:  # noqa: BLE001
+            log(f"카카오 수집 실패 — 합성 데이터로 계속: {e!r}")
         seongji_build.main()      # seongji_data.js 빌드
         log("성지폰 단가 갱신 완료")
     except Exception as e:  # noqa: BLE001

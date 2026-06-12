@@ -52,8 +52,8 @@ def build() -> dict:
                 """
                 SELECT p.snapshot_date, p.model_name, p.carrier, p.subscription_type,
                        p.contract_type, p.storage_gb, p.cash_price, p.monthly_fee,
-                       p.plan_name, p.plan_duration_mo, p.confidence,
-                       po.source, po.url, po.title, po.posted_at
+                       p.plan_name, p.plan_duration_mo, p.confidence, p.region,
+                       po.source, po.url, po.title, po.posted_at, po.author
                 FROM seongji_prices p
                 JOIN seongji_posts  po ON po.id = p.post_id
                 WHERE p.snapshot_date = ?
@@ -134,23 +134,23 @@ def build() -> dict:
             )
         ]
 
-        # 6) 실시간 수집 피드 — Naver 출처 최근 30건 (게시글당 최고신뢰 가격 1건 첨부)
+        # 6) 실시간 수집 피드 — Naver·카카오 출처 최근 50건 (게시글당 최고신뢰 가격 1건 첨부)
         feed = [
             dict(r) for r in conn.execute(
                 """
-                SELECT po.source, po.url, po.title,
+                SELECT po.source, po.url, po.title, po.author,
                        COALESCE(po.posted_at, po.crawled_at) AS posted_at,
                        p.model_name, p.carrier, p.subscription_type,
-                       p.cash_price, p.confidence
+                       p.cash_price, p.confidence, p.region
                 FROM seongji_posts po
                 LEFT JOIN seongji_prices p ON p.id = (
                     SELECT p2.id FROM seongji_prices p2
                     WHERE p2.post_id = po.id
                     ORDER BY p2.confidence DESC, p2.cash_price IS NULL, p2.id
                     LIMIT 1)
-                WHERE po.source LIKE 'naver%'
+                WHERE po.source IN ('naver_cafe', 'naver_web', 'kakao')
                 ORDER BY posted_at DESC, po.id DESC
-                LIMIT 30
+                LIMIT 50
                 """
             )
         ]
