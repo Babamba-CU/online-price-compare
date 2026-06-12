@@ -28,6 +28,13 @@ DATA_PATH = Path(__file__).parent / "seongji_vision_data.json"
 PRICE_SANITY = (-500_000, 3_000_000)
 MIN_CONFIDENCE = 0.6
 
+# 사용자 확정 제외 규칙 (2026-06-13):
+#  - 결합(인터넷+TV)·제휴카드 조건 포함가 → 순수 단말 시세가 아니므로 제외
+#  - 온누리상품권 반영 '체감가' → 실결제액 왜곡이므로 제외
+import re
+EXCLUDE_CONDITION_RE = re.compile(
+    r"결합|인터넷\s*\+?\s*TV|제휴\s*카드|온누리|체감가")
+
 
 def _log(msg: str) -> None:
     print(f"[seongji_vision] {msg}", file=sys.stderr, flush=True)
@@ -78,6 +85,8 @@ def load() -> dict:
                     continue
                 if not (PRICE_SANITY[0] <= cash <= PRICE_SANITY[1]):
                     continue
+                if EXCLUDE_CONDITION_RE.search(it.get("add_condition") or ""):
+                    continue   # 결합/제휴카드/온누리 체감가 — 사용자 확정 제외
                 # 신선도: 시세표 표기일이 7일 이내면 오늘 스냅샷으로 재스탬프
                 # (매일 재생성되는 대시보드에서 계속 보이도록). 원 표기일은 조건에 기록.
                 orig = it.get("snapshot_date") or date.today().isoformat()
