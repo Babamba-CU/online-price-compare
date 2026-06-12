@@ -134,26 +134,30 @@ def build() -> dict:
             )
         ]
 
-        # 6) 실시간 수집 피드 — Naver·카카오 출처 최근 50건 (게시글당 최고신뢰 가격 1건 첨부)
-        feed = [
-            dict(r) for r in conn.execute(
-                """
-                SELECT po.source, po.url, po.title, po.author,
-                       COALESCE(po.posted_at, po.crawled_at) AS posted_at,
-                       p.model_name, p.carrier, p.subscription_type,
-                       p.cash_price, p.confidence, p.region
-                FROM seongji_posts po
-                LEFT JOIN seongji_prices p ON p.id = (
-                    SELECT p2.id FROM seongji_prices p2
-                    WHERE p2.post_id = po.id
-                    ORDER BY p2.confidence DESC, p2.cash_price IS NULL, p2.id
-                    LIMIT 1)
-                WHERE po.source IN ('naver_cafe', 'naver_web', 'kakao')
-                ORDER BY posted_at DESC, po.id DESC
-                LIMIT 50
-                """
-            )
-        ]
+        # 6) 실시간 수집 피드 — 소스별 쿼터(카카오 25 + 네이버 25)로 최근글 수집.
+        # 네이버는 게시일이 없어 crawled_at(=수집 직후) 기준이라, 단일 정렬로 합치면
+        # 갱신 직후 네이버가 피드를 독식함 → 소스별로 뽑은 뒤 병합 정렬.
+        FEED_SQL = """
+            SELECT po.source, po.url, po.title, po.author,
+                   COALESCE(po.posted_at, po.crawled_at) AS posted_at,
+                   p.model_name, p.carrier, p.subscription_type,
+                   p.cash_price, p.confidence, p.region
+            FROM seongji_posts po
+            LEFT JOIN seongji_prices p ON p.id = (
+                SELECT p2.id FROM seongji_prices p2
+                WHERE p2.post_id = po.id
+                ORDER BY p2.confidence DESC, p2.cash_price IS NULL, p2.id
+                LIMIT 1)
+            WHERE po.source IN ({placeholders})
+            ORDER BY posted_at DESC, po.id DESC
+            LIMIT 25
+        """
+        feed = []
+        for srcs in (("kakao",), ("naver_cafe", "naver_web")):
+            ph = ",".join("?" * len(srcs))
+            feed += [dict(r) for r in conn.execute(
+                FEED_SQL.format(placeholders=ph), srcs)]
+        feed.sort(key=lambda r: (r["posted_at"] or "", ), reverse=True)
 
     return {
         "generatedAt":     date.today().isoformat(),
