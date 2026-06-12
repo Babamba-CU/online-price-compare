@@ -53,6 +53,7 @@ def build() -> dict:
                 SELECT p.snapshot_date, p.model_name, p.carrier, p.subscription_type,
                        p.contract_type, p.storage_gb, p.cash_price, p.monthly_fee,
                        p.plan_name, p.plan_duration_mo, p.confidence, p.region,
+                       p.add_condition,
                        po.source, po.url, po.title, po.posted_at, po.author
                 FROM seongji_prices p
                 JOIN seongji_posts  po ON po.id = p.post_id
@@ -153,7 +154,7 @@ def build() -> dict:
             LIMIT 25
         """
         feed = []
-        for srcs in (("kakao",), ("naver_cafe", "naver_web")):
+        for srcs in (("kakao", "kakao_ocr"), ("naver_cafe", "naver_web")):
             ph = ",".join("?" * len(srcs))
             feed += [dict(r) for r in conn.execute(
                 FEED_SQL.format(placeholders=ph), srcs)]

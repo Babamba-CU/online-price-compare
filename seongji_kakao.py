@@ -37,7 +37,14 @@ from seongji_db import (
 from seongji_parser import parse_seongji_lines, to_db_rows
 
 POSTS_URL = "https://pf.kakao.com/rocket-web/web/profiles/{handle}/posts"
+POST_URL = "https://pf.kakao.com/rocket-web/web/profiles/{handle}/posts/{post_id}"
 SOURCES_PATH = Path(__file__).parent / "seongji_sources.json"
+
+# 게시글 본문의 내부 교차링크 (시세표 본문 게시글로 연결되는 경우가 많음)
+INTERNAL_LINK_RE = __import__("re").compile(
+    r"https?://pf\.kakao\.com/(_[A-Za-z]+)/(\d+)")
+LINKED_RECENT_DAYS = 30      # 교차링크 게시글은 핀 성격 — 본 글보다 긴 윈도우 허용
+MAX_LINKS_PER_POST = 2
 
 USER_AGENT = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
               "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36")
@@ -66,6 +73,30 @@ def _fetch_posts(handle: str) -> list[dict]:
     )
     r.raise_for_status()
     return r.json().get("items", [])
+
+
+def _fetch_single_post(handle: str, post_id: str) -> dict:
+    r = requests.get(
+        POST_URL.format(handle=handle, post_id=post_id),
+        headers={"User-Agent": USER_AGENT},
+        timeout=15,
+    )
+    r.raise_for_status()
+    return r.json()
+
+
+def _internal_links(item: dict) -> list[tuple[str, str]]:
+    """게시글 contents 의 내부 교차링크 [(핸들, 게시글id)] — 최대 MAX_LINKS_PER_POST."""
+    out: list[tuple[str, str]] = []
+    for c in item.get("contents", []):
+        if c.get("t") != "link":
+            continue
+        m = INTERNAL_LINK_RE.match(c.get("v") or "")
+        if m:
+            out.append((m.group(1), m.group(2)))
+        if len(out) >= MAX_LINKS_PER_POST:
+            break
+    return out
 
 
 def _post_text(item: dict) -> str:
@@ -97,6 +128,41 @@ def collect(snapshot: date | None = None) -> dict:
     channels_ok = 0
     last_error: str | None = None
 
+    seen_posts: set[str] = set()
+
+    def _ingest(conn, it: dict, post_handle: str, name: str, region: str) -> tuple[int, int]:
+        """게시글 1건 적재. 반환 (posts, prices)."""
+        key = f"{post_handle}/{it.get('id')}"
+        if key in seen_posts:
+            return 0, 0
+        seen_posts.add(key)
+        text = _post_text(it)
+        if not text.strip():
+            return 0, 0
+        title = (it.get("title") or "").strip()
+        prices = parse_seongji_lines(title, text)
+        post_id = upsert_post(conn, {
+            "source": "kakao",
+            "source_post_id": key,
+            "url": f"https://pf.kakao.com/{post_handle}/{it.get('id')}",
+            "title": title or text.splitlines()[0][:80],
+            "author": name,
+            "posted_at": datetime.fromtimestamp(
+                it["published_at"] / 1000).isoformat() if it.get("published_at") else None,
+            "raw_text": text[:2000],
+        })
+        rows = [
+            {**r, "region": region}
+            for r in to_db_rows(prices, snap_iso)
+            if r.get("cash_price") is not None
+            and r.get("confidence", 0) >= MIN_PRICE_CONFIDENCE
+            and PRICE_SANITY[0] <= r["cash_price"] <= PRICE_SANITY[1]
+        ]
+        inserted = insert_prices(conn, post_id, rows) if rows else 0
+        return 1, inserted
+
+    linked_cutoff_ms = (datetime.now() - timedelta(days=LINKED_RECENT_DAYS)).timestamp() * 1000
+
     with connect() as conn:
         for s in sources:
             handle, name, region = s["handle"], s.get("name") or "", s.get("region") or ""
@@ -109,36 +175,29 @@ def collect(snapshot: date | None = None) -> dict:
                 time.sleep(REQUEST_SLEEP)
                 continue
 
+            linked: list[tuple[str, str]] = []
             for it in items:
                 if (it.get("published_at") or 0) < cutoff_ms:
                     continue   # 오래된 핀 고정/과거 글 제외
-                text = _post_text(it)
-                if not text.strip():
+                linked += _internal_links(it)   # 최근 글이 가리키는 시세표 본문
+                p, pr = _ingest(conn, it, handle, name, region)
+                n_posts += p
+                n_prices += pr
+
+            # 교차링크 1-hop — 시세표 본문 게시글 (핀 성격이라 30일 윈도우)
+            for lh, lid in linked:
+                if f"{lh}/{lid}" in seen_posts:
                     continue
-                title = (it.get("title") or "").strip()
-                prices = parse_seongji_lines(title, text)
-
-                post_id = upsert_post(conn, {
-                    "source": "kakao",
-                    "source_post_id": f"{handle}/{it.get('id')}",
-                    "url": f"https://pf.kakao.com/{handle}/{it.get('id')}",
-                    "title": title or text.splitlines()[0][:80],
-                    "author": name,
-                    "posted_at": datetime.fromtimestamp(
-                        it["published_at"] / 1000).isoformat() if it.get("published_at") else None,
-                    "raw_text": text[:2000],
-                })
-                n_posts += 1
-
-                rows = [
-                    {**r, "region": region}
-                    for r in to_db_rows(prices, snap_iso)
-                    if r.get("cash_price") is not None
-                    and r.get("confidence", 0) >= MIN_PRICE_CONFIDENCE
-                    and PRICE_SANITY[0] <= r["cash_price"] <= PRICE_SANITY[1]
-                ]
-                if rows:
-                    n_prices += insert_prices(conn, post_id, rows)
+                try:
+                    lit = _fetch_single_post(lh, lid)
+                except Exception:  # noqa: BLE001
+                    continue
+                time.sleep(REQUEST_SLEEP)
+                if (lit.get("published_at") or 0) < linked_cutoff_ms:
+                    continue
+                p, pr = _ingest(conn, lit, lh, name, region)
+                n_posts += p
+                n_prices += pr
 
             time.sleep(REQUEST_SLEEP)
 

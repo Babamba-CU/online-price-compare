@@ -492,7 +492,7 @@
 <body>
   <header>
     <h1>온라인 단가비교</h1>
-    <p class="subtitle">3사 공시지원금 + 성지폰 단가 일단위 통합 모니터링 · Naver 카페/웹문서 실측 수집</p>
+    <p class="subtitle">3사 공시지원금 + 성지폰 단가 일단위 통합 모니터링 · 카카오 시세표(Vision 판독) + Naver 실측 수집</p>
   </header>
 
   <nav class="tabs-bar">
@@ -1372,8 +1372,10 @@
       if (!feed.length) { sec.style.display = "none"; return; }
       sec.style.display = "";
       document.getElementById("sjFeedList").innerHTML = feed.map(f => {
-        const isKakao = f.source === "kakao";
-        const src = isKakao ? "카카오" : (f.source === "naver_cafe" ? "카페" : "웹");
+        const isKakao = (f.source || "").startsWith("kakao");
+        const src = f.source === "kakao_ocr" ? "시세표"
+                  : isKakao ? "카카오"
+                  : (f.source === "naver_cafe" ? "카페" : "웹");
         const badgeCls = isKakao ? "kakao" : "naver";
         const chip = f.carrier && CARRIERS.includes(f.carrier)
           ? `<span class="${CARRIER_CLASS[f.carrier]}">${f.carrier}</span> ` : "";
@@ -1610,8 +1612,9 @@
         const carrier = r.carrier || "?";
         if (r.carrier && !CARRIERS.includes(carrier)) return "";   // 알뜰 행 숨김 (미상은 표시)
         const cls = CARRIER_CLASS[carrier] || "";
+        const isEst = (r.add_condition || "").includes("월청구추정");
         const cash = r.cash_price != null
-          ? `<span class="net-cell">${(r.cash_price / 10000).toLocaleString()}만</span>` : "-";
+          ? `<span class="net-cell"${isEst ? ' title="월청구금액 기반 추정가"' : ""}>${isEst ? "~" : ""}${(r.cash_price / 10000).toLocaleString()}만</span>` : "-";
         const monthly = r.monthly_fee ? `${r.monthly_fee.toLocaleString()}원` : "-";
         const sub = lookupSubsidy(r);
         const rb = calcSeongjiRB(r, sub);
@@ -1642,7 +1645,7 @@
           <td class="price-cell">${monthly}</td>
           <td>${r.plan_name || "-"}</td>
           <td style="text-align:center">${r.plan_duration_mo ? r.plan_duration_mo + "M" : "-"}</td>
-          <td><span class="source-badge${(r.source || "").startsWith("naver") ? " naver" : r.source === "kakao" ? " kakao" : ""}">${r.source || "-"}</span>
+          <td><span class="source-badge${(r.source || "").startsWith("naver") ? " naver" : (r.source || "").startsWith("kakao") ? " kakao" : ""}">${r.source || "-"}</span>
               <a href="${r.url}" target="_blank" rel="noopener noreferrer">${(r.title || "열기").slice(0, 30)}…</a></td>
         </tr>`;
       }).join("");

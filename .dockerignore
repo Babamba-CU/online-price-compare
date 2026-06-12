@@ -21,7 +21,9 @@ logs/
 requirements-crawler.txt
 
 # 외부 크롤러/Supabase 동기화 스크립트는 배포 컨테이너에서 사용 안 함
-# (내장 스케줄러는 seed+build+naver 수집만 사용하므로 크롤러 계열만 제외)
+# (내장 스케줄러는 seed+build+naver/kakao 수집+vision 적재만 사용)
+# seongji_vision_batch.py 는 로컬 전용(이미지 다운로드), 판독 결과 JSON 만 이미지에 포함
+seongji_vision_batch.py
 seongji_crawler.py
 seongji_supabase_sync.py
 subsidy_crawler.py

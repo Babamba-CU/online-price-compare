@@ -215,6 +215,65 @@ LINE_PRICE_RES: list[tuple[re.Pattern, int]] = [
     (re.compile(r"(-?\d{1,3}(?:\.\d)?)\s*만\s*원?(?!\s*원\s*대)"), 10000),  # 54만 / 54만원
 ]
 
+# ------------------------------------------------------------------
+# 월청구금액 → 현금완납가 추정
+# ------------------------------------------------------------------
+# 공식(사용자 확정): 현금완납가 ≈ (월청구액 − 요금제 정가) × 약정개월수(미표기 시 24)
+# 요금제 정가 사전 — "NNN요금제" 표기 + 주요 요금제명
+PLAN_FEE_MAP = {
+    "5GX프리미엄": 109_000, "5GX 프리미엄": 109_000,
+    "초이스스페셜": 110_000, "초이스 스페셜": 110_000, "5G 초이스 스페셜": 110_000,
+    "5G프리미어슈퍼": 115_000, "5G 프리미어 슈퍼": 115_000,
+}
+PLAN_NNN_RE = re.compile(r"(\d{2,3})\s*요금제")          # 109요금제 → 109,000원
+MONTHLY_BILL_RES: list[tuple[re.Pattern, int]] = [
+    (re.compile(r"월\s*청구\s*(?:금액|액)?\s*[:：]?\s*(\d{1,3}(?:,\d{3})+)\s*원"), 1),
+    (re.compile(r"월\s*납부\s*[:：]?\s*(\d{1,3}(?:,\d{3})+)\s*원"), 1),
+    (re.compile(r"월\s*(?:청구|납부)\s*[:：]?\s*(\d{1,2}(?:\.\d)?)\s*만"), 10000),
+]
+DURATION_CTX_RE = re.compile(r"(\d{2})\s*개월")
+DEFAULT_DURATION_MO = 24
+
+
+def _plan_fee_from_text(text: str) -> tuple[Optional[str], Optional[int]]:
+    """텍스트에서 (요금제명, 월정액 정가) 추출. 'NNN요금제' 또는 알려진 요금제명."""
+    m = PLAN_NNN_RE.search(text)
+    if m:
+        return m.group(0), int(m.group(1)) * 1000
+    for name, fee in PLAN_FEE_MAP.items():
+        if name in text:
+            return name, fee
+    return None, None
+
+
+def estimate_cash_from_monthly(line: str, ctx: str = "") -> Optional[dict]:
+    """월청구액 표기 줄에서 현금완납가 추정.
+
+    반환: {cash_price, plan_name, plan_fee, duration_mo} 또는 None.
+    요금제 정가를 알 수 없으면 추정하지 않는다 (임의 가정 금지).
+    """
+    monthly = None
+    for r, unit in MONTHLY_BILL_RES:
+        m = r.search(line)
+        if m:
+            monthly = int(float(m.group(1).replace(",", "")) * unit)
+            break
+    if monthly is None:
+        return None
+    plan_name, plan_fee = _plan_fee_from_text(line)
+    if plan_fee is None:
+        plan_name, plan_fee = _plan_fee_from_text(ctx)
+    if plan_fee is None or monthly <= plan_fee:
+        return None   # 요금제 미상 또는 단말 부담 0 이하 — 추정 불가
+    dm = DURATION_CTX_RE.search(line) or DURATION_CTX_RE.search(ctx)
+    duration = int(dm.group(1)) if dm else DEFAULT_DURATION_MO
+    return {
+        "cash_price": (monthly - plan_fee) * duration,
+        "plan_name": plan_name,
+        "plan_fee": plan_fee,
+        "duration_mo": duration,
+    }
+
 
 def parse_seongji_lines(title: str, body: str) -> list[ParsedPrice]:
     """게시글을 줄 단위로 훑어 모델+가격 쌍을 추출 (시세표 텍스트용).
@@ -247,6 +306,8 @@ def parse_seongji_lines(title: str, body: str) -> list[ParsedPrice]:
             continue
 
         price = None
+        plan_name = None
+        monthly_est = None
         for r, unit in LINE_PRICE_RES:
             m = r.search(line)
             if m:
@@ -256,7 +317,12 @@ def parse_seongji_lines(title: str, body: str) -> list[ParsedPrice]:
                     continue
                 break
         if price is None:
-            continue   # 모델만 있고 가격 없는 줄은 스킵
+            # 직접 가격이 없으면 월청구액 기반 추정 시도 (요금제 정가를 알 때만)
+            monthly_est = estimate_cash_from_monthly(line, ctx=text)
+            if monthly_est is None:
+                continue   # 모델만 있고 가격 단서 없는 줄은 스킵
+            price = monthly_est["cash_price"]
+            plan_name = monthly_est["plan_name"]
 
         carrier  = c or ctx_carrier
         sub      = s or ctx_sub
@@ -264,6 +330,7 @@ def parse_seongji_lines(title: str, body: str) -> list[ParsedPrice]:
         confidence = 0.6
         if carrier: confidence += 0.1
         if sub:     confidence += 0.1
+        if monthly_est: confidence = 0.6   # 추정값은 보수적으로 고정
 
         storage = _extract_storage(line)
         for norm, raw, default_storage in models:
@@ -275,6 +342,10 @@ def parse_seongji_lines(title: str, body: str) -> list[ParsedPrice]:
                 contract_type=contract,
                 storage_gb=storage or default_storage,
                 cash_price=price,
+                plan_name=plan_name,
+                add_condition=(
+                    f"월청구추정({monthly_est['duration_mo']}개월,"
+                    f"{monthly_est['plan_fee']:,}원요금제)" if monthly_est else None),
                 confidence=min(confidence, 0.8),
                 raw_text=line[:200],
             ))

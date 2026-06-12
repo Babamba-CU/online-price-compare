@@ -75,6 +75,12 @@ def refresh_data() -> None:
             log(f"카카오 수집: {r}")
         except Exception as e:  # noqa: BLE001
             log(f"카카오 수집 실패 — 합성 데이터로 계속: {e!r}")
+        try:
+            import seongji_vision_load
+            r = seongji_vision_load.load()   # 시세표 이미지 판독 결과(커밋된 JSON) 적재
+            log(f"시세표 vision 적재: {r}")
+        except Exception as e:  # noqa: BLE001
+            log(f"시세표 vision 적재 실패 — 계속: {e!r}")
         seongji_build.main()      # seongji_data.js 빌드
         log("성지폰 단가 갱신 완료")
     except Exception as e:  # noqa: BLE001
