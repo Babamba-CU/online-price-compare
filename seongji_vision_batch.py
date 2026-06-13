@@ -56,6 +56,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--channels", type=int, default=30)
     ap.add_argument("--max-images", type=int, default=60)
+    ap.add_argument("--per-channel", type=int, default=2)
     args = ap.parse_args()
 
     sources = [s for s in json.loads(SOURCES_PATH.read_text(encoding="utf-8"))
@@ -111,13 +112,13 @@ def main() -> None:
 
         per_channel = 0
         for it in sorted(items + linked, key=lambda x: -(x.get("published_at") or 0)):
-            if per_channel >= 2 or n_img >= args.max_images:
+            if per_channel >= args.per_channel or n_img >= args.max_images:
                 break
             blob = (it.get("title") or "") + " " + _text(it)[:200]
             if not it.get("media") or not any(k in blob for k in PRICE_KEYWORDS):
                 continue
             for m in it["media"][:2]:
-                if per_channel >= 2 or n_img >= args.max_images:
+                if per_channel >= args.per_channel or n_img >= args.max_images:
                     break
                 url = (m.get("xlarge_url") or m.get("url") or "").replace("http://", "https://")
                 if not url or url in done_urls:

@@ -803,6 +803,14 @@
           </select>
         </div>
         <div class="filter-input-group">
+          <label class="filter-input-label">가격 조건</label>
+          <select id="kkFilterCond" onchange="kakaoRender()">
+            <option value="pure" selected>순수 현금완납가 (조건부 제외)</option>
+            <option value="all">전체 (결합·제휴 포함)</option>
+            <option value="cond">조건부만 (결합·제휴·온누리)</option>
+          </select>
+        </div>
+        <div class="filter-input-group">
           <label class="filter-input-label">정렬</label>
           <select id="kkFilterSort" onchange="kakaoRender()">
             <option value="store">매장별</option>
@@ -814,6 +822,22 @@
     </div>
 
     <div class="kpi-section" id="kkKpiSection"></div>
+
+    <div class="chart-section">
+      <div class="chart-title">3사 현금완납가 비교 (매장 분포)</div>
+      <div class="chart-help">
+        각 단말 컬럼에 통신사별 마커 3개 (<code>● 최고</code> · <code>━ 중앙</code> · <code>● 최저</code>) 를 점선으로 연결.
+        여러 매장의 <b>현금완납가</b> 분포를 3사로 비교합니다. 음수(차비) 포함. 통신사 필터와 무관하게 3사 모두 표시.
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-box skt"></span>SKT</div>
+        <div class="legend-item"><span class="legend-box kt"></span>KT</div>
+        <div class="legend-item"><span class="legend-box lg"></span>LGU+</div>
+      </div>
+      <div class="chart-scroll-container">
+        <canvas id="kkBoxCanvas" height="460"></canvas>
+      </div>
+    </div>
 
     <div class="table-section">
       <div class="table-title">
@@ -1834,7 +1858,11 @@
     const DATA = window.SEONGJI_DATA || {};
     const STORES = DATA.kakaoStores || [];
     const SUMMARY = DATA.kakaoSummary || { stores: 0, regions: 0, rows: 0, models: 0, negative: 0 };
+    const CARRIERS = ["SKT", "KT", "LGU+"];
     const CARRIER_CLASS = { "SKT": "carrier-skt", "KT": "carrier-kt", "LGU+": "carrier-lg" };
+    // MAMF: SKT=brand / KT=ink2(surface 대체) / LG=accent — :root 토큰과 동기
+    const CARRIER_COLORS = { "SKT": "#3617CE", "KT": "#52525C", "LGU+": "#EA002C" };
+    let kkBoxMarkers = [];
     const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     const won = v => (v == null ? "-" : Number(v).toLocaleString());
@@ -1844,6 +1872,14 @@
       const cond = r.add_condition || "";
       const m = cond.match(/시세표기준일\s*(\d{4}-\d{2}-\d{2})/);
       return { est: cond.includes("월청구추정"), boardDate: m ? m[1] : null };
+    }
+    // 결합(인터넷+TV)·제휴카드·온누리 체감가 등 조건부 가격 여부
+    const COND_RE = /결합|인터넷|TV|제휴|온누리|체감/;
+    const isConditional = r => COND_RE.test(r.add_condition || "");
+    function condPass(r, mode) {
+      if (mode === "all") return true;
+      if (mode === "cond") return isConditional(r);
+      return !isConditional(r);   // "pure" (기본)
     }
 
     function initFilters() {
@@ -1858,12 +1894,13 @@
     function renderMeta() {
       const ocr = STORES.filter(r => r.source === "kakao_ocr").length;
       const txt = STORES.filter(r => r.source === "kakao").length;
+      const condN = STORES.filter(isConditional).length;
       document.getElementById("kkMetaBar").innerHTML = `
         <span>최종 빌드: <b>${DATA.generatedAt || "-"}</b></span>
         <span>최신 스냅샷: <b>${DATA.latestSnapshot || "-"}</b></span>
         <span>수집 매장 <b>${SUMMARY.stores}</b>곳 · ${SUMMARY.regions}개 권역</span>
         <span>시세표 ${ocr} · 텍스트 ${txt}</span>
-        <span>※ 단일 매장 집중 — 일부 권역은 매장 1곳</span>`;
+        <span>조건부(결합·제휴) ${condN}건 — 기본 제외</span>`;
     }
 
     function renderKpi(rows) {
@@ -1921,10 +1958,14 @@
       if (!rows.length) { tbody.innerHTML = ""; empty.style.display = "block"; return; }
       empty.style.display = "none";
 
+      const CAP = 2000;
+      const capped = rows.length > CAP ? rows.slice(0, CAP) : rows;
       let html = "";
+      if (rows.length > CAP) html += `<tr class="kk-group"><td colspan="10">
+        <span class="kk-meta">표시 ${CAP.toLocaleString()} / 전체 ${rows.length.toLocaleString()}건 — 지역·모델 필터로 좁혀보세요</span></td></tr>`;
       if (sort === "store") {
         const groups = {};
-        rows.forEach(r => { const key = `${r.author || "?"}__${r.region || ""}`; (groups[key] = groups[key] || []).push(r); });
+        capped.forEach(r => { const key = `${r.author || "?"}__${r.region || ""}`; (groups[key] = groups[key] || []).push(r); });
         Object.keys(groups).sort().forEach(key => {
           const g = groups[key];
           const head = g[0];
@@ -1939,9 +1980,129 @@
         const sorted = (sort === "price_asc")
           ? [...rows].sort((a, b) => (a.cash_price ?? 9e9) - (b.cash_price ?? 9e9))
           : [...rows].sort((a, b) => (a.model_name || "").localeCompare(b.model_name || "") || (a.cash_price ?? 0) - (b.cash_price ?? 0));
-        sorted.forEach(r => { html += rowHtml(r, false); });
+        sorted.slice(0, CAP).forEach(r => { html += rowHtml(r, false); });
       }
       tbody.innerHTML = html;
+    }
+
+    /* === 3사 현금완납가 비교 차트 === */
+    // (model, carrier) → 현금완납가 분포. 통신사 필터는 차트에 적용하지 않음(3사 비교 목적).
+    function buildKkBuckets(chartRows) {
+      const byMC = {};
+      chartRows.forEach(r => {
+        if (!CARRIERS.includes(r.carrier) || r.cash_price == null) return;
+        const m = r.model_name;
+        (byMC[m] = byMC[m] || {});
+        (byMC[m][r.carrier] = byMC[m][r.carrier] || []).push(r.cash_price);
+      });
+      const stat = {};
+      Object.keys(byMC).forEach(m => {
+        stat[m] = {};
+        CARRIERS.forEach(c => {
+          const vals = (byMC[m][c] || []).slice().sort((a, b) => a - b);
+          if (!vals.length) return;
+          const mid = (q) => {
+            const idx = q * (vals.length - 1), lo = Math.floor(idx), hi = Math.min(lo + 1, vals.length - 1);
+            return Math.round(vals[lo] * (1 - (idx - lo)) + vals[hi] * (idx - lo));
+          };
+          stat[m][c] = { count: vals.length, min: vals[0], median: mid(0.5), max: vals[vals.length - 1] };
+        });
+      });
+      return stat;
+    }
+
+    function drawKkChart(chartRows) {
+      const cvs = document.getElementById("kkBoxCanvas");
+      const stat = buildKkBuckets(chartRows);
+      // 관측치 많은 순으로 정렬, 매장 2곳 이상 관측된 모델만, 최대 24종 (가독성)
+      const nObs = m => CARRIERS.reduce((s, c) => s + (stat[m][c]?.count || 0), 0);
+      const models = Object.keys(stat)
+        .filter(m => CARRIERS.some(c => stat[m][c]) && nObs(m) >= 2)
+        .sort((a, b) => nObs(b) - nObs(a))
+        .slice(0, 24);
+      const dpr = window.devicePixelRatio || 1;
+      const containerW = cvs.parentElement.offsetWidth;
+      const height = 460, minColW = 120;
+      const width = Math.max(containerW, models.length * minColW);
+      cvs.width = width * dpr; cvs.height = height * dpr;
+      cvs.style.width = width + "px"; cvs.style.height = height + "px";
+      const ctx = cvs.getContext("2d");
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.scale(dpr, dpr);
+      ctx.fillStyle = "white"; ctx.fillRect(0, 0, width, height);
+      const padT = 28, padB = 110, padL = 78, padR = 36;
+      const innerW = width - padL - padR, innerH = height - padT - padB;
+      kkBoxMarkers = [];
+      if (!models.length) {
+        ctx.fillStyle = "#9494A0"; ctx.font = "14px Pretendard, sans-serif"; ctx.textAlign = "center";
+        ctx.fillText("3사 통신사 라벨이 있는 현금완납가가 없습니다.", width / 2, height / 2);
+        return;
+      }
+      let lo = Infinity, hi = -Infinity;
+      models.forEach(m => CARRIERS.forEach(c => { const s = stat[m][c]; if (s) { lo = Math.min(lo, s.min); hi = Math.max(hi, s.max); } }));
+      lo = Math.min(0, lo);   // 차비(음수) 포함, 0 기준선 보장
+      const loMan = Math.floor(lo / 10000 / 5) * 5, hiMan = Math.ceil(hi / 10000 / 5) * 5;
+      const span = (hiMan - loMan) || 10;
+      const yOf = v => padT + innerH * (1 - (v / 10000 - loMan) / span);
+
+      ctx.strokeStyle = "#E4E4EA"; ctx.lineWidth = 1;
+      ctx.fillStyle = "#9494A0"; ctx.font = "11px 'JetBrains Mono', monospace";
+      ctx.textAlign = "right"; ctx.textBaseline = "middle";
+      const steps = 6;
+      for (let i = 0; i <= steps; i++) {
+        const man = loMan + span * i / steps, y = yOf(man * 10000);
+        ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(width - padR, y);
+        ctx.strokeStyle = (Math.abs(man) < 0.01) ? "#C9C9D2" : "#E4E4EA"; ctx.stroke();
+        ctx.fillText(`${Math.round(man)}만`, padL - 8, y);
+      }
+      ctx.strokeStyle = "#0E0E12"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT + innerH);
+      ctx.lineTo(width - padR, padT + innerH); ctx.stroke();
+      ctx.save(); ctx.fillStyle = "#0E0E12"; ctx.font = "bold 12px Pretendard, sans-serif";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.translate(18, padT + innerH / 2); ctx.rotate(-Math.PI / 2);
+      ctx.fillText("현금완납가 (만원)", 0, 0); ctx.restore();
+
+      const colW = innerW / models.length, slot = Math.min(26, colW / 4), R = 4, tick = 9;
+      models.forEach((model, mi) => {
+        const gx = padL + colW * mi + colW / 2;
+        ctx.fillStyle = "#0E0E12"; ctx.font = "bold 11px Pretendard, sans-serif";
+        ctx.textAlign = "center"; ctx.textBaseline = "top";
+        ctx.save(); ctx.translate(gx, padT + innerH + 12); ctx.rotate(-Math.PI / 4);
+        ctx.fillText(model, 0, 0); ctx.restore();
+        if (mi > 0) { ctx.strokeStyle = "#F0F0F4"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(padL + colW * mi, padT); ctx.lineTo(padL + colW * mi, padT + innerH); ctx.stroke(); }
+        CARRIERS.forEach((carrier, ci) => {
+          const s = stat[model][carrier]; if (!s) return;
+          const x = gx + (ci - 1) * slot, color = CARRIER_COLORS[carrier];
+          const yMax = yOf(s.max), yMed = yOf(s.median), yMin = yOf(s.min);
+          ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.setLineDash([3, 3]);
+          ctx.beginPath(); ctx.moveTo(x, yMax); ctx.lineTo(x, yMin); ctx.stroke(); ctx.setLineDash([]);
+          ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, yMax, R, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(x, yMin, R, 0, Math.PI * 2); ctx.fill();
+          ctx.strokeStyle = color; ctx.lineWidth = 2.5;
+          ctx.beginPath(); ctx.moveTo(x - tick, yMed); ctx.lineTo(x + tick, yMed); ctx.stroke();
+          kkBoxMarkers.push({ model, carrier, stat: s, color, x, ys: [yMax, yMed, yMin] });
+        });
+      });
+    }
+
+    function setupKkHover() {
+      const cvs = document.getElementById("kkBoxCanvas");
+      let tip = document.querySelector(".box-tooltip");
+      if (!tip) { tip = document.createElement("div"); tip.className = "box-tooltip"; document.body.appendChild(tip); }
+      cvs.onmousemove = (e) => {
+        const r = cvs.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
+        let hit = null;
+        for (const m of kkBoxMarkers) { for (const y of m.ys) { if (Math.hypot(mx - m.x, my - y) < 10) { hit = m; break; } } if (hit) break; }
+        if (hit) {
+          const s = hit.stat, man = v => (v / 10000).toFixed(1).replace(/\.0$/, "") + "만";
+          tip.innerHTML = `<div style="color:${hit.color};font-weight:bold;margin-bottom:4px">${hit.model} / ${hit.carrier}</div>
+            <div style="border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:4px">매장 ${s.count}곳 현금완납가</div>
+            <div>최고: ${man(s.max)}</div><div>중앙: ${man(s.median)}</div><div>최저: ${man(s.min)}</div>`;
+          tip.style.display = "block"; tip.style.left = (e.clientX + 12) + "px"; tip.style.top = (e.clientY - 10) + "px";
+          cvs.style.cursor = "pointer";
+        } else { tip.style.display = "none"; cvs.style.cursor = "default"; }
+      };
+      cvs.onmouseleave = () => { tip.style.display = "none"; cvs.style.cursor = "default"; };
     }
 
     function render() {
@@ -1950,14 +2111,25 @@
       const sub = document.getElementById("kkFilterSub").value;
       const model = document.getElementById("kkFilterModel").value;
       const source = document.getElementById("kkFilterSource").value;
+      const cond = document.getElementById("kkFilterCond").value;
       const sort = document.getElementById("kkFilterSort").value;
       const rows = STORES.filter(r =>
         (!region || r.region === region) &&
         (!carrier || r.carrier === carrier) &&
         (!sub || r.subscription_type === sub) &&
         (!model || r.model_name === model) &&
-        (!source || r.source === source));
+        (!source || r.source === source) &&
+        condPass(r, cond));
+      // 차트는 3사 비교가 목적이라 통신사 필터를 적용하지 않는다.
+      const chartRows = STORES.filter(r =>
+        (!region || r.region === region) &&
+        (!sub || r.subscription_type === sub) &&
+        (!model || r.model_name === model) &&
+        (!source || r.source === source) &&
+        condPass(r, cond));
       renderKpi(rows);
+      drawKkChart(chartRows);
+      setupKkHover();
       renderTable(rows, sort);
     }
     window.kakaoRender = render;
@@ -1971,6 +2143,9 @@
       initFilters();
       renderMeta();
       render();
+      window.addEventListener("resize", () => {
+        if (document.getElementById("view-kakao").classList.contains("active")) render();
+      });
     }
     init();
   })();

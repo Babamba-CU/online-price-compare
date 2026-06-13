@@ -85,21 +85,17 @@ def load() -> dict:
                     continue
                 if not (PRICE_SANITY[0] <= cash <= PRICE_SANITY[1]):
                     continue
-                if EXCLUDE_CONDITION_RE.search(it.get("add_condition") or ""):
-                    continue   # 결합/제휴카드/온누리 체감가 — 사용자 확정 제외
-                # 신선도: 시세표 표기일이 7일 이내면 오늘 스냅샷으로 재스탬프
-                # (매일 재생성되는 대시보드에서 계속 보이도록). 원 표기일은 조건에 기록.
-                orig = it.get("snapshot_date") or date.today().isoformat()
-                try:
-                    age = (date.today() - date.fromisoformat(orig)).days
-                except ValueError:
-                    age = 999
-                if 0 < age <= 7:
-                    snap = date.today().isoformat()
+                # 결합/제휴카드/온누리 조건부 가격도 적재한다(전체 커버리지).
+                # 단순 단말 시세와 구분되도록 add_condition 에 사유를 남겨
+                # 대시보드에서 기본 필터(조건부 제외)로 토글 가능하게 한다.
+                # 배치 다운로드는 각 채널의 '최신' 시세표 이미지를 받은 시점 캡처이므로
+                # 모두 오늘 스냅샷으로 재스탬프한다(Vision 이 추정한 표기일은 게시글
+                # 생성연도 혼동 등으로 부정확). 원 표기일은 add_condition 에 보존.
+                orig = it.get("snapshot_date") or ""
+                snap = date.today().isoformat()
+                if orig and orig != snap:
                     it = {**it, "add_condition":
                           f"{it.get('add_condition') or ''} 시세표기준일 {orig}".strip()}
-                else:
-                    snap = orig
                 snapshots.add(snap)
                 price_rows.append({
                     "snapshot_date": snap,
