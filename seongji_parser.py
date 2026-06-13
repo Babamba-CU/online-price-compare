@@ -55,14 +55,21 @@ MODEL_PATTERNS: list[tuple[re.Pattern, str, Optional[int]]] = [
     (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s26\s*\+|s26\s*plus|S26\s*플러스|\bS26\+"), "Galaxy S26+",       256),
     (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s26\b|\bS26\b"),           "Galaxy S26",        256),
     (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s25\s*ultra\b|\bS25\s*(?:U|울트라)\b"), "Galaxy S25 Ultra",  256),
+    # S25 파생(Edge/FE/+)은 기본 S25 보다 먼저 — 더 구체적인 표기 우선
+    (re.compile(r"(?i)\bs25\s*edge\b"),                            "Galaxy S25 Edge",   256),
+    (re.compile(r"(?i)\bs25\s*fe\b"),                              "Galaxy S25 FE",     256),
+    (re.compile(r"(?i)\bs25\s*\+|\bs25\s*plus\b|s25\s*플러스"),       "Galaxy S25+",       256),
     (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s25\b|\bS25\b"),           "Galaxy S25",        256),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*fold\s*7\b|폴드\s*7|\bZF\s*7\b|\bZ폴드7"),  "Galaxy Z Fold 7",   256),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*flip\s*7\b|플립\s*7|\bZ플립7"),  "Galaxy Z Flip 7",   256),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*fold\s*6\b|폴드\s*6|\bZF\s*6\b"),  "Galaxy Z Fold 6",   256),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*flip\s*6\b|플립\s*6"),  "Galaxy Z Flip 6",   256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*fold\s*7\b|폴드\s*7|\bZF\s*7\b|\bZ폴드7|\bfold\s*7\b"),  "Galaxy Z Fold 7",   256),
+    # 플립7 FE 는 기본 플립7 보다 먼저
+    (re.compile(r"(?i)\b(?:z\s*)?flip\s*7\s*fe\b|플립\s*7\s*fe"),     "Galaxy Z Flip 7 FE", 256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*flip\s*7\b|플립\s*7|\bZ플립7|\bflip\s*7\b"),  "Galaxy Z Flip 7",   256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*fold\s*6\b|폴드\s*6|\bZF\s*6\b|\bfold\s*6\b"),  "Galaxy Z Fold 6",   256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*z\s*flip\s*6\b|플립\s*6|\bflip\s*6\b"),  "Galaxy Z Flip 6",   256),
 ]
 
-STORAGE_RE = re.compile(r"(\d{3,4})\s*(?:GB|기가|gb)", re.IGNORECASE)
+# 256GB / 256G / 256기가 모두 인식 ("256G👉" 처럼 GB 없이 G 만 붙는 성지 표기 대응)
+STORAGE_RE = re.compile(r"(\d{3,4})\s*(?:GB|기가|G)(?![A-Za-z])", re.IGNORECASE)
 # 가격: "현금완납 5만", "현완 50만원", "현완가 -10만원" 등
 # 만원 단위, 마이너스(차익) 포함
 PRICE_RES = [
@@ -209,7 +216,10 @@ def parse_post_text(title: str, body: str) -> list[ParsedPrice]:
 # 않도록 콤마를 차단한다. 원단위는 현완/현금가 키워드가 붙은 경우만 채택.
 LINE_PRICE_RES: list[tuple[re.Pattern, int]] = [
     # (패턴, 곱셈단위) — group(1) * 단위 = 원
-    (re.compile(r"👉🏻?\s*(-?\d{1,3}(?:\.\d)?)(?![\d,])"), 10000),   # S26U👉54
+    # 기종👉 263,000  (구매가, 원 단위·콤마 포함). 모델이 있는 줄에서만 평가되므로
+    # "온누리상품권 337,000원 환급"(모델 없는 줄)과 충돌하지 않는다. → 가장 먼저 시도.
+    (re.compile(r"👉🏻?\s*(-?\d{1,3}(?:,\d{3})+)(?!\d)"), 1),
+    (re.compile(r"👉🏻?\s*(-?\d{1,3}(?:\.\d)?)(?![\d,])"), 10000),   # S26U👉54 (만원 약어)
     (re.compile(r"(?:현완|현금가|현금완납|일시불)\s*[:：]?\s*(-?\d{1,3}(?:\.\d)?)\s*만"), 10000),
     (re.compile(r"(?:현완|현금가|현금완납|일시불)\s*[:：]?\s*(\d{1,3}(?:,\d{3})+)\s*원"), 1),
     (re.compile(r"(-?\d{1,3}(?:\.\d)?)\s*만\s*원?(?!\s*원\s*대)"), 10000),  # 54만 / 54만원
