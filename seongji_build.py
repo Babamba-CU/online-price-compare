@@ -16,10 +16,14 @@ OUT_PATH = Path(__file__).parent / "seongji_data.js"
 DAYS = 30
 BOX_WINDOW_DAYS = 14   # 박스플롯은 최근 N 일 관측치를 분포로 사용
 
-# 카카오 성지 채널 계열 소스 — 기존 "성지폰 단가 비교" 뷰(전국 사이트 시세)에서는 제외하고
-# 별도 "카카오 성지" 탭에서만 매장별로 보여준다. (집계 차원이 달라 함께 시각화 부적합)
+# 카카오 성지 채널 계열 소스 — "카카오 성지" 탭에서만 매장별로 보여준다.
 KAKAO_SOURCES = ("kakao", "kakao_ocr")
 _KAKAO_IN = "(" + ",".join(f"'{s}'" for s in KAKAO_SOURCES) + ")"
+
+# 기존 "성지폰 단가 비교" 뷰(전국 온라인 시세)는 사이트 크롤러 소스만 보여준다.
+# 카카오(매장 좌표)·네이버(검색 피드)는 집계 차원/품질이 달라 제외.
+_NON_SITE = KAKAO_SOURCES + ("naver_cafe", "naver_web")
+_NON_SITE_IN = "(" + ",".join(f"'{s}'" for s in _NON_SITE) + ")"
 
 
 def build() -> dict:
@@ -64,7 +68,7 @@ def build() -> dict:
                 JOIN seongji_posts  po ON po.id = p.post_id
                 WHERE p.snapshot_date = ?
                   AND p.cash_price IS NOT NULL
-                  AND po.source NOT IN {_KAKAO_IN}
+                  AND po.source NOT IN {_NON_SITE_IN}
                 ORDER BY p.model_name, p.carrier, p.cash_price
                 """,
                 (latest,),
@@ -84,7 +88,7 @@ def build() -> dict:
             WHERE p.snapshot_date >= ?
               AND p.cash_price IS NOT NULL
               AND p.cash_price > 0
-              AND po.source NOT IN {_KAKAO_IN}
+              AND po.source NOT IN {_NON_SITE_IN}
             """,
             (box_cutoff,),
         ))
@@ -128,7 +132,7 @@ def build() -> dict:
             f"""
             SELECT DISTINCT p.model_name
             FROM seongji_prices p JOIN seongji_posts po ON po.id = p.post_id
-            WHERE po.source NOT IN {_KAKAO_IN}
+            WHERE po.source NOT IN {_NON_SITE_IN}
             ORDER BY p.model_name
             """
         )]
