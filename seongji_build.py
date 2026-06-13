@@ -16,6 +16,11 @@ OUT_PATH = Path(__file__).parent / "seongji_data.js"
 DAYS = 30
 BOX_WINDOW_DAYS = 14   # 박스플롯은 최근 N 일 관측치를 분포로 사용
 
+# 카카오 성지 채널 계열 소스 — 기존 "성지폰 단가 비교" 뷰(전국 사이트 시세)에서는 제외하고
+# 별도 "카카오 성지" 탭에서만 매장별로 보여준다. (집계 차원이 달라 함께 시각화 부적합)
+KAKAO_SOURCES = ("kakao", "kakao_ocr")
+_KAKAO_IN = "(" + ",".join(f"'{s}'" for s in KAKAO_SOURCES) + ")"
+
 
 def build() -> dict:
     init_db()
@@ -49,7 +54,7 @@ def build() -> dict:
 
         detail = [
             dict(r) for r in conn.execute(
-                """
+                f"""
                 SELECT p.snapshot_date, p.model_name, p.carrier, p.subscription_type,
                        p.contract_type, p.storage_gb, p.cash_price, p.monthly_fee,
                        p.plan_name, p.plan_duration_mo, p.confidence, p.region,
@@ -59,6 +64,7 @@ def build() -> dict:
                 JOIN seongji_posts  po ON po.id = p.post_id
                 WHERE p.snapshot_date = ?
                   AND p.cash_price IS NOT NULL
+                  AND po.source NOT IN {_KAKAO_IN}
                 ORDER BY p.model_name, p.carrier, p.cash_price
                 """,
                 (latest,),
@@ -68,15 +74,17 @@ def build() -> dict:
         # 3) 박스플롯 통계 — 최근 BOX_WINDOW_DAYS 의 모든 관측치 분포
         box_cutoff = (today - timedelta(days=BOX_WINDOW_DAYS)).isoformat()
         box_rows = list(conn.execute(
-            """
+            f"""
             SELECT p.model_name,
                    COALESCE(p.carrier, '?')           AS carrier,
                    COALESCE(p.subscription_type, '?') AS sub,
                    p.cash_price
             FROM seongji_prices p
+            JOIN seongji_posts po ON po.id = p.post_id
             WHERE p.snapshot_date >= ?
               AND p.cash_price IS NOT NULL
               AND p.cash_price > 0
+              AND po.source NOT IN {_KAKAO_IN}
             """,
             (box_cutoff,),
         ))
@@ -115,9 +123,14 @@ def build() -> dict:
                 "avg":               int(sum(vals) / len(vals)),
             })
 
-        # 4) 모델 옵션
+        # 4) 모델 옵션 (사이트 시세 뷰 전용 — 카카오 전용 모델 제외)
         models = [r[0] for r in conn.execute(
-            "SELECT DISTINCT model_name FROM seongji_prices ORDER BY model_name"
+            f"""
+            SELECT DISTINCT p.model_name
+            FROM seongji_prices p JOIN seongji_posts po ON po.id = p.post_id
+            WHERE po.source NOT IN {_KAKAO_IN}
+            ORDER BY p.model_name
+            """
         )]
 
         # 5) 크롤링 런 로그
@@ -160,6 +173,33 @@ def build() -> dict:
                 FEED_SQL.format(placeholders=ph), srcs)]
         feed.sort(key=lambda r: (r["posted_at"] or "", ), reverse=True)
 
+        # 7) 카카오 성지 — 매장(판매점)별 수집 단가 (별도 탭). 최신 스냅샷 한정.
+        #    출고가/공시지원금은 생략하고 매장이 게시한 가격(현금완납가/실구매추정)만 보여준다.
+        kakao_rows = [
+            dict(r) for r in conn.execute(
+                f"""
+                SELECT p.snapshot_date, p.model_name, p.carrier, p.subscription_type,
+                       p.storage_gb, p.cash_price, p.plan_name, p.plan_duration_mo,
+                       p.add_condition, p.confidence, p.region,
+                       po.source, po.url, po.title, po.posted_at, po.author
+                FROM seongji_prices p
+                JOIN seongji_posts  po ON po.id = p.post_id
+                WHERE p.snapshot_date = ?
+                  AND p.cash_price IS NOT NULL
+                  AND po.source IN {_KAKAO_IN}
+                ORDER BY po.author, p.model_name, p.storage_gb, p.cash_price
+                """,
+                (latest,),
+            )
+        ]
+        kakao_summary = {
+            "stores":   len({r["author"] for r in kakao_rows if r["author"]}),
+            "regions":  len({r["region"] for r in kakao_rows if r["region"]}),
+            "rows":     len(kakao_rows),
+            "models":   len({r["model_name"] for r in kakao_rows}),
+            "negative": sum(1 for r in kakao_rows if (r["cash_price"] or 0) < 0),
+        }
+
     return {
         "generatedAt":     date.today().isoformat(),
         "latestSnapshot":  latest,
@@ -173,6 +213,8 @@ def build() -> dict:
         "detail":          detail,
         "runs":            runs,
         "feed":            feed,
+        "kakaoStores":     kakao_rows,
+        "kakaoSummary":    kakao_summary,
     }
 
 
@@ -186,7 +228,8 @@ def main() -> None:
     print(
         f"wrote {OUT_PATH}  "
         f"(daily={len(payload['daily'])}, box={len(payload['boxStats'])}, "
-        f"detail={len(payload['detail'])}, feed={len(payload['feed'])})"
+        f"detail={len(payload['detail'])}, feed={len(payload['feed'])}, "
+        f"kakao={len(payload['kakaoStores'])} / {payload['kakaoSummary']['stores']}점)"
     )
 
 

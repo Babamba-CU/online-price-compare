@@ -469,6 +469,26 @@
     .feed-parse { font-family: var(--font-mono); font-size: 12px; white-space: nowrap; }
     .feed-parse .nohit { color: var(--ink3); font-weight: 400; }
 
+    /* ===== 카카오 성지 탭 전용 ===== */
+    tbody tr.kk-group td {
+      background: var(--bg-inset) !important;
+      font-weight: 600; font-size: 12.5px;
+      border-top: 1.5px solid var(--border-strong);
+      padding: 9px var(--spacing-md);
+    }
+    .kk-group .kk-store { color: var(--ink); }
+    .kk-group .kk-region { color: var(--ink2); font-weight: 500; margin-right: 6px; }
+    .kk-group .kk-meta { color: var(--ink3); font-weight: 400; font-size: 11px; margin-left: 8px; }
+    .price-type {
+      display: inline-block; padding: 1px 7px; border-radius: 6px;
+      font-size: 11px; font-weight: 600; font-family: var(--font-mono);
+    }
+    .price-type.cash { background: var(--bg-inset); color: var(--ink2); }
+    .price-type.est  { background: #FFF8DB; color: #8A6D00; border: 1px solid #EFE0A3; }
+    .cash-neg { color: var(--accent); font-weight: 700; }
+    .cash-neg .pb { font-size: 10px; font-weight: 600; margin-left: 3px; }
+    .kk-restamp { font-size: 10px; color: var(--ink3); margin-left: 4px; }
+
     .empty-state {
       padding: 60px var(--spacing-xl); text-align: center;
       color: var(--color-text-light); font-size: 14px;
@@ -499,6 +519,7 @@
     <div class="tabs" role="tablist">
       <button type="button" class="tab active" data-view="subsidy" role="tab">공시지원금 비교</button>
       <button type="button" class="tab"        data-view="seongji" role="tab">성지폰 단가 비교</button>
+      <button type="button" class="tab"        data-view="kakao"   role="tab">카카오 성지</button>
     </div>
   </nav>
 
@@ -737,6 +758,93 @@
     </div>
   </section>
 
+  <!-- =============================================================
+       VIEW 3 : 카카오 성지 (매장별 수집 단가)
+       ============================================================= -->
+  <section id="view-kakao" class="view">
+    <div class="meta-bar" id="kkMetaBar" style="padding: var(--spacing-md) var(--spacing-xl) 0;">
+      <span>데이터 로딩 중…</span>
+    </div>
+
+    <div class="filters-section">
+      <div class="filter-row">
+        <div class="filter-input-group">
+          <label class="filter-input-label">지역</label>
+          <select id="kkFilterRegion" onchange="kakaoRender()"><option value="">전체</option></select>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">통신사</label>
+          <select id="kkFilterCarrier" onchange="kakaoRender()">
+            <option value="">전체</option>
+            <option value="SKT">SKT</option>
+            <option value="KT">KT</option>
+            <option value="LGU+">LGU+</option>
+          </select>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">가입유형</label>
+          <select id="kkFilterSub" onchange="kakaoRender()">
+            <option value="">전체</option>
+            <option value="MNP">MNP</option>
+            <option value="신규">신규</option>
+            <option value="기변">기변</option>
+          </select>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">단말기</label>
+          <select id="kkFilterModel" onchange="kakaoRender()"><option value="">전체</option></select>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">데이터 종류</label>
+          <select id="kkFilterSource" onchange="kakaoRender()">
+            <option value="">전체</option>
+            <option value="kakao_ocr">시세표 이미지</option>
+            <option value="kakao">게시글 텍스트</option>
+          </select>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">정렬</label>
+          <select id="kkFilterSort" onchange="kakaoRender()">
+            <option value="store">매장별</option>
+            <option value="price_asc">현금완납가 낮은 순</option>
+            <option value="model">모델명 순</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="kpi-section" id="kkKpiSection"></div>
+
+    <div class="table-section">
+      <div class="table-title">
+        카카오 성지 매장별 수집 단가
+        <span class="sub-note">성지점 카카오 채널 시세표(Vision 판독)·게시글 텍스트 · 출고가·공시지원금 생략, 매장이 게시한 현금완납가/실구매가 표시 · 음수=차비(페이백)</span>
+      </div>
+      <div class="table-wrapper">
+        <table id="kkTable">
+          <thead>
+            <tr>
+              <th>지역</th>
+              <th>판매점</th>
+              <th>모델</th>
+              <th>용량</th>
+              <th>통신사</th>
+              <th>가입유형</th>
+              <th>가격유형</th>
+              <th>현금완납가</th>
+              <th>시세표 기준일</th>
+              <th>원문</th>
+            </tr>
+          </thead>
+          <tbody id="kkTbody"></tbody>
+        </table>
+      </div>
+      <div id="kkEmptyState" class="empty-state" style="display:none">
+        조건에 맞는 카카오 수집 단가가 없습니다.
+      </div>
+    </div>
+  </section>
+
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script src="subsidy_data.js"></script>
   <script src="seongji_data.js"></script>
@@ -751,6 +859,7 @@
         // 차트 폭 재계산
         if (view === 'subsidy' && typeof subsidyRender === 'function') subsidyRender();
         if (view === 'seongji' && typeof seongjiRender === 'function') seongjiRender();
+        if (view === 'kakao'   && typeof kakaoRender   === 'function') kakaoRender();
       });
     });
   </script>
@@ -1714,6 +1823,154 @@
       window.addEventListener("resize", () => {
         if (document.getElementById("view-seongji").classList.contains("active")) render();
       });
+    }
+    init();
+  })();
+  </script>
+
+  <!-- ===== 카카오 성지 view 로직 (IIFE) ===== -->
+  <script>
+  (function () {
+    const DATA = window.SEONGJI_DATA || {};
+    const STORES = DATA.kakaoStores || [];
+    const SUMMARY = DATA.kakaoSummary || { stores: 0, regions: 0, rows: 0, models: 0, negative: 0 };
+    const CARRIER_CLASS = { "SKT": "carrier-skt", "KT": "carrier-kt", "LGU+": "carrier-lg" };
+    const esc = s => String(s ?? "").replace(/[&<>"']/g, c =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const won = v => (v == null ? "-" : Number(v).toLocaleString());
+
+    // add_condition 에서 (실구매)추정 여부 + 시세표 원본 기준일 파싱
+    function priceMeta(r) {
+      const cond = r.add_condition || "";
+      const m = cond.match(/시세표기준일\s*(\d{4}-\d{2}-\d{2})/);
+      return { est: cond.includes("월청구추정"), boardDate: m ? m[1] : null };
+    }
+
+    function initFilters() {
+      const rs = document.getElementById("kkFilterRegion");
+      Array.from(new Set(STORES.map(r => r.region).filter(Boolean))).sort()
+        .forEach(rg => rs.insertAdjacentHTML("beforeend", `<option value="${esc(rg)}">${esc(rg)}</option>`));
+      const ms = document.getElementById("kkFilterModel");
+      Array.from(new Set(STORES.map(r => r.model_name).filter(Boolean))).sort()
+        .forEach(mm => ms.insertAdjacentHTML("beforeend", `<option value="${esc(mm)}">${esc(mm)}</option>`));
+    }
+
+    function renderMeta() {
+      const ocr = STORES.filter(r => r.source === "kakao_ocr").length;
+      const txt = STORES.filter(r => r.source === "kakao").length;
+      document.getElementById("kkMetaBar").innerHTML = `
+        <span>최종 빌드: <b>${DATA.generatedAt || "-"}</b></span>
+        <span>최신 스냅샷: <b>${DATA.latestSnapshot || "-"}</b></span>
+        <span>수집 매장 <b>${SUMMARY.stores}</b>곳 · ${SUMMARY.regions}개 권역</span>
+        <span>시세표 ${ocr} · 텍스트 ${txt}</span>
+        <span>※ 단일 매장 집중 — 일부 권역은 매장 1곳</span>`;
+    }
+
+    function renderKpi(rows) {
+      const stores = new Set(rows.map(r => r.author).filter(Boolean)).size;
+      const neg = rows.filter(r => (r.cash_price || 0) < 0).length;
+      let lowest = null;
+      rows.filter(r => (r.cash_price || 0) > 0).forEach(r => { if (!lowest || r.cash_price < lowest.cash_price) lowest = r; });
+      const byRegion = {};
+      rows.forEach(r => { if (r.region) byRegion[r.region] = (byRegion[r.region] || 0) + 1; });
+      const topRegion = Object.entries(byRegion).sort((a, b) => b[1] - a[1])[0];
+      const cards = [
+        { label: "수집 매장", value: `${stores}곳`, sub: `${rows.length}건 수집` },
+        { label: "최저 현금완납가", value: lowest ? `${won(lowest.cash_price)}원` : "-", sub: lowest ? `${lowest.model_name} · ${lowest.author || ""}` : "데이터 없음" },
+        { label: "차비(페이백) 매물", value: `${neg}건`, sub: "현금완납가 음수 — 받고 개통" },
+        { label: "최다 권역", value: topRegion ? topRegion[0] : "-", sub: topRegion ? `${topRegion[1]}건` : "" },
+      ];
+      document.getElementById("kkKpiSection").innerHTML = cards.map(c => `<div class="kpi-card">
+        <div class="kpi-label">${esc(c.label)}</div>
+        <div class="kpi-value">${esc(c.value)}</div>
+        <div class="kpi-sub">${esc(c.sub)}</div></div>`).join("");
+    }
+
+    function priceCell(r) {
+      if (r.cash_price < 0)
+        return `<span class="cash-neg">${won(Math.abs(r.cash_price))}원<span class="pb">차비</span></span>`;
+      return `${priceMeta(r).est ? "~" : ""}${won(r.cash_price)}원`;
+    }
+
+    function rowHtml(r, grouped) {
+      const { est, boardDate } = priceMeta(r);
+      const cls = CARRIER_CLASS[r.carrier] || "";
+      const carrierChip = cls ? `<span class="${cls}">${esc(r.carrier)}</span>` : `<span style="color:var(--ink3)">미상</span>`;
+      const ptype = est ? `<span class="price-type est">실구매추정</span>` : `<span class="price-type cash">현금완납</span>`;
+      const dateCell = boardDate
+        ? `${boardDate}<span class="kk-restamp">🕘재표기</span>`
+        : ((r.posted_at || "").slice(0, 10) || "-");
+      return `<tr>
+        <td style="font-size:12px">${grouped ? "" : esc(r.region || "-")}</td>
+        <td style="font-size:12px">${grouped ? "" : esc(r.author || "-")}</td>
+        <td><b>${esc(r.model_name)}</b></td>
+        <td style="text-align:center">${r.storage_gb ? r.storage_gb + "GB" : "-"}</td>
+        <td style="text-align:center">${carrierChip}</td>
+        <td style="text-align:center">${esc(r.subscription_type || "-")}</td>
+        <td style="text-align:center">${ptype}</td>
+        <td class="price-cell">${priceCell(r)}</td>
+        <td style="font-size:11px;color:var(--ink3)">${dateCell}</td>
+        <td><span class="source-badge kakao">${r.source === "kakao_ocr" ? "시세표" : "텍스트"}</span>
+            <a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">열기</a></td>
+      </tr>`;
+    }
+
+    function renderTable(rows, sort) {
+      const tbody = document.getElementById("kkTbody");
+      const empty = document.getElementById("kkEmptyState");
+      if (!rows.length) { tbody.innerHTML = ""; empty.style.display = "block"; return; }
+      empty.style.display = "none";
+
+      let html = "";
+      if (sort === "store") {
+        const groups = {};
+        rows.forEach(r => { const key = `${r.author || "?"}__${r.region || ""}`; (groups[key] = groups[key] || []).push(r); });
+        Object.keys(groups).sort().forEach(key => {
+          const g = groups[key];
+          const head = g[0];
+          const ocr = g.filter(r => r.source === "kakao_ocr").length;
+          html += `<tr class="kk-group"><td colspan="10">
+            <span class="kk-region">${esc(head.region || "-")}</span>
+            <span class="kk-store">${esc(head.author || "-")}</span>
+            <span class="kk-meta">${g.length}건 · ${ocr ? "시세표 이미지" : "게시글 텍스트"}</span></td></tr>`;
+          g.forEach(r => { html += rowHtml(r, true); });
+        });
+      } else {
+        const sorted = (sort === "price_asc")
+          ? [...rows].sort((a, b) => (a.cash_price ?? 9e9) - (b.cash_price ?? 9e9))
+          : [...rows].sort((a, b) => (a.model_name || "").localeCompare(b.model_name || "") || (a.cash_price ?? 0) - (b.cash_price ?? 0));
+        sorted.forEach(r => { html += rowHtml(r, false); });
+      }
+      tbody.innerHTML = html;
+    }
+
+    function render() {
+      const region = document.getElementById("kkFilterRegion").value;
+      const carrier = document.getElementById("kkFilterCarrier").value;
+      const sub = document.getElementById("kkFilterSub").value;
+      const model = document.getElementById("kkFilterModel").value;
+      const source = document.getElementById("kkFilterSource").value;
+      const sort = document.getElementById("kkFilterSort").value;
+      const rows = STORES.filter(r =>
+        (!region || r.region === region) &&
+        (!carrier || r.carrier === carrier) &&
+        (!sub || r.subscription_type === sub) &&
+        (!model || r.model_name === model) &&
+        (!source || r.source === source));
+      renderKpi(rows);
+      renderTable(rows, sort);
+    }
+    window.kakaoRender = render;
+
+    function init() {
+      if (!STORES.length) {
+        document.getElementById("kkMetaBar").innerHTML = "<span>카카오 수집 단가가 아직 없습니다.</span>";
+        document.getElementById("kkEmptyState").style.display = "block";
+        return;
+      }
+      initFilters();
+      renderMeta();
+      render();
     }
     init();
   })();
