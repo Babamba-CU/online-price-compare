@@ -63,6 +63,18 @@ def main() -> None:
     sources = [s for s in json.loads(SOURCES_PATH.read_text(encoding="utf-8"))
                if s.get("type") == "kakao" and s.get("handle")]
 
+    # 효율화: 분석 2회 이상 실패한 채널은 제외 (매일 같은 헛수고 방지)
+    try:
+        import vision_skiplist
+        skips = vision_skiplist.active_skips()
+        before = len(sources)
+        sources = [s for s in sources if s["handle"] not in skips]
+        if before != len(sources):
+            print(f"  [skiplist] {before - len(sources)}개 채널 제외 (분석 {vision_skiplist.THRESHOLD}회+ 실패)",
+                  file=sys.stderr)
+    except Exception as e:  # noqa: BLE001
+        print(f"  [skiplist] 미적용: {e!r}", file=sys.stderr)
+
     # 이미 판독된 이미지 URL
     done_urls: set[str] = set()
     if VISION_DATA_PATH.exists():

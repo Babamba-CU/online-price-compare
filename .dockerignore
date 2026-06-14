@@ -43,3 +43,6 @@ crontab.example
 # 로컬 전용 — 사내망 데이터 팩 생성기
 export_pack.py
 dist
+daily_collect.py
+vision_skiplist.py
+vision_skiplist.json
