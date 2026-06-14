@@ -37,9 +37,11 @@ ALLOWED_EXTENSIONS = {".html", ".js", ".css", ".map", ".png", ".jpg", ".jpeg",
 
 # === 일일 데이터 갱신 설정 ======================================================
 # 컨테이너 TZ=Asia/Seoul 이므로 date.today() 와 아래 시각 모두 KST 기준.
-REFRESH_HOUR   = int(os.getenv("REFRESH_HOUR", "7"))
+REFRESH_HOUR   = int(os.getenv("REFRESH_HOUR", "5"))   # 매일 05:00 KST
 REFRESH_MINUTE = int(os.getenv("REFRESH_MINUTE", "0"))
 TZ_NAME        = os.getenv("TZ", "Asia/Seoul")
+# DATA_SOURCE=postgres → 사내망 모드: 수집 대신 사내 PostgreSQL 에서 *_data.js 빌드
+DATA_SOURCE    = os.getenv("DATA_SOURCE", "").lower()
 
 app = Flask(__name__, static_folder=None)
 
@@ -99,10 +101,23 @@ def refresh_data() -> None:
     log("데이터 갱신 종료")
 
 
+def refresh_from_pg() -> None:
+    """사내망 모드: 사내 PostgreSQL 을 읽어 seongji_data.js / subsidy_data.js 재생성.
+    인터넷 수집 로직을 타지 않는다(폐쇄망 OK)."""
+    try:
+        import build_from_pg
+        build_from_pg.main()
+        print("[refresh:pg] 사내 PostgreSQL → 화면 데이터 갱신 완료", file=sys.stderr, flush=True)
+    except Exception as e:  # noqa: BLE001
+        print(f"[refresh:pg] 갱신 실패: {e!r}", file=sys.stderr, flush=True)
+
+
 def start_scheduler() -> None:
-    """기동 시 1회 즉시 갱신 + 매일 REFRESH_HOUR:REFRESH_MINUTE(KST) 정기 갱신 등록."""
+    """기동 시 1회 즉시 갱신 + 매일 REFRESH_HOUR:REFRESH_MINUTE(KST) 정기 갱신 등록.
+    DATA_SOURCE=postgres 면 수집 대신 사내 PostgreSQL 빌드를 돌린다."""
+    job = refresh_from_pg if DATA_SOURCE == "postgres" else refresh_data
     # 기동 직후 1회 갱신 — Flask/health 를 막지 않도록 별도 스레드에서 실행
-    threading.Thread(target=refresh_data, name="refresh-startup", daemon=True).start()
+    threading.Thread(target=job, name="refresh-startup", daemon=True).start()
 
     try:
         from apscheduler.schedulers.background import BackgroundScheduler
@@ -114,7 +129,7 @@ def start_scheduler() -> None:
 
     scheduler = BackgroundScheduler(timezone=TZ_NAME)
     scheduler.add_job(
-        refresh_data,
+        job,
         CronTrigger(hour=REFRESH_HOUR, minute=REFRESH_MINUTE, timezone=TZ_NAME),
         id="daily_refresh",
         replace_existing=True,
@@ -123,7 +138,8 @@ def start_scheduler() -> None:
     )
     scheduler.start()
     print(f"[scheduler] 일일 갱신 등록: 매일 "
-          f"{REFRESH_HOUR:02d}:{REFRESH_MINUTE:02d} {TZ_NAME}",
+          f"{REFRESH_HOUR:02d}:{REFRESH_MINUTE:02d} {TZ_NAME} "
+          f"(mode={'postgres' if DATA_SOURCE=='postgres' else 'collect'})",
           file=sys.stderr, flush=True)
 
 

@@ -1,0 +1,5 @@
+# 사내망 서빙 컨테이너 의존성 (정적 화면 + 사내 PostgreSQL → *_data.js 빌드)
+# 수집(크롤/Vision) 의존성 불필요 — 폐쇄망에서 인터넷 접근 안 함
+flask>=3.0.0
+APScheduler>=3.10.0
+psycopg2-binary>=2.9.0
