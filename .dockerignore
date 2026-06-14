@@ -39,3 +39,7 @@ crontab.example
 #   seongji_naver.py seongji_parser.py (Naver 수집·파싱)
 #   subsidy_db.py subsidy_build.py subsidy_seed.py
 #   schema.sql subsidy_schema.sql
+
+# 로컬 전용 — 사내망 데이터 팩 생성기
+export_pack.py
+dist
