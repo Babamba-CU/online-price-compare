@@ -57,6 +57,7 @@ def main() -> None:
     ap.add_argument("--channels", type=int, default=30)
     ap.add_argument("--max-images", type=int, default=60)
     ap.add_argument("--per-channel", type=int, default=2)
+    ap.add_argument("--recent-days", type=int, default=RECENT_DAYS)
     args = ap.parse_args()
 
     sources = [s for s in json.loads(SOURCES_PATH.read_text(encoding="utf-8"))
@@ -78,7 +79,7 @@ def main() -> None:
         conn.close()
     sources.sort(key=lambda s: (s.get("name") or "") in text_ok_authors)
 
-    cutoff_ms = (datetime.now() - timedelta(days=RECENT_DAYS)).timestamp() * 1000
+    cutoff_ms = (datetime.now() - timedelta(days=args.recent_days)).timestamp() * 1000
     OUT_DIR.mkdir(exist_ok=True)
     manifest: list[dict] = []
     n_img = 0
