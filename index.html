@@ -468,6 +468,64 @@
     .feed-parse { font-family: var(--font-mono); font-size: 12px; white-space: nowrap; }
     .feed-parse .nohit { color: var(--ink3); font-weight: 400; }
 
+    /* ===== 접이식 실시간 수집 피드 (하단·축소) ===== */
+    .feed-details { border: 1px solid var(--border); border-radius: 14px; background: var(--bg); }
+    .feed-details > summary {
+      list-style: none; cursor: pointer; padding: 11px 16px;
+      font-size: 13px; font-weight: 600; color: var(--ink2);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .feed-details > summary::-webkit-details-marker { display: none; }
+    .feed-details > summary::before {
+      content: ""; width: 7px; height: 7px; border-right: 1.5px solid var(--ink3);
+      border-bottom: 1.5px solid var(--ink3); transform: rotate(-45deg);
+      transition: transform .15s; margin-right: 2px;
+    }
+    .feed-details[open] > summary::before { transform: rotate(45deg); }
+    .feed-details > summary:hover { color: var(--ink); }
+    .feed-details[open] > summary { border-bottom: 1px solid var(--border); }
+    .feed-details .feed-list { border: none; border-radius: 0 0 14px 14px; margin-top: 0 !important; }
+
+    /* ===== AI 요약 의사결정 리포트 ===== */
+    .ai-report {
+      margin: var(--spacing-md) var(--spacing-xl) 0;
+      border: 1px solid var(--brand-border); border-radius: 16px;
+      background: linear-gradient(180deg, var(--brand-surface) 0%, var(--bg) 42%);
+      padding: 16px 18px;
+    }
+    .ai-report-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .ai-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--brand); color: #fff; font-size: 12px; font-weight: 600;
+      padding: 4px 10px; border-radius: 9999px; letter-spacing: -0.01em;
+    }
+    .ai-badge svg { width: 13px; height: 13px; }
+    .ai-sub { font-size: 12px; color: var(--ink3); font-family: var(--font-mono); }
+    .ai-headline { font-size: 16px; font-weight: 700; line-height: 1.5; color: var(--ink); margin-bottom: 14px; letter-spacing: -0.01em; }
+    .ai-headline b { color: var(--brand); }
+    .ai-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+    .ai-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+    .ai-card-t {
+      font-size: 11px; font-weight: 600; color: var(--ink3); font-family: var(--font-mono);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 9px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .ai-card-t .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); }
+    .ai-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; font-size: 13px; padding: 3px 0; }
+    .ai-row .k { color: var(--ink2); }
+    .ai-row .v { font-family: var(--font-mono); font-weight: 600; white-space: nowrap; }
+    .ai-row .v.win { color: var(--brand); }
+    .ai-row .v.lose { color: var(--accent); }
+    .ai-row .sub { font-size: 11px; color: var(--ink3); }
+    .ai-up { color: var(--accent); } .ai-down { color: #0E9F6E; }
+    .ai-recs { margin-top: 14px; border-top: 1px solid var(--brand-border); padding-top: 12px; }
+    .ai-rec-t { font-size: 12px; font-weight: 600; color: var(--brand); margin-bottom: 8px; }
+    .ai-recs ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+    .ai-recs li { font-size: 13px; line-height: 1.5; color: var(--ink); padding-left: 20px; position: relative; }
+    .ai-recs li::before { content: "→"; position: absolute; left: 0; color: var(--brand); font-weight: 700; }
+    .ai-recs li b { font-weight: 600; }
+    .ai-empty { font-size: 13px; color: var(--ink3); }
+
     /* ===== 카카오 성지 탭 전용 ===== */
     tbody tr.kk-group td {
       background: var(--bg-inset) !important;
@@ -529,6 +587,8 @@
     <div style="padding: var(--spacing-md) var(--spacing-xl) 0; font-size: 12px; color: var(--color-text-light); display: flex; gap: var(--spacing-lg); flex-wrap: wrap;" id="subsidyMetaBar">
       <span>데이터 로딩 중…</span>
     </div>
+
+    <div class="ai-report" id="subsidyReport"></div>
 
     <div class="filters-section">
       <div class="filter-row">
@@ -647,6 +707,8 @@
       <span>데이터 로딩 중…</span>
     </div>
 
+    <div class="ai-report" id="seongjiReport"></div>
+
     <div class="filters-section">
       <div class="filter-row">
         <div class="filter-input-group">
@@ -713,14 +775,6 @@
       </div>
     </div>
 
-    <div class="table-section" id="sjFeedSection" style="display:none">
-      <div class="table-title">
-        실시간 수집 피드
-        <span class="sub-note">성지점 카카오 채널 342개 + Naver Search API (카페·웹문서) · 최근 50건 · 매일 07:00 KST 자동 수집</span>
-      </div>
-      <div class="feed-list" id="sjFeedList"></div>
-    </div>
-
     <div class="table-section">
       <div class="table-title">
         최신일자 사이트별 단가 상세 (정렬: 현금완납가 오름차순)
@@ -755,6 +809,13 @@
         <code>python seongji_crawler.py</code> → <code>python seongji_build.py</code> 순서로 실행하세요.
       </div>
     </div>
+
+    <div class="table-section">
+      <details class="feed-details" id="sjFeedSection" style="display:none">
+        <summary>실시간 수집 피드 <span class="sub-note" id="sjFeedCount"></span></summary>
+        <div class="feed-list" id="sjFeedList" style="margin-top:10px"></div>
+      </details>
+    </div>
   </section>
 
   <!-- =============================================================
@@ -764,6 +825,8 @@
     <div class="meta-bar" id="kkMetaBar" style="padding: var(--spacing-md) var(--spacing-xl) 0;">
       <span>데이터 로딩 중…</span>
     </div>
+
+    <div class="ai-report" id="kakaoReport"></div>
 
     <div class="filters-section">
       <div class="filter-row">
@@ -823,10 +886,11 @@
     <div class="kpi-section" id="kkKpiSection"></div>
 
     <div class="chart-section">
-      <div class="chart-title">3사 현금완납가 비교 (매장 분포)</div>
+      <div class="chart-title">3사 현금완납가 비교 (매장 분포 박스플롯)</div>
       <div class="chart-help">
-        각 단말 컬럼에 통신사별 마커 3개 (<code>● 최고</code> · <code>━ 중앙</code> · <code>● 최저</code>) 를 점선으로 연결.
-        여러 매장의 <b>현금완납가</b> 분포를 3사로 비교합니다. 음수(차비) 포함. 통신사 필터와 무관하게 3사 모두 표시.
+        통신사별 <b>박스플롯</b> — 박스 = 1~3분위(중간 50% 매장), 가운데 굵은 선 = 중앙값,
+        수염 = 1.5×IQR 내 최저~최고, 속빈 점 = 이상치. 여러 매장의 <b>현금완납가</b> 분포를 3사로 비교합니다.
+        음수(차비) 포함 · 통신사 필터와 무관하게 3사 모두 표시.
       </div>
       <div class="legend">
         <div class="legend-item"><span class="legend-box skt"></span>SKT</div>
@@ -885,6 +949,37 @@
         if (view === 'kakao'   && typeof kakaoRender   === 'function') kakaoRender();
       });
     });
+  </script>
+
+  <!-- ===== AI 요약 의사결정 리포트 (공통 렌더러) ===== -->
+  <script>
+  (function () {
+    const SPARK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.1 6.4L20.5 11l-6.4 2.1L12 19.5l-2.1-6.4L3.5 11l6.4-2.1z"/></svg>';
+    const escA = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    // o = { count, headline, cards:[{title, rows:[{k,v,cls,sub}] | empty}], recs:[html] }
+    window.aiReportHTML = function (o) {
+      const cards = (o.cards || []).map(c => {
+        const body = c.empty
+          ? `<div class="ai-empty">${c.empty}</div>`
+          : (c.rows || []).map(r => `<div class="ai-row">
+               <span class="k">${r.k}</span>
+               <span class="v ${r.cls || ""}">${r.v}${r.sub ? ` <span class="sub">${r.sub}</span>` : ""}</span>
+             </div>`).join("");
+        return `<div class="ai-card"><div class="ai-card-t"><span class="dot"></span>${c.title}</div>${body}</div>`;
+      }).join("");
+      const recs = (o.recs && o.recs.length)
+        ? `<div class="ai-recs"><div class="ai-rec-t">경쟁 대응 제언 (판매정책 관점)</div><ul>${o.recs.map(r => `<li>${r}</li>`).join("")}</ul></div>`
+        : "";
+      return `<div class="ai-report-head">
+          <span class="ai-badge">${SPARK} AI 요약</span>
+          <span class="ai-sub">${escA(o.count || "")} · 판매정책 의사결정 관점</span>
+        </div>
+        <div class="ai-headline">${o.headline || ""}</div>
+        <div class="ai-grid">${cards}</div>${recs}`;
+    };
+    // 만원 포맷
+    window.aiMan = (v) => (v == null ? "-" : (Math.round(v / 1000) / 10).toLocaleString() + "만");
+  })();
   </script>
 
   <!-- ===== 공시지원금 view 로직 (IIFE) ===== -->
@@ -1355,8 +1450,79 @@
       drawCompareChart(variants, offersByVarCar);
       setupChartHover();
       renderTable(variants, offersByVarCar);
+      renderReport(offers, subType, refDate);
     }
     window.subsidyRender = render;
+
+    /* === AI 요약 리포트 (공시지원금) === */
+    const SUB_FLAGSHIPS = ["Galaxy S26 Ultra", "Galaxy S26+", "Galaxy S26",
+      "iPhone 17 Pro Max", "iPhone 17 Pro", "Galaxy Z Fold 7", "Galaxy Z Flip 7"];
+    function renderReport(offers, subType, refDate) {
+      const el = document.getElementById("subsidyReport");
+      if (!el) return;
+      const M = window.aiMan;
+      // 모델×통신사 최저 실구매가
+      const byMC = {};
+      offers.forEach(o => {
+        if (!CARRIERS.includes(o.carrier) || o.net_buy_price == null) return;
+        (byMC[o.model_name] = byMC[o.model_name] || {});
+        const cur = byMC[o.model_name][o.carrier];
+        if (cur == null || o.net_buy_price < cur) byMC[o.model_name][o.carrier] = o.net_buy_price;
+      });
+      const flagRows = [];
+      SUB_FLAGSHIPS.filter(m => byMC[m]).forEach(m => {
+        const byC = CARRIERS.map(c => ({ c, p: byMC[m][c] })).filter(o => o.p != null);
+        if (byC.length < 2) return;
+        byC.sort((a, b) => a.p - b.p);
+        const best = byC[0], worst = byC[byC.length - 1], gap = worst.p - best.p;
+        flagRows.push({ k: m, v: `${best.c} ${M(best.p)}`, cls: "win",
+          sub: `최고 ${worst.c} ${M(worst.p)} · 격차 ${M(gap)}`, _best: best.c, _gap: gap });
+      });
+      // 저가 단말
+      const lowAll = offers.filter(o => o.net_buy_price != null && CARRIERS.includes(o.carrier))
+        .sort((a, b) => a.net_buy_price - b.net_buy_price)[0];
+      const lowCards = lowAll ? [{ k: `${lowAll.model_name} ${lowAll.storage_gb || "?"}GB`,
+        v: `${lowAll.carrier} ${M(lowAll.net_buy_price)}`, cls: "win",
+        sub: `공시 ${M(lowAll.subsidy_public)}+추가 ${M(lowAll.subsidy_additional)}` }] : [];
+
+      // 전일 대비 변동 (subsidy_changes)
+      const changes = (DATA.changes || []).filter(c => Math.abs(c.diff || 0) >= 10000)
+        .sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff)).slice(0, 4);
+      const chgCard = changes.length ? changes.map(c => ({
+        k: `${c.carrier} ${c.model_name}`,
+        v: `${c.diff > 0 ? "▲" : "▼"} ${M(Math.abs(c.diff))}`,
+        cls: c.diff > 0 ? "" : "",
+        sub: c.field === "subsidy_public" ? "공시" : c.field === "subsidy_additional" ? "추가" : c.field,
+      })) : null;
+
+      let headline, recs = [];
+      if (flagRows.length) {
+        const f = flagRows[0];
+        headline = `${refDate} ${subType} 기준 — <b>${f.k}</b> 실구매가 ${f.v.replace(/<[^>]+>/g, "")} 최저 <span style="color:var(--ink3);font-weight:400">(${f.sub})</span>`;
+        const lead = {};
+        flagRows.forEach(r => lead[r._best] = (lead[r._best] || 0) + 1);
+        const top = Object.entries(lead).sort((a, b) => b[1] - a[1])[0];
+        if (top && top[1] >= 2) recs.push(`<b>${top[0]}</b>가 플래그십 ${top[1]}종 실구매가 최저 — 번이 흡인력 우위. 대응사는 추가지원금/프로모션 검토`);
+        const wide = flagRows.filter(r => r._gap >= 150000).sort((a, b) => b._gap - a._gap)[0];
+        if (wide) recs.push(`<b>${wide.k}</b> 3사 실구매가 격차 ${M(wide._gap)} — 고가 통신사 정책 점검 필요`);
+      } else headline = `${refDate} 공시지원금 데이터 요약`;
+      if (changes.length) {
+        const big = changes[0];
+        recs.push(`전일 대비 <b>${big.carrier} ${big.model_name}</b> ${big.field === "subsidy_public" ? "공시" : "추가"}지원금 ${big.diff > 0 ? "상향" : "하향"} ${M(Math.abs(big.diff))} — 시장 변동 신호, 동향 추적`);
+      }
+      recs.push(`공시(공통지원금) 경로와 선택약정 25% 비교는 상세표 '선약비교'로 — 요금제 구간별 유불리 판단해 안내 가이드 갱신`);
+
+      el.innerHTML = window.aiReportHTML({
+        count: `${offers.length}개 오퍼 · ${refDate}`,
+        headline,
+        cards: [
+          { title: "플래그십 실구매가 3사", rows: flagRows.length ? flagRows : null, empty: flagRows.length ? null : "데이터 부족" },
+          { title: "최저 실구매가 단말", rows: lowCards.length ? lowCards : null, empty: lowCards.length ? null : "데이터 부족" },
+          { title: "전일 대비 변동", rows: chgCard, empty: chgCard ? null : "최근 변동 이력 없음 (안정)" },
+        ],
+        recs,
+      });
+    }
 
     function init() {
       document.getElementById("filterDate").value = DATA.latestSnapshot !== "-" ? DATA.latestSnapshot : "";
@@ -1503,6 +1669,8 @@
       const feed = DATA.feed || [];
       if (!feed.length) { sec.style.display = "none"; return; }
       sec.style.display = "";
+      const cnt = document.getElementById("sjFeedCount");
+      if (cnt) cnt.textContent = `${feed.length}건 · 카카오+Naver · 매일 05:00 자동 수집`;
       document.getElementById("sjFeedList").innerHTML = feed.map(f => {
         const isKakao = (f.source || "").startsWith("kakao");
         const src = f.source === "kakao_ocr" ? "시세표"
@@ -1817,8 +1985,89 @@
 
       renderKpi(filteredDetail);
       renderDetailTable(filteredDetail);
+      renderReport(filteredDetail);
     }
     window.seongjiRender = render;
+
+    /* === AI 요약 리포트 (성지폰 사이트 시세) === */
+    const SJ_FLAGSHIPS = ["Galaxy S26 Ultra", "Galaxy S26+", "Galaxy S26",
+      "iPhone 17 Pro Max", "iPhone 17 Pro", "Galaxy Z Fold 7", "Galaxy Z Flip 7"];
+    function renderReport(rows) {
+      const el = document.getElementById("seongjiReport");
+      if (!el) return;
+      const M = window.aiMan;
+      // 모델×통신사 최저 현금완납가 (사이트 시세)
+      const byMC = {};
+      rows.forEach(r => {
+        if (!CARRIERS.includes(r.carrier) || r.cash_price == null) return;
+        (byMC[r.model_name] = byMC[r.model_name] || {});
+        const cur = byMC[r.model_name][r.carrier];
+        if (cur == null || r.cash_price < cur) byMC[r.model_name][r.carrier] = r.cash_price;
+      });
+      const flagRows = [];
+      SJ_FLAGSHIPS.filter(m => byMC[m]).forEach(m => {
+        const byC = CARRIERS.map(c => ({ c, p: byMC[m][c] })).filter(o => o.p != null);
+        if (byC.length < 2) return;
+        byC.sort((a, b) => a.p - b.p);
+        const best = byC[0], worst = byC[byC.length - 1], gap = worst.p - best.p;
+        flagRows.push({ k: m, v: `${best.c} ${M(best.p)}`, cls: "win", sub: `최고 ${worst.c} ${M(worst.p)} · 격차 ${M(gap)}`, _best: best.c });
+      });
+      // 성지RB 큰 단말 (사이트 공시 경로 대비 성지가 더 싼 폭)
+      let rbBest = null;
+      rows.forEach(r => {
+        if (!CARRIERS.includes(r.carrier)) return;
+        const sub = lookupSubsidy(r), rb = calcSeongjiRB(r, sub);
+        if (rb.value != null && rb.value > 0 && (!rbBest || rb.value > rbBest.rb))
+          rbBest = { rb: rb.value, model: r.model_name, carrier: r.carrier };
+      });
+      const rbCards = rbBest ? [{ k: `${rbBest.model}`, v: `${rbBest.carrier} +${M(rbBest.rb)}`, cls: "win", sub: "성지가 공시 경로보다 저렴" }] : [];
+
+      // 전일 대비 변동 (daily 시계열 median_price)
+      const series = {};
+      (DATA.daily || []).forEach(d => {
+        if (!CARRIERS.includes(d.carrier) || d.median_price == null) return;
+        const key = `${d.model_name}__${d.carrier}`;
+        (series[key] = series[key] || []).push({ date: d.snapshot_date, v: d.median_price });
+      });
+      const deltas = [];
+      Object.keys(series).forEach(key => {
+        const arr = series[key].sort((a, b) => (a.date > b.date ? 1 : -1));
+        if (arr.length < 2) return;
+        const diff = arr[arr.length - 1].v - arr[arr.length - 2].v;
+        if (Math.abs(diff) >= 10000) {
+          const [model, carrier] = key.split("__");
+          deltas.push({ model, carrier, diff });
+        }
+      });
+      deltas.sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff));
+      const chgCard = deltas.length ? deltas.slice(0, 4).map(d => ({
+        k: `${d.carrier} ${d.model}`, v: `${d.diff > 0 ? "▲" : "▼"} ${M(Math.abs(d.diff))}`,
+        cls: "", sub: d.diff > 0 ? "상승" : "하락",
+      })) : null;
+
+      let headline, recs = [];
+      if (flagRows.length) {
+        const f = flagRows[0];
+        headline = `사이트 성지 시세 — <b>${f.k}</b> 현금완납가 ${f.v.replace(/<[^>]+>/g, "")} 최저 <span style="color:var(--ink3);font-weight:400">(${f.sub})</span>`;
+        const lead = {}; flagRows.forEach(r => lead[r._best] = (lead[r._best] || 0) + 1);
+        const top = Object.entries(lead).sort((a, b) => b[1] - a[1])[0];
+        if (top && top[1] >= 2) recs.push(`온라인 성지에서 <b>${top[0]}</b>가 플래그십 ${top[1]}종 최저 — 자사 온라인 단가 경쟁력 점검`);
+      } else headline = `사이트 성지 시세 요약 (합성 기준선 + 실측)`;
+      if (rbBest) recs.push(`<b>${rbBest.model}</b>는 성지가가 공시 경로 대비 ${M(rbBest.rb)} 저렴(성지RB) — 온라인 유출 경로로 추적, 정책 대응 판단`);
+      if (deltas.length) { const b = deltas[0]; recs.push(`전일 대비 <b>${b.carrier} ${b.model}</b> 성지 시세 ${b.diff > 0 ? "상승" : "하락"} ${M(Math.abs(b.diff))} — 추세 모니터링`); }
+      recs.push(`사이트 시세(익명 전국)와 카카오 매장 호가는 성격이 달라 별도 탭에서 교차 확인 권장`);
+
+      el.innerHTML = window.aiReportHTML({
+        count: `${new Set(rows.map(r => r.model_name)).size}개 모델 · ${rows.length}건`,
+        headline,
+        cards: [
+          { title: "플래그십 현금완납가 3사", rows: flagRows.length ? flagRows : null, empty: flagRows.length ? null : "데이터 부족" },
+          { title: "성지RB 최대 (공시 대비 저렴)", rows: rbCards.length ? rbCards : null, empty: rbCards.length ? null : "데이터 부족" },
+          { title: "전일 대비 변동", rows: chgCard, empty: chgCard ? null : "전일 대비 큰 변동 없음" },
+        ],
+        recs,
+      });
+    }
 
     function initMetricToggle() {
       const tg = document.getElementById("sjMetricToggle");
@@ -2000,11 +2249,20 @@
         CARRIERS.forEach(c => {
           const vals = (byMC[m][c] || []).slice().sort((a, b) => a - b);
           if (!vals.length) return;
-          const mid = (q) => {
-            const idx = q * (vals.length - 1), lo = Math.floor(idx), hi = Math.min(lo + 1, vals.length - 1);
+          const q = (p) => {
+            const idx = p * (vals.length - 1), lo = Math.floor(idx), hi = Math.min(lo + 1, vals.length - 1);
             return Math.round(vals[lo] * (1 - (idx - lo)) + vals[hi] * (idx - lo));
           };
-          stat[m][c] = { count: vals.length, min: vals[0], median: mid(0.5), max: vals[vals.length - 1] };
+          const q1 = q(0.25), median = q(0.5), q3 = q(0.75), iqr = q3 - q1;
+          const fLo = q1 - 1.5 * iqr, fHi = q3 + 1.5 * iqr;
+          const inFence = vals.filter(v => v >= fLo && v <= fHi);
+          const whiskerLo = inFence.length ? inFence[0] : vals[0];
+          const whiskerHi = inFence.length ? inFence[inFence.length - 1] : vals[vals.length - 1];
+          const outliers = vals.filter(v => v < fLo || v > fHi);
+          stat[m][c] = {
+            count: vals.length, min: vals[0], max: vals[vals.length - 1],
+            q1, median, q3, whiskerLo, whiskerHi, outliers,
+          };
         });
       });
       return stat;
@@ -2061,7 +2319,9 @@
       ctx.translate(18, padT + innerH / 2); ctx.rotate(-Math.PI / 2);
       ctx.fillText("현금완납가 (만원)", 0, 0); ctx.restore();
 
-      const colW = innerW / models.length, slot = Math.min(26, colW / 4), R = 4, tick = 9;
+      const colW = innerW / models.length;
+      const slot = Math.min(30, colW / 3.4);
+      const boxW = Math.max(9, slot * 0.66), half = boxW / 2, cap = half * 0.6;
       models.forEach((model, mi) => {
         const gx = padL + colW * mi + colW / 2;
         ctx.fillStyle = "#0E0E12"; ctx.font = "bold 11px Pretendard, sans-serif";
@@ -2072,14 +2332,26 @@
         CARRIERS.forEach((carrier, ci) => {
           const s = stat[model][carrier]; if (!s) return;
           const x = gx + (ci - 1) * slot, color = CARRIER_COLORS[carrier];
-          const yMax = yOf(s.max), yMed = yOf(s.median), yMin = yOf(s.min);
-          ctx.strokeStyle = color; ctx.lineWidth = 1.5; ctx.setLineDash([3, 3]);
-          ctx.beginPath(); ctx.moveTo(x, yMax); ctx.lineTo(x, yMin); ctx.stroke(); ctx.setLineDash([]);
-          ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, yMax, R, 0, Math.PI * 2); ctx.fill();
-          ctx.beginPath(); ctx.arc(x, yMin, R, 0, Math.PI * 2); ctx.fill();
-          ctx.strokeStyle = color; ctx.lineWidth = 2.5;
-          ctx.beginPath(); ctx.moveTo(x - tick, yMed); ctx.lineTo(x + tick, yMed); ctx.stroke();
-          kkBoxMarkers.push({ model, carrier, stat: s, color, x, ys: [yMax, yMed, yMin] });
+          const yQ1 = yOf(s.q1), yQ3 = yOf(s.q3), yMed = yOf(s.median);
+          const yWLo = yOf(s.whiskerLo), yWHi = yOf(s.whiskerHi);
+          ctx.strokeStyle = color;
+          // 수염 (q3↑최고, q1↓최저) + 양끝 캡
+          ctx.lineWidth = 1.4;
+          ctx.beginPath(); ctx.moveTo(x, yQ3); ctx.lineTo(x, yWHi);
+          ctx.moveTo(x, yQ1); ctx.lineTo(x, yWLo);
+          ctx.moveTo(x - cap, yWHi); ctx.lineTo(x + cap, yWHi);
+          ctx.moveTo(x - cap, yWLo); ctx.lineTo(x + cap, yWLo); ctx.stroke();
+          // 박스 (Q1~Q3): 연한 채움 + 컬러 보더
+          const boxTop = Math.min(yQ1, yQ3), boxH = Math.max(1, Math.abs(yQ1 - yQ3));
+          ctx.globalAlpha = 0.13; ctx.fillStyle = color; ctx.fillRect(x - half, boxTop, boxW, boxH); ctx.globalAlpha = 1;
+          ctx.lineWidth = 1.4; ctx.strokeRect(x - half, boxTop, boxW, boxH);
+          // 중앙값 (굵게)
+          ctx.lineWidth = 2.4; ctx.beginPath(); ctx.moveTo(x - half, yMed); ctx.lineTo(x + half, yMed); ctx.stroke();
+          // 이상치 (속빈 점)
+          ctx.lineWidth = 1;
+          (s.outliers || []).forEach(o => { ctx.beginPath(); ctx.arc(x, yOf(o), 2.4, 0, Math.PI * 2); ctx.stroke(); });
+          kkBoxMarkers.push({ model, carrier, stat: s, color, x, half,
+                              yTop: Math.min(yWHi, boxTop) - 4, yBot: Math.max(yWLo, boxTop + boxH) + 4 });
         });
       });
     }
@@ -2091,12 +2363,16 @@
       cvs.onmousemove = (e) => {
         const r = cvs.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
         let hit = null;
-        for (const m of kkBoxMarkers) { for (const y of m.ys) { if (Math.hypot(mx - m.x, my - y) < 10) { hit = m; break; } } if (hit) break; }
+        for (const m of kkBoxMarkers) {
+          if (mx >= m.x - m.half - 3 && mx <= m.x + m.half + 3 && my >= m.yTop && my <= m.yBot) { hit = m; break; }
+        }
         if (hit) {
           const s = hit.stat, man = v => (v / 10000).toFixed(1).replace(/\.0$/, "") + "만";
           tip.innerHTML = `<div style="color:${hit.color};font-weight:bold;margin-bottom:4px">${hit.model} / ${hit.carrier}</div>
-            <div style="border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:4px">매장 ${s.count}곳 현금완납가</div>
-            <div>최고: ${man(s.max)}</div><div>중앙: ${man(s.median)}</div><div>최저: ${man(s.min)}</div>`;
+            <div style="border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:4px">매장 ${s.count}곳 현금완납가 분포</div>
+            <div>최고: ${man(s.max)}</div><div>3분위(Q3): ${man(s.q3)}</div>
+            <div>중앙값: ${man(s.median)}</div><div>1분위(Q1): ${man(s.q1)}</div>
+            <div>최저: ${man(s.min)}</div>${s.outliers.length ? `<div style="color:#bbb">이상치 ${s.outliers.length}건</div>` : ""}`;
           tip.style.display = "block"; tip.style.left = (e.clientX + 12) + "px"; tip.style.top = (e.clientY - 10) + "px";
           cvs.style.cursor = "pointer";
         } else { tip.style.display = "none"; cvs.style.cursor = "default"; }
@@ -2130,8 +2406,81 @@
       drawKkChart(chartRows);
       setupKkHover();
       renderTable(rows, sort);
+      renderReport(chartRows);
     }
     window.kakaoRender = render;
+
+    /* === AI 요약 리포트 (카카오 성지) === */
+    const FLAGSHIPS = ["Galaxy S26 Ultra", "Galaxy S26+", "Galaxy S26",
+      "iPhone 17 Pro Max", "iPhone 17 Pro", "Galaxy Z Fold 7", "Galaxy Z Flip 7"];
+    function renderReport(chartRows) {
+      const el = document.getElementById("kakaoReport");
+      const stat = buildKkBuckets(chartRows);
+      const stores = new Set(chartRows.map(r => r.author).filter(Boolean)).size;
+      const M = window.aiMan, clean = s => s.replace(/<[^>]+>/g, "");
+
+      // 플래그십 3사 비교
+      const flagRows = [];
+      FLAGSHIPS.filter(m => stat[m]).forEach(m => {
+        const byC = CARRIERS.map(c => ({ c, med: stat[m][c] && stat[m][c].median })).filter(o => o.med != null);
+        if (byC.length < 2) return;
+        byC.sort((a, b) => a.med - b.med);
+        const best = byC[0], worst = byC[byC.length - 1], gap = worst.med - best.med;
+        flagRows.push({ k: m, v: `${best.c} ${M(best.med)}`, cls: "win",
+          sub: `최고 ${worst.c} ${M(worst.med)} · 격차 ${M(gap)}`, _gap: gap, _best: best.c });
+      });
+
+      // 저가 단말 공략 (비플래그십 중 중앙 현금완납가 최저 모델 → 최저호가 매장/조건)
+      const lowCards = [];
+      const lowModel = Object.keys(stat)
+        .filter(m => !FLAGSHIPS.includes(m) && CARRIERS.some(c => stat[m][c]))
+        .map(m => ({ m, med: Math.min(...CARRIERS.map(c => stat[m][c] ? stat[m][c].median : Infinity)) }))
+        .filter(o => isFinite(o.med)).sort((a, b) => a.med - b.med)[0];
+      if (lowModel) {
+        const cand = chartRows.filter(r => r.model_name === lowModel.m && CARRIERS.includes(r.carrier))
+          .sort((a, b) => (a.cash_price ?? 9e9) - (b.cash_price ?? 9e9))[0];
+        if (cand) lowCards.push({
+          k: lowModel.m, v: `${cand.cash_price < 0 ? "차비 " : ""}${M(Math.abs(cand.cash_price))}`,
+          cls: cand.cash_price < 0 ? "lose" : "", sub: `${cand.carrier || "?"} ${cand.subscription_type || ""} · ${cand.author || "?"}(${cand.region || "?"})` });
+      }
+      // 차비(페이백) 최다 권역
+      const negByRegion = {};
+      chartRows.forEach(r => { if ((r.cash_price || 0) < 0 && r.region) negByRegion[r.region] = (negByRegion[r.region] || 0) + 1; });
+      const topNeg = Object.entries(negByRegion).sort((a, b) => b[1] - a[1])[0];
+      if (topNeg) lowCards.push({ k: "차비 매물 최다 권역", v: `${topNeg[0]}`, cls: "lose", sub: `${topNeg[1]}건` });
+
+      // 헤드라인 + 제언
+      let headline, recs = [];
+      if (flagRows.length) {
+        const f = flagRows[0];
+        headline = `오늘 카카오 성지 최저가 — <b>${f.k}</b> ${clean(f.v)} 최저 <span style="color:var(--ink3);font-weight:400">(${clean(f.sub)})</span>`;
+        // 어느 통신사가 플래그십 최저를 가장 많이 차지하는가
+        const bestCount = {};
+        flagRows.forEach(r => bestCount[r._best] = (bestCount[r._best] || 0) + 1);
+        const lead = Object.entries(bestCount).sort((a, b) => b[1] - a[1])[0];
+        if (lead && lead[1] >= 2) {
+          const others = CARRIERS.filter(c => c !== lead[0]).join("/");
+          recs.push(`<b>${lead[0]}</b>가 플래그십 ${lead[1]}종에서 현금완납 최저 — 번이 유출 위험. ${others} 추가지원금 상향 또는 매장 인센티브 대응 검토`);
+        }
+        const wide = flagRows.filter(r => r._gap >= 200000).sort((a, b) => b._gap - a._gap)[0];
+        if (wide) recs.push(`<b>${wide.k}</b> 3사 격차 ${M(wide._gap)}로 큼 — 고가 통신사는 즉시 가격 정합성 점검 필요`);
+      } else {
+        headline = `3사 통신사 라벨이 있는 시세표가 부족합니다 — 수집 누적 후 비교가 풍부해집니다.`;
+      }
+      if (lowCards.length) recs.push(`저가 단말 <b>${lowModel.m}</b>에 일부 매장이 ${lowCards[0].cls === "lose" ? "차비 공세" : "초저가"} — 해당 권역 모니터링 및 유사 정책 대응 판단`);
+      recs.push(`매장 분포 박스플롯에서 <b>박스가 길거나(매장 간 편차 큰) 이상치가 많은 단말</b>은 정책 난립 구간 — 가이드 단가 통제 우선순위`);
+
+      el.innerHTML = window.aiReportHTML({
+        count: `${stores}개 매장 · ${chartRows.length}건`,
+        headline,
+        cards: [
+          { title: "플래그십 3사 최저가", rows: flagRows.length ? flagRows : null, empty: flagRows.length ? null : "데이터 부족" },
+          { title: "저가/공략 단말", rows: lowCards.length ? lowCards : null, empty: lowCards.length ? null : "데이터 부족" },
+          { title: "전일 대비 변동", empty: "카카오는 당일 스냅샷 기준 — 전일 대비는 일별 누적 후 제공" },
+        ],
+        recs,
+      });
+    }
 
     function init() {
       if (!STORES.length) {
