@@ -486,45 +486,36 @@
     .feed-details[open] > summary { border-bottom: 1px solid var(--border); }
     .feed-details .feed-list { border: none; border-radius: 0 0 14px 14px; margin-top: 0 !important; }
 
-    /* ===== AI 요약 의사결정 리포트 ===== */
+    /* ===== AI 요약 의사결정 리포트 (자연어·컴팩트) ===== */
     .ai-report {
       margin: var(--spacing-md) var(--spacing-xl) 0;
-      border: 1px solid var(--brand-border); border-radius: 16px;
-      background: linear-gradient(180deg, var(--brand-surface) 0%, var(--bg) 42%);
-      padding: 16px 18px;
+      border: 1px solid var(--brand-border); border-radius: 14px;
+      background: linear-gradient(180deg, var(--brand-surface) 0%, var(--bg) 70%);
+      padding: 12px 16px;
     }
-    .ai-report-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+    .ai-report-head { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
     .ai-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: var(--brand); color: #fff; font-size: 12px; font-weight: 600;
-      padding: 4px 10px; border-radius: 9999px; letter-spacing: -0.01em;
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--brand); color: #fff; font-size: 11px; font-weight: 600;
+      padding: 3px 9px; border-radius: 9999px; letter-spacing: -0.01em;
     }
-    .ai-badge svg { width: 13px; height: 13px; }
-    .ai-sub { font-size: 12px; color: var(--ink3); font-family: var(--font-mono); }
-    .ai-headline { font-size: 16px; font-weight: 700; line-height: 1.5; color: var(--ink); margin-bottom: 14px; letter-spacing: -0.01em; }
-    .ai-headline b { color: var(--brand); }
-    .ai-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
-    .ai-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
-    .ai-card-t {
-      font-size: 11px; font-weight: 600; color: var(--ink3); font-family: var(--font-mono);
-      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 9px;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .ai-card-t .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); }
-    .ai-row { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; font-size: 13px; padding: 3px 0; }
-    .ai-row .k { color: var(--ink2); }
-    .ai-row .v { font-family: var(--font-mono); font-weight: 600; white-space: nowrap; }
-    .ai-row .v.win { color: var(--brand); }
-    .ai-row .v.lose { color: var(--accent); }
-    .ai-row .sub { font-size: 11px; color: var(--ink3); }
-    .ai-up { color: var(--accent); } .ai-down { color: #0E9F6E; }
-    .ai-recs { margin-top: 14px; border-top: 1px solid var(--brand-border); padding-top: 12px; }
-    .ai-rec-t { font-size: 12px; font-weight: 600; color: var(--brand); margin-bottom: 8px; }
-    .ai-recs ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
-    .ai-recs li { font-size: 13px; line-height: 1.5; color: var(--ink); padding-left: 20px; position: relative; }
+    .ai-badge svg { width: 12px; height: 12px; }
+    .ai-sub { font-size: 11px; color: var(--ink3); font-family: var(--font-mono); }
+    .ai-headline { font-size: 14.5px; font-weight: 700; line-height: 1.45; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.01em; }
+    .ai-headline b, .ai-headline .hi { color: var(--brand); }
+    .ai-lines { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .ai-lines li { font-size: 13px; line-height: 1.5; color: var(--ink2); padding-left: 15px; position: relative; }
+    .ai-lines li::before { content: ""; position: absolute; left: 3px; top: 8px; width: 5px; height: 5px; border-radius: 50%; background: var(--brand-border); }
+    .ai-lines b { font-weight: 600; color: var(--ink); }
+    .ai-lines .hi { color: var(--brand); font-weight: 600; font-family: var(--font-mono); }
+    .ai-lines .neg { color: var(--accent); font-weight: 600; font-family: var(--font-mono); }
+    .ai-recs { margin-top: 9px; border-top: 1px solid var(--brand-border); padding-top: 8px; }
+    .ai-rec-t { font-size: 11px; font-weight: 600; color: var(--brand); margin-bottom: 5px; }
+    .ai-recs ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .ai-recs li { font-size: 12.5px; line-height: 1.45; color: var(--ink); padding-left: 18px; position: relative; }
     .ai-recs li::before { content: "→"; position: absolute; left: 0; color: var(--brand); font-weight: 700; }
     .ai-recs li b { font-weight: 600; }
-    .ai-empty { font-size: 13px; color: var(--ink3); }
+    @media (max-width: 768px) { .ai-report { margin: var(--spacing-sm) var(--spacing-md) 0; } }
 
     /* ===== 카카오 성지 탭 전용 ===== */
     tbody tr.kk-group td {
@@ -956,29 +947,23 @@
   (function () {
     const SPARK = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.1 6.4L20.5 11l-6.4 2.1L12 19.5l-2.1-6.4L3.5 11l6.4-2.1z"/></svg>';
     const escA = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-    // o = { count, headline, cards:[{title, rows:[{k,v,cls,sub}] | empty}], recs:[html] }
+    // o = { count, headline, lines:[html], recs:[html], recTitle }
     window.aiReportHTML = function (o) {
-      const cards = (o.cards || []).map(c => {
-        const body = c.empty
-          ? `<div class="ai-empty">${c.empty}</div>`
-          : (c.rows || []).map(r => `<div class="ai-row">
-               <span class="k">${r.k}</span>
-               <span class="v ${r.cls || ""}">${r.v}${r.sub ? ` <span class="sub">${r.sub}</span>` : ""}</span>
-             </div>`).join("");
-        return `<div class="ai-card"><div class="ai-card-t"><span class="dot"></span>${c.title}</div>${body}</div>`;
-      }).join("");
-      const recs = (o.recs && o.recs.length)
-        ? `<div class="ai-recs"><div class="ai-rec-t">경쟁 대응 제언 (판매정책 관점)</div><ul>${o.recs.map(r => `<li>${r}</li>`).join("")}</ul></div>`
+      const lines = (o.lines || []).filter(Boolean).map(l => `<li>${l}</li>`).join("");
+      const recs = (o.recs && o.recs.filter(Boolean).length)
+        ? `<div class="ai-recs"><div class="ai-rec-t">${o.recTitle || "경쟁 대응 제언"}</div><ul>${o.recs.filter(Boolean).map(r => `<li>${r}</li>`).join("")}</ul></div>`
         : "";
       return `<div class="ai-report-head">
           <span class="ai-badge">${SPARK} AI 요약</span>
-          <span class="ai-sub">${escA(o.count || "")} · 판매정책 의사결정 관점</span>
+          <span class="ai-sub">${escA(o.count || "")}</span>
         </div>
         <div class="ai-headline">${o.headline || ""}</div>
-        <div class="ai-grid">${cards}</div>${recs}`;
+        <ul class="ai-lines">${lines}</ul>${recs}`;
     };
-    // 만원 포맷
+    // 만원 포맷 (음수 그대로, '만' 접미)
     window.aiMan = (v) => (v == null ? "-" : (Math.round(v / 1000) / 10).toLocaleString() + "만");
+    window.aiHi = (s) => `<span class="hi">${s}</span>`;
+    window.aiNeg = (s) => `<span class="neg">${s}</span>`;
   })();
   </script>
 
@@ -1469,58 +1454,50 @@
         const cur = byMC[o.model_name][o.carrier];
         if (cur == null || o.net_buy_price < cur) byMC[o.model_name][o.carrier] = o.net_buy_price;
       });
-      const flagRows = [];
-      SUB_FLAGSHIPS.filter(m => byMC[m]).forEach(m => {
+      const HI = window.aiHi;
+      // 플래그십: 모델별 3사 최저/최고/격차
+      const flags = SUB_FLAGSHIPS.filter(m => byMC[m]).map(m => {
         const byC = CARRIERS.map(c => ({ c, p: byMC[m][c] })).filter(o => o.p != null);
-        if (byC.length < 2) return;
+        if (byC.length < 2) return null;
         byC.sort((a, b) => a.p - b.p);
-        const best = byC[0], worst = byC[byC.length - 1], gap = worst.p - best.p;
-        flagRows.push({ k: m, v: `${best.c} ${M(best.p)}`, cls: "win",
-          sub: `최고 ${worst.c} ${M(worst.p)} · 격차 ${M(gap)}`, _best: best.c, _gap: gap });
-      });
-      // 저가 단말
-      const lowAll = offers.filter(o => o.net_buy_price != null && CARRIERS.includes(o.carrier))
-        .sort((a, b) => a.net_buy_price - b.net_buy_price)[0];
-      const lowCards = lowAll ? [{ k: `${lowAll.model_name} ${lowAll.storage_gb || "?"}GB`,
-        v: `${lowAll.carrier} ${M(lowAll.net_buy_price)}`, cls: "win",
-        sub: `공시 ${M(lowAll.subsidy_public)}+추가 ${M(lowAll.subsidy_additional)}` }] : [];
+        return { m, best: byC[0], worst: byC[byC.length - 1], gap: byC[byC.length - 1].p - byC[0].p, n: byC.length };
+      }).filter(Boolean);
 
-      // 전일 대비 변동 (subsidy_changes)
-      const changes = (DATA.changes || []).filter(c => Math.abs(c.diff || 0) >= 10000)
-        .sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff)).slice(0, 4);
-      const chgCard = changes.length ? changes.map(c => ({
-        k: `${c.carrier} ${c.model_name}`,
-        v: `${c.diff > 0 ? "▲" : "▼"} ${M(Math.abs(c.diff))}`,
-        cls: c.diff > 0 ? "" : "",
-        sub: c.field === "subsidy_public" ? "공시" : c.field === "subsidy_additional" ? "추가" : c.field,
-      })) : null;
-
-      let headline, recs = [];
-      if (flagRows.length) {
-        const f = flagRows[0];
-        headline = `${refDate} ${subType} 기준 — <b>${f.k}</b> 실구매가 ${f.v.replace(/<[^>]+>/g, "")} 최저 <span style="color:var(--ink3);font-weight:400">(${f.sub})</span>`;
+      let headline, lines = [], recs = [];
+      if (flags.length) {
         const lead = {};
-        flagRows.forEach(r => lead[r._best] = (lead[r._best] || 0) + 1);
-        const top = Object.entries(lead).sort((a, b) => b[1] - a[1])[0];
-        if (top && top[1] >= 2) recs.push(`<b>${top[0]}</b>가 플래그십 ${top[1]}종 실구매가 최저 — 번이 흡인력 우위. 대응사는 추가지원금/프로모션 검토`);
-        const wide = flagRows.filter(r => r._gap >= 150000).sort((a, b) => b._gap - a._gap)[0];
-        if (wide) recs.push(`<b>${wide.k}</b> 3사 실구매가 격차 ${M(wide._gap)} — 고가 통신사 정책 점검 필요`);
+        flags.forEach(f => lead[f.best.c] = (lead[f.best.c] || 0) + 1);
+        const leadTop = Object.entries(lead).sort((a, b) => b[1] - a[1])[0];
+        const avgGap = flags.reduce((s, f) => s + f.gap, 0) / flags.length;
+        const wide = [...flags].sort((a, b) => b.gap - a.gap)[0];
+        const narrow = [...flags].sort((a, b) => a.gap - b.gap)[0];
+
+        headline = `${refDate} ${subType} 기준 — 플래그십 ${flags.length}종 3사 실구매가 격차 평균 ${HI(M(avgGap))}, `
+          + `${leadTop[1] >= 2 ? `<b>${leadTop[0]}</b>가 ${leadTop[1]}종 최저` : `${wide.best.c} 우위`}. 추천 판매단말 <b>${narrow.m}</b>(격차 ${HI(M(narrow.gap))}).`;
+
+        if (leadTop && leadTop[1] >= 2)
+          lines.push(`<b>${leadTop[0]}</b>가 플래그십 ${leadTop[1]}종에서 실구매가 최저 — 번호이동 흡인력 우위, 타사는 동일 단말 가격 열위.`);
+        lines.push(`경쟁사 격차 최대는 <b>${wide.m}</b> — 최저 ${wide.best.c} ${HI(M(wide.best.p))} ↔ 최고 ${wide.worst.c} ${M(wide.worst.p)}로 <b>${HI(M(wide.gap))}</b> 차이. ${wide.worst.c}는 이 단말 가격 경쟁력 약함.`);
+        lines.push(`<b>판매 추천: ${narrow.m}</b> — 3사 격차가 ${HI(M(narrow.gap))}로 가장 작아, 어느 통신사든 상대적 가격 열위가 작은 안정 판매 기종.`);
+        const lowAll = offers.filter(o => o.net_buy_price != null && CARRIERS.includes(o.carrier))
+          .sort((a, b) => a.net_buy_price - b.net_buy_price)[0];
+        if (lowAll) lines.push(`최저 실구매가 단말은 <b>${lowAll.model_name} ${lowAll.storage_gb || "?"}GB</b> ${lowAll.carrier} ${HI(M(lowAll.net_buy_price))} (공시 ${M(lowAll.subsidy_public)}+추가 ${M(lowAll.subsidy_additional)}).`);
+
+        recs.push(`격차 큰 <b>${wide.m}</b>(${M(wide.gap)})는 ${wide.worst.c} 추가지원금·현장 인센티브로 방어, 격차 작은 <b>${narrow.m}</b>는 프로모션 집중 판매.`);
       } else headline = `${refDate} 공시지원금 데이터 요약`;
+
+      const changes = (DATA.changes || []).filter(c => Math.abs(c.diff || 0) >= 10000)
+        .sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff)).slice(0, 1);
       if (changes.length) {
         const big = changes[0];
-        recs.push(`전일 대비 <b>${big.carrier} ${big.model_name}</b> ${big.field === "subsidy_public" ? "공시" : "추가"}지원금 ${big.diff > 0 ? "상향" : "하향"} ${M(Math.abs(big.diff))} — 시장 변동 신호, 동향 추적`);
+        recs.push(`전일 대비 <b>${big.carrier} ${big.model_name}</b> ${big.field === "subsidy_public" ? "공시" : "추가"}지원금 ${big.diff > 0 ? "상향" : "하향"} ${HI(M(Math.abs(big.diff)))} — 시장 변동 신호, 동향 추적.`);
       }
-      recs.push(`공시(공통지원금) 경로와 선택약정 25% 비교는 상세표 '선약비교'로 — 요금제 구간별 유불리 판단해 안내 가이드 갱신`);
+      recs.push(`공시(공통지원금) vs 선택약정 25%는 상세표 '선약비교'에서 요금제 구간별 유불리 확인 후 안내 가이드 갱신.`);
 
       el.innerHTML = window.aiReportHTML({
-        count: `${offers.length}개 오퍼 · ${refDate}`,
-        headline,
-        cards: [
-          { title: "플래그십 실구매가 3사", rows: flagRows.length ? flagRows : null, empty: flagRows.length ? null : "데이터 부족" },
-          { title: "최저 실구매가 단말", rows: lowCards.length ? lowCards : null, empty: lowCards.length ? null : "데이터 부족" },
-          { title: "전일 대비 변동", rows: chgCard, empty: chgCard ? null : "최근 변동 이력 없음 (안정)" },
-        ],
-        recs,
+        count: `${offers.length}개 오퍼 · ${refDate} · 판매정책 관점`,
+        headline, lines, recs,
+        recTitle: "경쟁 대응 제언 (판매정책 관점)",
       });
     }
 
@@ -2004,68 +1981,80 @@
         const cur = byMC[r.model_name][r.carrier];
         if (cur == null || r.cash_price < cur) byMC[r.model_name][r.carrier] = r.cash_price;
       });
-      const flagRows = [];
-      SJ_FLAGSHIPS.filter(m => byMC[m]).forEach(m => {
-        const byC = CARRIERS.map(c => ({ c, p: byMC[m][c] })).filter(o => o.p != null);
-        if (byC.length < 2) return;
-        byC.sort((a, b) => a.p - b.p);
-        const best = byC[0], worst = byC[byC.length - 1], gap = worst.p - best.p;
-        flagRows.push({ k: m, v: `${best.c} ${M(best.p)}`, cls: "win", sub: `최고 ${worst.c} ${M(worst.p)} · 격차 ${M(gap)}`, _best: best.c });
+      const HI = window.aiHi, NEG = window.aiNeg;
+      // (사이트 × 단말 × 가입조건) 그룹별 통신사 최저 현금완납가
+      const grp = {};
+      rows.forEach(r => {
+        if (!CARRIERS.includes(r.carrier) || r.cash_price == null) return;
+        const cond = r.subscription_type || "-";
+        const k = `${r.source}|||${r.model_name}|||${cond}`;
+        const g = (grp[k] = grp[k] || { source: r.source, model: r.model_name, cond, car: {} });
+        if (g.car[r.carrier] == null || r.cash_price < g.car[r.carrier]) g.car[r.carrier] = r.cash_price;
       });
-      // 성지RB 큰 단말 (사이트 공시 경로 대비 성지가 더 싼 폭)
+      // 핵심: 같은 사이트·단말·조건에서 경쟁사 단가가 더 높은(격차 큰) 스팟
+      const spots = [];
+      Object.values(grp).forEach(g => {
+        const cs = CARRIERS.map(c => ({ c, p: g.car[c] })).filter(o => o.p != null);
+        if (cs.length < 2) return;
+        cs.sort((a, b) => a.p - b.p);
+        const lo = cs[0], hi = cs[cs.length - 1];
+        if (hi.p - lo.p >= 30000) spots.push({ source: g.source, model: g.model, cond: g.cond, lo, hi, gap: hi.p - lo.p });
+      });
+      spots.sort((a, b) => b.gap - a.gap);
+
+      let headline, lines = [], recs = [];
+      if (spots.length) {
+        const s0 = spots[0], siteSet = new Set(spots.map(s => s.source));
+        headline = `사이트 성지 시세 — 경쟁사 단가가 더 높은 스팟 <b>${HI(spots.length + "건")}</b> (${siteSet.size}개 사이트). `
+          + `최대는 <b>${s0.source}</b> ${s0.model} ${s0.cond} — ${s0.hi.c}가 ${s0.lo.c}보다 ${HI(M(s0.gap))} 비쌈.`;
+        spots.slice(0, 3).forEach(s => lines.push(
+          `<b>${s.source}</b> · ${s.model} <b>${s.cond}</b> — ${s.hi.c} ${NEG(M(s.hi.p))} vs 최저 ${s.lo.c} ${HI(M(s.lo.p))} <span style="color:var(--ink3)">(격차 ${M(s.gap)})</span>. ${s.hi.c}가 이 사이트·조건서 단가 미대응.`));
+        recs.push(`<b>${s0.hi.c}</b>는 ${s0.source} 등에서 단가 미대응 구간 — 해당 사이트·조건 모니터링 및 대응 단가 검토.`);
+      } else {
+        const flags = SJ_FLAGSHIPS.filter(m => byMC[m]).map(m => {
+          const byC = CARRIERS.map(c => ({ c, p: byMC[m][c] })).filter(o => o.p != null);
+          if (byC.length < 2) return null;
+          byC.sort((a, b) => a.p - b.p);
+          return { m, best: byC[0], worst: byC[byC.length - 1], gap: byC[byC.length - 1].p - byC[0].p };
+        }).filter(Boolean).sort((a, b) => b.gap - a.gap);
+        if (flags.length) {
+          const f0 = flags[0];
+          headline = `사이트 성지 시세 — 단말별 3사 현금완납가 격차. 최대 <b>${f0.m}</b> ${f0.best.c} ${HI(M(f0.best.p))} ↔ ${f0.worst.c} ${M(f0.worst.p)} (${HI(M(f0.gap))} 차).`;
+          flags.slice(0, 3).forEach(f => lines.push(`<b>${f.m}</b> — 최저 ${f.best.c} ${HI(M(f.best.p))}, 최고 ${f.worst.c} ${NEG(M(f.worst.p))} (격차 ${M(f.gap)}). ${f.worst.c} 온라인 단가 경쟁력 약함.`));
+        } else headline = `사이트 성지 시세 요약 (합성 기준선 + 실측)`;
+      }
+
+      // 성지RB 최대 (공시 경로 대비 성지가 저렴 — 온라인 유출 신호)
       let rbBest = null;
       rows.forEach(r => {
         if (!CARRIERS.includes(r.carrier)) return;
         const sub = lookupSubsidy(r), rb = calcSeongjiRB(r, sub);
         if (rb.value != null && rb.value > 0 && (!rbBest || rb.value > rbBest.rb))
-          rbBest = { rb: rb.value, model: r.model_name, carrier: r.carrier };
+          rbBest = { rb: rb.value, model: r.model_name, carrier: r.carrier, source: r.source };
       });
-      const rbCards = rbBest ? [{ k: `${rbBest.model}`, v: `${rbBest.carrier} +${M(rbBest.rb)}`, cls: "win", sub: "성지가 공시 경로보다 저렴" }] : [];
+      if (rbBest) lines.push(`성지RB 최대: <b>${rbBest.model}</b> ${rbBest.carrier} — 성지가가 공시 경로보다 ${HI(M(rbBest.rb))} 저렴(${rbBest.source}). 온라인 유출 경로로 추적.`);
 
       // 전일 대비 변동 (daily 시계열 median_price)
       const series = {};
       (DATA.daily || []).forEach(d => {
         if (!CARRIERS.includes(d.carrier) || d.median_price == null) return;
-        const key = `${d.model_name}__${d.carrier}`;
-        (series[key] = series[key] || []).push({ date: d.snapshot_date, v: d.median_price });
+        (series[`${d.model_name}__${d.carrier}`] = series[`${d.model_name}__${d.carrier}`] || []).push({ date: d.snapshot_date, v: d.median_price });
       });
       const deltas = [];
       Object.keys(series).forEach(key => {
         const arr = series[key].sort((a, b) => (a.date > b.date ? 1 : -1));
         if (arr.length < 2) return;
         const diff = arr[arr.length - 1].v - arr[arr.length - 2].v;
-        if (Math.abs(diff) >= 10000) {
-          const [model, carrier] = key.split("__");
-          deltas.push({ model, carrier, diff });
-        }
+        if (Math.abs(diff) >= 10000) { const [model, carrier] = key.split("__"); deltas.push({ model, carrier, diff }); }
       });
       deltas.sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff));
-      const chgCard = deltas.length ? deltas.slice(0, 4).map(d => ({
-        k: `${d.carrier} ${d.model}`, v: `${d.diff > 0 ? "▲" : "▼"} ${M(Math.abs(d.diff))}`,
-        cls: "", sub: d.diff > 0 ? "상승" : "하락",
-      })) : null;
-
-      let headline, recs = [];
-      if (flagRows.length) {
-        const f = flagRows[0];
-        headline = `사이트 성지 시세 — <b>${f.k}</b> 현금완납가 ${f.v.replace(/<[^>]+>/g, "")} 최저 <span style="color:var(--ink3);font-weight:400">(${f.sub})</span>`;
-        const lead = {}; flagRows.forEach(r => lead[r._best] = (lead[r._best] || 0) + 1);
-        const top = Object.entries(lead).sort((a, b) => b[1] - a[1])[0];
-        if (top && top[1] >= 2) recs.push(`온라인 성지에서 <b>${top[0]}</b>가 플래그십 ${top[1]}종 최저 — 자사 온라인 단가 경쟁력 점검`);
-      } else headline = `사이트 성지 시세 요약 (합성 기준선 + 실측)`;
-      if (rbBest) recs.push(`<b>${rbBest.model}</b>는 성지가가 공시 경로 대비 ${M(rbBest.rb)} 저렴(성지RB) — 온라인 유출 경로로 추적, 정책 대응 판단`);
-      if (deltas.length) { const b = deltas[0]; recs.push(`전일 대비 <b>${b.carrier} ${b.model}</b> 성지 시세 ${b.diff > 0 ? "상승" : "하락"} ${M(Math.abs(b.diff))} — 추세 모니터링`); }
-      recs.push(`사이트 시세(익명 전국)와 카카오 매장 호가는 성격이 달라 별도 탭에서 교차 확인 권장`);
+      if (deltas.length) { const b = deltas[0]; recs.push(`전일 대비 <b>${b.carrier} ${b.model}</b> 사이트 시세 ${b.diff > 0 ? "상승" : "하락"} ${HI(M(Math.abs(b.diff)))} — 추세 모니터링.`); }
+      recs.push(`사이트 시세(익명·전국)와 카카오 매장 호가는 성격이 달라 별도 탭에서 교차 확인 권장.`);
 
       el.innerHTML = window.aiReportHTML({
-        count: `${new Set(rows.map(r => r.model_name)).size}개 모델 · ${rows.length}건`,
-        headline,
-        cards: [
-          { title: "플래그십 현금완납가 3사", rows: flagRows.length ? flagRows : null, empty: flagRows.length ? null : "데이터 부족" },
-          { title: "성지RB 최대 (공시 대비 저렴)", rows: rbCards.length ? rbCards : null, empty: rbCards.length ? null : "데이터 부족" },
-          { title: "전일 대비 변동", rows: chgCard, empty: chgCard ? null : "전일 대비 큰 변동 없음" },
-        ],
-        recs,
+        count: `${new Set(rows.map(r => r.model_name)).size}개 모델 · ${rows.length}건 · 판매정책 관점`,
+        headline, lines, recs,
+        recTitle: "경쟁 대응 제언 (판매정책 관점)",
       });
     }
 
@@ -2417,68 +2406,58 @@
       const el = document.getElementById("kakaoReport");
       const stat = buildKkBuckets(chartRows);
       const stores = new Set(chartRows.map(r => r.author).filter(Boolean)).size;
-      const M = window.aiMan, clean = s => s.replace(/<[^>]+>/g, "");
+      const M = window.aiMan, HI = window.aiHi, NEG = window.aiNeg;
 
-      // 플래그십 3사 비교
-      const flagRows = [];
-      FLAGSHIPS.filter(m => stat[m]).forEach(m => {
+      // 1) 플래그십 3사 움직임 (모델별 중앙 현금완납가 최저 통신사)
+      const flags = FLAGSHIPS.filter(m => stat[m]).map(m => {
         const byC = CARRIERS.map(c => ({ c, med: stat[m][c] && stat[m][c].median })).filter(o => o.med != null);
-        if (byC.length < 2) return;
+        if (byC.length < 2) return null;
         byC.sort((a, b) => a.med - b.med);
-        const best = byC[0], worst = byC[byC.length - 1], gap = worst.med - best.med;
-        flagRows.push({ k: m, v: `${best.c} ${M(best.med)}`, cls: "win",
-          sub: `최고 ${worst.c} ${M(worst.med)} · 격차 ${M(gap)}`, _gap: gap, _best: best.c });
-      });
+        return { m, best: byC[0], worst: byC[byC.length - 1], gap: byC[byC.length - 1].med - byC[0].med };
+      }).filter(Boolean);
+      const leadCount = {};
+      flags.forEach(f => leadCount[f.best.c] = (leadCount[f.best.c] || 0) + 1);
+      const lead = Object.entries(leadCount).sort((a, b) => b[1] - a[1])[0];
+      const wideFlag = [...flags].sort((a, b) => b.gap - a.gap)[0];
 
-      // 저가 단말 공략 (비플래그십 중 중앙 현금완납가 최저 모델 → 최저호가 매장/조건)
-      const lowCards = [];
+      // 2) 최대 현금 페이백(차비) 스팟
+      const payback = chartRows.filter(r => CARRIERS.includes(r.carrier) && r.cash_price != null && r.cash_price < 0)
+        .sort((a, b) => a.cash_price - b.cash_price)[0];
+
+      // 3) 저가 단말 공략 (비플래그십 최저 median → 최저호가 매장/조건)
       const lowModel = Object.keys(stat)
         .filter(m => !FLAGSHIPS.includes(m) && CARRIERS.some(c => stat[m][c]))
         .map(m => ({ m, med: Math.min(...CARRIERS.map(c => stat[m][c] ? stat[m][c].median : Infinity)) }))
         .filter(o => isFinite(o.med)).sort((a, b) => a.med - b.med)[0];
-      if (lowModel) {
-        const cand = chartRows.filter(r => r.model_name === lowModel.m && CARRIERS.includes(r.carrier))
-          .sort((a, b) => (a.cash_price ?? 9e9) - (b.cash_price ?? 9e9))[0];
-        if (cand) lowCards.push({
-          k: lowModel.m, v: `${cand.cash_price < 0 ? "차비 " : ""}${M(Math.abs(cand.cash_price))}`,
-          cls: cand.cash_price < 0 ? "lose" : "", sub: `${cand.carrier || "?"} ${cand.subscription_type || ""} · ${cand.author || "?"}(${cand.region || "?"})` });
-      }
-      // 차비(페이백) 최다 권역
+      const lowSpot = lowModel ? chartRows.filter(r => r.model_name === lowModel.m && CARRIERS.includes(r.carrier))
+        .sort((a, b) => (a.cash_price ?? 9e9) - (b.cash_price ?? 9e9))[0] : null;
+
+      // 4) 차비 매물 최다 권역 (특정 지역 강화)
       const negByRegion = {};
       chartRows.forEach(r => { if ((r.cash_price || 0) < 0 && r.region) negByRegion[r.region] = (negByRegion[r.region] || 0) + 1; });
       const topNeg = Object.entries(negByRegion).sort((a, b) => b[1] - a[1])[0];
-      if (topNeg) lowCards.push({ k: "차비 매물 최다 권역", v: `${topNeg[0]}`, cls: "lose", sub: `${topNeg[1]}건` });
 
-      // 헤드라인 + 제언
-      let headline, recs = [];
-      if (flagRows.length) {
-        const f = flagRows[0];
-        headline = `오늘 카카오 성지 최저가 — <b>${f.k}</b> ${clean(f.v)} 최저 <span style="color:var(--ink3);font-weight:400">(${clean(f.sub)})</span>`;
-        // 어느 통신사가 플래그십 최저를 가장 많이 차지하는가
-        const bestCount = {};
-        flagRows.forEach(r => bestCount[r._best] = (bestCount[r._best] || 0) + 1);
-        const lead = Object.entries(bestCount).sort((a, b) => b[1] - a[1])[0];
-        if (lead && lead[1] >= 2) {
-          const others = CARRIERS.filter(c => c !== lead[0]).join("/");
-          recs.push(`<b>${lead[0]}</b>가 플래그십 ${lead[1]}종에서 현금완납 최저 — 번이 유출 위험. ${others} 추가지원금 상향 또는 매장 인센티브 대응 검토`);
-        }
-        const wide = flagRows.filter(r => r._gap >= 200000).sort((a, b) => b._gap - a._gap)[0];
-        if (wide) recs.push(`<b>${wide.k}</b> 3사 격차 ${M(wide._gap)}로 큼 — 고가 통신사는 즉시 가격 정합성 점검 필요`);
-      } else {
-        headline = `3사 통신사 라벨이 있는 시세표가 부족합니다 — 수집 누적 후 비교가 풍부해집니다.`;
-      }
-      if (lowCards.length) recs.push(`저가 단말 <b>${lowModel.m}</b>에 일부 매장이 ${lowCards[0].cls === "lose" ? "차비 공세" : "초저가"} — 해당 권역 모니터링 및 유사 정책 대응 판단`);
-      recs.push(`매장 분포 박스플롯에서 <b>박스가 길거나(매장 간 편차 큰) 이상치가 많은 단말</b>은 정책 난립 구간 — 가이드 단가 통제 우선순위`);
+      let headline, lines = [], recs = [];
+      const payTxt = r => `${r.cash_price < 0 ? NEG("차비 " + M(Math.abs(r.cash_price))) : HI(M(r.cash_price))}`;
+      if (flags.length && lead) {
+        const others = CARRIERS.filter(c => c !== lead[0]).join("/");
+        headline = `오늘 카카오 성지 — 플래그십 ${flags.length}종 중 <b>${lead[0]}</b>가 ${HI(lead[1] + "종")} 현금완납 최저. 격차 최대 <b>${wideFlag.m}</b> ${HI(M(wideFlag.gap))}.`;
+        lines.push(`<b>플래그십 움직임</b> — ${lead[0]}가 ${lead[1]}종 최저가 주도 (예: ${wideFlag.m} ${wideFlag.best.c} ${HI(M(wideFlag.best.med))} ↔ ${wideFlag.worst.c} ${M(wideFlag.worst.med)}). ${others}는 추종 또는 가격 열위.`);
+      } else headline = `오늘 카카오 성지 — 3사 라벨 시세표가 부족합니다 (수집 누적 시 비교 강화).`;
+
+      if (payback) lines.push(`<b>최대 현금 페이백</b> — ${payback.model_name} ${payback.carrier} ${payback.subscription_type || ""} ${payTxt(payback)} (${payback.author || "?"}·${payback.region || "?"}). 특정 스팟 공세 신호.`);
+      if (lowSpot) lines.push(`<b>저가 단말 공략</b> — ${lowModel.m} ${lowSpot.carrier} ${lowSpot.subscription_type || ""} ${payTxt(lowSpot)} (${lowSpot.author || "?"}·${lowSpot.region || "?"}). 보급형으로 가입 유치.`);
+      if (topNeg) lines.push(`<b>권역 강화</b> — ${NEG(topNeg[0])}에 차비 매물 ${HI(topNeg[1] + "건")} 집중. 해당 지역 경쟁 심화 스팟, 일별 추적 필요.`);
+
+      if (lead && lead[1] >= 2) recs.push(`<b>${lead[0]}</b> 플래그십 ${lead[1]}종 현금완납 최저 — 번이 유출 위험. ${CARRIERS.filter(c => c !== lead[0]).join("/")} 추가지원금 상향·매장 인센티브 대응 검토.`);
+      if (wideFlag && wideFlag.gap >= 200000) recs.push(`<b>${wideFlag.m}</b> 3사 격차 ${M(wideFlag.gap)}로 큼 — 고가 통신사 즉시 가격 정합성 점검.`);
+      if (topNeg) recs.push(`<b>${topNeg[0]}</b> 등 차비 집중 권역은 경쟁사 권역 드라이브 조기 포착 대상 — 일별 모니터링.`);
+      recs.push(`박스플롯에서 박스가 길거나 이상치 많은 단말은 정책 난립 구간 — 가이드 단가 통제 우선순위.`);
 
       el.innerHTML = window.aiReportHTML({
-        count: `${stores}개 매장 · ${chartRows.length}건`,
-        headline,
-        cards: [
-          { title: "플래그십 3사 최저가", rows: flagRows.length ? flagRows : null, empty: flagRows.length ? null : "데이터 부족" },
-          { title: "저가/공략 단말", rows: lowCards.length ? lowCards : null, empty: lowCards.length ? null : "데이터 부족" },
-          { title: "전일 대비 변동", empty: "카카오는 당일 스냅샷 기준 — 전일 대비는 일별 누적 후 제공" },
-        ],
-        recs,
+        count: `${stores}개 매장 · ${chartRows.length}건 · 스팟 경쟁동향`,
+        headline, lines, recs,
+        recTitle: "경쟁 대응 제언 (판매정책 관점)",
       });
     }
 
