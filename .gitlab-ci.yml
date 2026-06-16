@@ -1,0 +1,56 @@
+# ============================================================================
+# Polaris Colab 자동 배포 — 매일 정기 1회 (GitLab Pipeline Schedules로 트리거)
+# ----------------------------------------------------------------------------
+# · 일반 코드 푸시로는 배포하지 않음 (데이터는 컨테이너가 매일 05:00 자동 갱신).
+# · GitLab "Build > Pipeline schedules"에 cron(예: 0 5 * * *, TZ=Asia/Seoul)을
+#   등록하면 매일 1회 이 파이프라인이 돌며 deploy_colab 잡을 실행.
+# · 실제 배포 명령은 Colab이 제공하는 트리거 방식에 맞춰 아래 [A]/[B]/[C] 중
+#   하나를 채운 뒤, CI/CD Variable `COLAB_DEPLOY_CONFIGURED=1` 을 설정해야 동작.
+#   (설정 전에는 일부러 실패하여 "아직 미설정"임을 알림 — 자세한 건 deploy/colab/README.md)
+# ============================================================================
+
+stages:
+  - deploy
+
+deploy_colab:
+  stage: deploy
+  # 스케줄 파이프라인일 때만 실행 — 일반 push/MR로는 배포 안 함
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  script:
+    - echo "[colab-deploy] 시작 $CI_COMMIT_SHORT_SHA @ $CI_PIPELINE_CREATED_AT"
+    # ========================================================================
+    # ▼▼▼ Colab 트리거 방식에 맞춰 아래 3가지 중 하나만 주석 해제해서 사용 ▼▼▼
+    #
+    # [A] Colab ↔ GitLab 자동연동(GitOps)을 쓰는 경우
+    #     - 푸시 시 Colab이 알아서 빌드·재배포하므로 이 잡 자체가 불필요.
+    #     - "매일 강제 재배포"만 필요하면 Colab의 재배포 API를 [B] 형태로 호출.
+    #
+    # [B] Colab 배포 API/CLI가 있는 경우 (가장 일반적)
+    #     - GitLab > Settings > CI/CD > Variables 에 아래를 Masked 로 등록:
+    #         COLAB_DEPLOY_URL, COLAB_TOKEN
+    #   - |
+    #     curl -fsS -X POST "$COLAB_DEPLOY_URL" \
+    #       -H "Authorization: Bearer $COLAB_TOKEN" \
+    #       -H "Content-Type: application/json" \
+    #       -d "{\"project\":\"$CI_PROJECT_PATH\",\"ref\":\"$CI_COMMIT_SHA\"}"
+    #     # (Colab CLI가 있으면: colab deploy --app online-price --ref "$CI_COMMIT_SHA")
+    #
+    # [C] 사내 컨테이너 레지스트리 경유
+    #     - CI/CD Variables: REGISTRY, REGISTRY_USER, REGISTRY_PASSWORD
+    #   - |
+    #     docker build -t "$REGISTRY/online-price:latest" -t "$REGISTRY/online-price:$CI_COMMIT_SHORT_SHA" .
+    #     echo "$REGISTRY_PASSWORD" | docker login "$REGISTRY" -u "$REGISTRY_USER" --password-stdin
+    #     docker push "$REGISTRY/online-price:latest"
+    #     docker push "$REGISTRY/online-price:$CI_COMMIT_SHORT_SHA"
+    #     # 이후 Colab이 latest를 pull하도록 설정하거나 Colab redeploy API([B])를 추가 호출
+    # ========================================================================
+    - |
+      if [ "$COLAB_DEPLOY_CONFIGURED" != "1" ]; then
+        echo "‼️  Colab 배포 명령이 아직 설정되지 않았습니다."
+        echo "    1) deploy/colab/README.md 를 보고 Colab 트리거 방식을 확인하세요."
+        echo "    2) 위 [A]/[B]/[C] 중 하나를 채우고 필요한 CI/CD Variable 을 등록하세요."
+        echo "    3) CI/CD Variable 'COLAB_DEPLOY_CONFIGURED=1' 을 설정하면 이 가드가 해제됩니다."
+        exit 1
+      fi
+    - echo "[colab-deploy] 완료"
