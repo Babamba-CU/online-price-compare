@@ -51,15 +51,17 @@ def prepare(cap: int = DEFAULT_CAP) -> None:
 
 def merge_and_build() -> None:
     """판독 결과는 Claude 가 seongji_vision_data.json 에 이미 병합했다는 전제.
-    여기서는 사이트 시드 + vision 적재 + 빌드만 마무리."""
+
+    수집기(카카오/네이버/사이트 크롤러)는 requests·bs4 의존이라 venv 서브프로세스로
+    실행(_run) — in-process import 는 시스템 python 에 requests 가 없으면 통째로
+    스킵되는 문제가 있었음(2026-07-08 실측). seed/vision/build 는 stdlib 만 사용.
+    """
     import seongji_db, seed_sample, seongji_vision_load, seongji_build
     seongji_db.DB_PATH.unlink(missing_ok=True)
     seed_sample.seed()
-    try:
-        import seongji_kakao
-        seongji_kakao.collect()
-    except Exception as e:  # noqa: BLE001
-        print(f"[daily] 카카오 텍스트 재수집 skip: {e!r}", file=sys.stderr)
+    _run([PY, str(BASE / "seongji_kakao.py")])                       # 카카오 텍스트
+    _run([PY, str(BASE / "seongji_naver.py")])                       # 네이버 검색(키 없으면 skip)
+    _run([PY, str(BASE / "seongji_crawler.py"), "--max-pages", "2"])  # 사이트(뽐뿌 등)
     seongji_vision_load.load()
     seongji_build.main()
     print("[daily] finalize(merge_and_build) 완료", file=sys.stderr)

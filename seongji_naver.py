@@ -34,30 +34,38 @@ from seongji_db import (
     log_run,
     upsert_post,
 )
-from seongji_parser import parse_post_text, to_db_rows
+from seongji_parser import parse_post_text, parse_seongji_lines, to_db_rows
 
 API = "https://openapi.naver.com/v1/search/{ep}.json"
 
-# webkr 은 sort 파라미터 미지원(400) — cafearticle 만 sort=date
+# webkr 은 sort 파라미터 미지원(400) — cafearticle/blog 만 sort=date.
+# blog 는 유일하게 게시일(postdate)을 제공 → 신선도 필터 가능 (실측 2026-07-08).
 ENDPOINTS: list[tuple[str, str]] = [
     ("cafearticle", "naver_cafe"),
     ("webkr", "naver_web"),
+    ("blog", "naver_blog"),
 ]
 
+# 실측(2026-07-08): 범용어는 모델 검출 2~6/30, 모델명+거래조건 결합형은 90~100%.
 DEFAULT_QUERIES = [
     "휴대폰 성지 시세",
-    "성지 좌표 휴대폰",
-    "갤럭시 S26 성지",
-    "갤럭시 Z플립7 성지",
-    "갤럭시 Z폴드7 성지",
-    "아이폰 17 성지 시세",
-    "아이폰 17 프로 성지",
+    "갤럭시 S26 울트라 성지 가격",
+    "갤럭시 S26 울트라 번호이동 차비",
+    "S26 울트라 현금완납 실구매가",
+    "갤럭시 Z플립7 성지 가격",
+    "갤럭시 Z폴드7 성지 시세표",
+    "아이폰17 프로 현금완납",
+    "아이폰17 프로 성지 시세표 좌표",
+    "휴대폰 성지 마이너스폰 오늘",
 ]
 
 DISPLAY = 100                          # 엔드포인트당 최대 결과 수
 REQUEST_SLEEP = 0.3                    # Naver 10QPS 제한 대비
 MIN_PRICE_CONFIDENCE = 0.6             # prices 적재 게이트 (모델+현금가 이상)
 PRICE_SANITY = (-500_000, 3_000_000)   # 현금완납가 타당 범위 (마이너스=차익 지급)
+# 검색 스니펫은 출고가/자급제가 오탐 위험(예: S26U 출고 290만) → 성지가 상한을 더 낮게.
+SNIPPET_PRICE_MAX = 2_500_000
+BLOG_RECENT_DAYS = 7                   # blog 는 postdate 기준 최근 N일만 적재
 
 TAG_RE = re.compile(r"<[^>]+>")
 
@@ -80,7 +88,7 @@ def _clean(s: str | None) -> str:
 
 def _fetch(ep: str, query: str, cid: str, csec: str) -> list[dict]:
     params: dict[str, object] = {"query": query, "display": DISPLAY, "start": 1}
-    if ep == "cafearticle":
+    if ep in ("cafearticle", "blog"):
         params["sort"] = "date"
     r = requests.get(
         API.format(ep=ep),
@@ -132,25 +140,44 @@ def collect(snapshot: date | None = None) -> dict:
 
                     title = _clean(it.get("title"))
                     desc = _clean(it.get("description"))
+
+                    # blog 만 게시일(postdate: YYYYMMDD) 제공 — 오래된 글은 시세 아님
+                    posted_at = None
+                    pd = (it.get("postdate") or "").strip()
+                    if ep == "blog":
+                        if len(pd) == 8 and pd.isdigit():
+                            posted_at = f"{pd[:4]}-{pd[4:6]}-{pd[6:]}"
+                            age = (date.today() - date(int(pd[:4]), int(pd[4:6]), int(pd[6:]))).days
+                            if age > BLOG_RECENT_DAYS:
+                                continue
+                        else:
+                            continue   # 게시일 미상 blog 글은 신선도 판별 불가 — 제외
+
+                    # 스니펫은 잘린 시세표 텍스트 — 라인 파서가 수율 높음(실측 0%→7.8%).
+                    # parse_post_text(모델 검출 게이트) 결과가 없으면 라인 파서로 폴백.
                     prices = parse_post_text(title, desc)
-                    if not prices:
+                    line_prices = parse_seongji_lines(title, desc)
+                    if not prices and not line_prices:
                         continue   # 모델 미검출 게시글은 피드 품질 위해 제외
+                    priced = line_prices if any(
+                        p.cash_price is not None for p in line_prices) else prices
 
                     post_id = upsert_post(conn, {
                         "source": source,
                         "url": link,
                         "title": title,
                         # cafearticle/webkr 응답엔 게시일 없음 → crawled_at 로 정렬
-                        "posted_at": None,
+                        "posted_at": posted_at,
                         "raw_text": (title + "\n" + desc)[:1000],
                     })
                     fetched += 1
 
                     rows = [
-                        r for r in to_db_rows(prices, snap_iso)
+                        {**r, "add_condition": (r.get("add_condition") or "검색스니펫")}
+                        for r in to_db_rows(priced, snap_iso)
                         if r.get("cash_price") is not None
                         and r.get("confidence", 0) >= MIN_PRICE_CONFIDENCE
-                        and PRICE_SANITY[0] <= r["cash_price"] <= PRICE_SANITY[1]
+                        and PRICE_SANITY[0] <= r["cash_price"] <= min(PRICE_SANITY[1], SNIPPET_PRICE_MAX)
                     ]
                     if rows:
                         parsed += insert_prices(conn, post_id, rows)

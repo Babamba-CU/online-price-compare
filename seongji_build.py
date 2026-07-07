@@ -22,7 +22,7 @@ _KAKAO_IN = "(" + ",".join(f"'{s}'" for s in KAKAO_SOURCES) + ")"
 
 # 기존 "성지폰 단가 비교" 뷰(전국 온라인 시세)는 사이트 크롤러 소스만 보여준다.
 # 카카오(매장 좌표)·네이버(검색 피드)는 집계 차원/품질이 달라 제외.
-_NON_SITE = KAKAO_SOURCES + ("naver_cafe", "naver_web")
+_NON_SITE = KAKAO_SOURCES + ("naver_cafe", "naver_web", "naver_blog")
 _NON_SITE_IN = "(" + ",".join(f"'{s}'" for s in _NON_SITE) + ")"
 
 
@@ -171,7 +171,7 @@ def build() -> dict:
             LIMIT 25
         """
         feed = []
-        for srcs in (("kakao", "kakao_ocr"), ("naver_cafe", "naver_web")):
+        for srcs in (("kakao", "kakao_ocr"), ("naver_cafe", "naver_web", "naver_blog")):
             ph = ",".join("?" * len(srcs))
             feed += [dict(r) for r in conn.execute(
                 FEED_SQL.format(placeholders=ph), srcs)]
@@ -202,7 +202,14 @@ def build() -> dict:
             "rows":     len(kakao_rows),
             "models":   len({r["model_name"] for r in kakao_rows}),
             "negative": sum(1 for r in kakao_rows if (r["cash_price"] or 0) < 0),
+            "subMissing": sum(1 for r in kakao_rows if r["subscription_type"] not in ("MNP", "기변", "신규")),
         }
+
+        # 7-1) 카카오 전일 대비 변화 — 롤링 히스토리에 오늘 집계 반영 후 직전일과 비교.
+        #      diff<0 = 가격 인하 = 리베이트 추가(경쟁 공세 신호).
+        import kakao_history
+        kakao_changes = kakao_history.compute_changes(
+            kakao_history.record(kakao_rows, latest), latest)
 
     return {
         "generatedAt":     date.today().isoformat(),
@@ -219,6 +226,7 @@ def build() -> dict:
         "feed":            feed,
         "kakaoStores":     kakao_rows,
         "kakaoSummary":    kakao_summary,
+        "kakaoChanges":    kakao_changes,
     }
 
 

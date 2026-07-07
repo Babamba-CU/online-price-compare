@@ -47,16 +47,19 @@ MODEL_PATTERNS: list[tuple[re.Pattern, str, Optional[int]]] = [
     (re.compile(r"(?i)\b(iphone|아이폰)\s*17\s*pro\s*max\b|아\s*17\s*(?:프로\s*맥스|프맥)|17\s*프로\s*맥스|17\s*프맥"), "iPhone 17 Pro Max", 256),
     (re.compile(r"(?i)\b(iphone|아이폰)\s*17\s*pro\b|아\s*17\s*프로|17\s*프로(?!\s*맥)"), "iPhone 17 Pro",     256),
     (re.compile(r"(?i)\b(iphone|아이폰)\s*17\s*plus\b"),            "iPhone 17 Plus",    128),
+    # 파생(에어/e)은 기본 17 보다 먼저 — 아17에어/아17E 시세표 약어 대응
+    (re.compile(r"(?i)\b(iphone|아이폰)\s*17\s*air\b|아\s*17\s*에어"), "iPhone 17 Air",   256),
+    (re.compile(r"(?i)\b(iphone|아이폰)\s*17\s*e\b|아17E(?![A-Za-z])"), "iPhone 17e",     128),
     (re.compile(r"(?i)\b(iphone|아이폰)\s*17\b|\b아17\b"),           "iPhone 17",         128),
     (re.compile(r"(?i)\b(iphone|아이폰)\s*16\s*pro\s*max\b"),       "iPhone 16 Pro Max", 256),
     (re.compile(r"(?i)\b(iphone|아이폰)\s*16\s*pro\b"),             "iPhone 16 Pro",     128),
     (re.compile(r"(?i)\b(iphone|아이폰)\s*16\b"),                   "iPhone 16",         128),
-    (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s26\s*ultra\b|\bS26\s*(?:U|울트라|울트)\b|S26\s*울트라"), "Galaxy S26 Ultra", 256),
+    (re.compile(r"(?i)\b(galaxy|갤럭시)?\s*s26\s*ultra\b|\bS26\s*(?:U|울트라|울트)\b|S26\s*울트라"), "Galaxy S26 Ultra", 256),
     (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s26\s*\+|s26\s*plus|S26\s*플러스|\bS26\+"), "Galaxy S26+",       256),
     (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s26\b|\bS26\b"),           "Galaxy S26",        256),
     (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s25\s*ultra\b|\bS25\s*(?:U|울트라)\b"), "Galaxy S25 Ultra",  256),
     # S25 파생(Edge/FE/+)은 기본 S25 보다 먼저 — 더 구체적인 표기 우선
-    (re.compile(r"(?i)\bs25\s*edge\b"),                            "Galaxy S25 Edge",   256),
+    (re.compile(r"(?i)\bs25\s*edge\b|s25\s*엣지"),                  "Galaxy S25 Edge",   256),
     (re.compile(r"(?i)\bs25\s*fe\b"),                              "Galaxy S25 FE",     256),
     (re.compile(r"(?i)\bs25\s*\+|\bs25\s*plus\b|s25\s*플러스"),       "Galaxy S25+",       256),
     (re.compile(r"(?i)\b(galaxy|갤럭시)\s*s25\b|\bS25\b"),           "Galaxy S25",        256),
@@ -222,8 +225,27 @@ LINE_PRICE_RES: list[tuple[re.Pattern, int]] = [
     (re.compile(r"👉🏻?\s*(-?\d{1,3}(?:\.\d)?)(?![\d,])"), 10000),   # S26U👉54 (만원 약어)
     (re.compile(r"(?:현완|현금가|현금완납|일시불)\s*[:：]?\s*(-?\d{1,3}(?:\.\d)?)\s*만"), 10000),
     (re.compile(r"(?:현완|현금가|현금완납|일시불)\s*[:：]?\s*(\d{1,3}(?:,\d{3})+)\s*원"), 1),
-    (re.compile(r"(-?\d{1,3}(?:\.\d)?)\s*만\s*원?(?!\s*원\s*대)"), 10000),  # 54만 / 54만원
+    # 54만 / 54만원. "60만원대"(추정 표현)는 확정가가 아니므로 차단 — lookahead 를
+    # 만 바로 뒤에 두어 원 소비 전에 '원?대' 를 검사한다 (실측 오탐: 뽐뿌 제목).
+    (re.compile(r"(-?\d{1,3}(?:\.\d)?)\s*만(?!\s*원?\s*대)\s*원?"), 10000),
 ]
+
+# 상품권/혜택 금액 오탐 가드 — 이 키워드가 붙은 라인(또는 혜택 섹션 헤더 하위)의 숫자는
+# 단가가 아니라 사은 혜택 금액이므로 가격 채택 금지 (실측: 오탐 11라인 전부 이 유형).
+# '페이백'은 실단가 신호(음수=차비)와 겹치므로 가드에서 제외.
+GIFT_GUARD_RE = re.compile(r"상품권|증정|사은품|환급|캐시백|페스티벌")
+
+# 슬래시 듀얼가격 — "S26U 37/47" (앞=번이가, 뒤=기변가. 만원 단위, 음수=차비).
+# 오탐 가드: lookbehind 로 날짜 연쇄(26/07/05) 뒷조각 차단, 줄끝 앵커($)로 줄 중간
+# 날짜(7/5 방문시) 미매칭, 용량 병기(256/512)는 코드에서 기각, |값|<=350만원 상한.
+SLASH_PAIR_RE = re.compile(r"(?<![\d/.~\-])(-?\d{1,3})\s*/\s*(-?\d{1,3})\s*$")
+_STORAGE_SET = {64, 128, 256, 512, 1024}
+SLASH_ABS_MAX_MAN = 350          # 만원 (실측 최대 213)
+
+# 듀얼 가입유형 섹션 헤더 — "LG 이동/기변" → (번이가, 기변가) 순서 컨텍스트.
+# '인터넷+TV (신규/이동/기변 ...)' 같은 비단말 라인은 컨텍스트 갱신에서 제외.
+DUAL_SUB_RE = re.compile(r"(?:번이|번호이동|이동|MNP)\s*/\s*기변")
+NON_DEVICE_CTX_RE = re.compile(r"인터넷|TV")
 
 # ------------------------------------------------------------------
 # 월청구금액 → 현금완납가 추정
@@ -296,6 +318,8 @@ def parse_seongji_lines(title: str, body: str) -> list[ParsedPrice]:
     ctx_carrier: Optional[str] = None
     ctx_sub: Optional[str] = None
     ctx_contract: Optional[str] = None
+    ctx_sub_pair: Optional[tuple[str, str]] = None   # "이동/기변" 듀얼 헤더 → (MNP, 기변)
+    ctx_gift = False                                  # 상품권/혜택 섹션 하위 여부
     out: list[ParsedPrice] = []
 
     for line in text.splitlines():
@@ -310,11 +334,89 @@ def parse_seongji_lines(title: str, body: str) -> list[ParsedPrice]:
 
         if not models:
             # 모델 없는 줄 — 섹션 헤더로 보고 컨텍스트만 갱신
+            if GIFT_GUARD_RE.search(line):
+                ctx_gift = True          # 혜택 섹션 시작 — 하위 모델 라인 가격 채택 금지
+            elif c or s or k:
+                ctx_gift = False         # 새 통신사/가입유형 섹션 — 혜택 가드 해제
+            if not NON_DEVICE_CTX_RE.search(line):
+                if DUAL_SUB_RE.search(line):
+                    ctx_sub_pair = ("MNP", "기변")
+                elif s:
+                    ctx_sub_pair = None  # 단일 유형 헤더가 나오면 듀얼 컨텍스트 해제
             if c: ctx_carrier = c
             if s: ctx_sub = s
             if k: ctx_contract = k
             continue
 
+        # 모델 라인 — 혜택 금액 라인이면 가격 채택 금지 (상품권 오탐 차단)
+        if ctx_gift or GIFT_GUARD_RE.search(line):
+            continue
+
+        carrier  = c or ctx_carrier
+        contract = k or ctx_contract
+        storage  = _extract_storage(line)
+
+        # 0) 멀티모델 한 줄: "[SKT] S26 41.9만/아이폰17 27.7만/플립7 46.5만" —
+        #    '/' 세그먼트로 나눠 모델-가격을 근접 페어링 (첫 가격이 전 모델에
+        #    전파되는 버그 방지 — 뽐뿌 제목 실측). 2개 세그먼트 이상 성립할 때만.
+        if len(models) >= 2 and "/" in line:
+            seg_hits = []
+            for sg in (x.strip() for x in line.split("/")):
+                sm = _extract_models(sg)
+                if not sm:
+                    continue
+                sprice = None
+                for r, unit in LINE_PRICE_RES:
+                    m = r.search(sg)
+                    if m:
+                        try:
+                            sprice = int(float(m.group(1).replace(",", "")) * unit)
+                        except ValueError:
+                            continue
+                        break
+                if sprice is not None:
+                    seg_hits.append((sm, sprice, sg))
+            if len(seg_hits) >= 2:
+                sub_m = s or ctx_sub
+                conf = min(0.6 + (0.1 if carrier else 0) + (0.1 if sub_m else 0), 0.8)
+                for sm, sprice, sg in seg_hits:
+                    for norm, raw, default_storage in sm:
+                        out.append(ParsedPrice(
+                            model_name=norm, model_raw=raw, carrier=carrier,
+                            subscription_type=sub_m, contract_type=contract,
+                            storage_gb=_extract_storage(sg) or default_storage,
+                            cash_price=sprice,
+                            confidence=conf, raw_text=sg[:200],
+                        ))
+                continue
+
+        # 1) 슬래시 듀얼가격: "S26U 37/47" → (번이가, 기변가) 두 레코드
+        pm = SLASH_PAIR_RE.search(line)
+        if pm:
+            try:
+                v1, v2 = int(pm.group(1)), int(pm.group(2))
+            except ValueError:
+                v1 = v2 = None
+            if (v1 is not None
+                    and not (v1 in _STORAGE_SET and v2 in _STORAGE_SET)     # 용량 병기 기각
+                    and abs(v1) <= SLASH_ABS_MAX_MAN and abs(v2) <= SLASH_ABS_MAX_MAN):
+                subs = ctx_sub_pair or ("MNP", "기변")   # 시세표 관행: 앞=번이, 뒤=기변
+                conf = 0.7 if carrier else 0.6
+                if not ctx_sub_pair:
+                    conf = min(conf, 0.65)               # 헤더 없이 관행 가정 — 보수적
+                for val, sub_v in zip((v1, v2), subs):
+                    for norm, raw, default_storage in models:
+                        out.append(ParsedPrice(
+                            model_name=norm, model_raw=raw, carrier=carrier,
+                            subscription_type=sub_v, contract_type=contract,
+                            storage_gb=storage or default_storage,
+                            cash_price=val * 10000,
+                            add_condition=None if ctx_sub_pair else "듀얼가정(번이/기변)",
+                            confidence=conf, raw_text=line[:200],
+                        ))
+                continue
+
+        # 2) 단일 가격 패턴
         price = None
         plan_name = None
         monthly_est = None
@@ -334,15 +436,12 @@ def parse_seongji_lines(title: str, body: str) -> list[ParsedPrice]:
             price = monthly_est["cash_price"]
             plan_name = monthly_est["plan_name"]
 
-        carrier  = c or ctx_carrier
-        sub      = s or ctx_sub
-        contract = k or ctx_contract
+        sub = s or ctx_sub
         confidence = 0.6
         if carrier: confidence += 0.1
         if sub:     confidence += 0.1
         if monthly_est: confidence = 0.6   # 추정값은 보수적으로 고정
 
-        storage = _extract_storage(line)
         for norm, raw, default_storage in models:
             out.append(ParsedPrice(
                 model_name=norm,

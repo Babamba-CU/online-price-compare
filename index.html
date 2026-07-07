@@ -1486,11 +1486,18 @@
         recs.push(`격차 큰 <b>${wide.m}</b>(${M(wide.gap)})는 ${wide.worst.c} 추가지원금·현장 인센티브로 방어, 격차 작은 <b>${narrow.m}</b>는 프로모션 집중 판매.`);
       } else headline = `${refDate} 공시지원금 데이터 요약`;
 
+      // 지원금 상향 = 리베이트 추가(실구매가 인하 효과), 하향 = 축소
       const changes = (DATA.changes || []).filter(c => Math.abs(c.diff || 0) >= 10000)
-        .sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff)).slice(0, 1);
-      if (changes.length) {
-        const big = changes[0];
-        recs.push(`전일 대비 <b>${big.carrier} ${big.model_name}</b> ${big.field === "subsidy_public" ? "공시" : "추가"}지원금 ${big.diff > 0 ? "상향" : "하향"} ${HI(M(Math.abs(big.diff)))} — 시장 변동 신호, 동향 추적.`);
+        .sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff));
+      const fLabel = c => c.field === "subsidy_public" ? "공시" : c.field === "subsidy_additional" ? "추가" : c.field;
+      changes.filter(c => c.diff > 0).slice(0, 2).forEach(c => {
+        lines.push(`<b>리베이트 추가</b> — ${c.carrier} ${c.model_name} ${fLabel(c)}지원금 ${M(c.old_value)}→${HI(M(c.new_value))} (▲${M(c.diff)} 상향). 실구매가 인하 효과 — 경쟁 대응 여부 판단.`);
+      });
+      const cutC = changes.filter(c => c.diff < 0)[0];
+      if (cutC) lines.push(`<b>리베이트 축소</b> — ${cutC.carrier} ${cutC.model_name} ${fLabel(cutC)}지원금 ${M(cutC.old_value)}→${M(cutC.new_value)} (▼${M(Math.abs(cutC.diff))} 하향).`);
+      if (changes.some(c => c.diff > 0)) {
+        const top = changes.filter(c => c.diff > 0)[0];
+        recs.push(`<b>${top.carrier}</b>의 ${top.model_name} 지원금 상향은 해당 단말 수요 드라이브 신호 — 동일 단말 자사 추가지원금·프로모션 대응 검토.`);
       }
       recs.push(`공시(공통지원금) vs 선택약정 25%는 상세표 '선약비교'에서 요금제 구간별 유불리 확인 후 안내 가이드 갱신.`);
 
@@ -2034,10 +2041,12 @@
       });
       if (rbBest) lines.push(`성지RB 최대: <b>${rbBest.model}</b> ${rbBest.carrier} — 성지가가 공시 경로보다 ${HI(M(rbBest.rb))} 저렴(${rbBest.source}). 온라인 유출 경로로 추적.`);
 
-      // 전일 대비 변동 (daily 시계열 median_price)
+      // 전일 대비 변동 (daily 시계열 median_price) — MNP 기준으로 고정.
+      // sub 를 섞으면 같은 날짜의 MNP/기변 행이 전일 대비로 오인됨.
       const series = {};
       (DATA.daily || []).forEach(d => {
         if (!CARRIERS.includes(d.carrier) || d.median_price == null) return;
+        if (d.subscription_type !== "MNP") return;
         (series[`${d.model_name}__${d.carrier}`] = series[`${d.model_name}__${d.carrier}`] || []).push({ date: d.snapshot_date, v: d.median_price });
       });
       const deltas = [];
@@ -2047,8 +2056,12 @@
         const diff = arr[arr.length - 1].v - arr[arr.length - 2].v;
         if (Math.abs(diff) >= 10000) { const [model, carrier] = key.split("__"); deltas.push({ model, carrier, diff }); }
       });
-      deltas.sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff));
-      if (deltas.length) { const b = deltas[0]; recs.push(`전일 대비 <b>${b.carrier} ${b.model}</b> 사이트 시세 ${b.diff > 0 ? "상승" : "하락"} ${HI(M(Math.abs(b.diff)))} — 추세 모니터링.`); }
+      // 시세 인하 = 해당 통신사 리베이트 추가(경쟁 공세), 상승 = 축소
+      const drops = deltas.filter(d => d.diff < 0).sort((a, b) => a.diff - b.diff).slice(0, 2);
+      drops.forEach(d => lines.push(`<b>리베이트 추가 감지</b> — ${d.carrier} ${d.model} 사이트 중앙시세 전일 대비 ${NEG("▼" + M(Math.abs(d.diff)))} 인하. 경쟁사 정책 상향 신호.`));
+      const rise = deltas.filter(d => d.diff > 0).sort((a, b) => b.diff - a.diff)[0];
+      if (rise) lines.push(`<b>리베이트 축소</b> — ${rise.carrier} ${rise.model} 사이트 중앙시세 ▲${M(rise.diff)} 상승. 정책 회수/재고 소진 가능성.`);
+      if (drops.length) recs.push(`리베이트 추가가 감지된 ${drops.map(d => `<b>${d.carrier} ${d.model}</b>`).join(", ")} — 자사 대응 단가·추가지원 상향 여부 판단.`);
       recs.push(`사이트 시세(익명·전국)와 카카오 매장 호가는 성격이 달라 별도 탭에서 교차 확인 권장.`);
 
       el.innerHTML = window.aiReportHTML({
@@ -2113,6 +2126,12 @@
     // 결합(인터넷+TV)·제휴카드·온누리 체감가 등 조건부 가격 여부
     const COND_RE = /결합|인터넷|TV|제휴|온누리|체감/;
     const isConditional = r => COND_RE.test(r.add_condition || "");
+
+    // 가입유형 미표기 → MNP(번호이동) 간주 — 통계 근거: 미표기 행 가격이 88.5% 조합에서
+    // MNP 분포에 근접(기변과는 중앙값 +16.5만 분리). 원본은 보존, 분석·필터 차원만 정규화.
+    const KNOWN_SUBS = ["MNP", "기변", "신규"];
+    const effSub = r => KNOWN_SUBS.includes(r.subscription_type) ? r.subscription_type : "MNP";
+    const subAssumed = r => !KNOWN_SUBS.includes(r.subscription_type);
     function condPass(r, mode) {
       if (mode === "all") return true;
       if (mode === "cond") return isConditional(r);
@@ -2137,7 +2156,8 @@
         <span>최신 스냅샷: <b>${DATA.latestSnapshot || "-"}</b></span>
         <span>수집 매장 <b>${SUMMARY.stores}</b>곳 · ${SUMMARY.regions}개 권역</span>
         <span>시세표 ${ocr} · 텍스트 ${txt}</span>
-        <span>조건부(결합·제휴) ${condN}건 — 기본 제외</span>`;
+        <span>조건부(결합·제휴) ${condN}건 — 기본 제외</span>
+        <span title="성지 시세표 관행상 유형 미표기는 번호이동 기준가일 확률이 높아 MNP로 간주(추정 표기)">유형 미표기 ${STORES.filter(subAssumed).length}건 → <b>MNP 간주</b><span style="color:var(--brand)">*</span></span>`;
     }
 
     function renderKpi(rows) {
@@ -2180,7 +2200,9 @@
         <td><b>${esc(r.model_name)}</b></td>
         <td style="text-align:center">${r.storage_gb ? r.storage_gb + "GB" : "-"}</td>
         <td style="text-align:center">${carrierChip}</td>
-        <td style="text-align:center">${esc(r.subscription_type || "-")}</td>
+        <td style="text-align:center">${subAssumed(r)
+          ? `MNP<span style="color:var(--brand);cursor:help" title="미표기 — 성지 관행상 MNP(번호이동) 기준가로 간주">*</span>`
+          : esc(r.subscription_type)}</td>
         <td style="text-align:center">${ptype}</td>
         <td class="price-cell">${priceCell(r)}</td>
         <td style="font-size:11px;color:var(--ink3)">${dateCell}</td>
@@ -2380,14 +2402,14 @@
       const rows = STORES.filter(r =>
         (!region || r.region === region) &&
         (!carrier || r.carrier === carrier) &&
-        (!sub || r.subscription_type === sub) &&
+        (!sub || effSub(r) === sub) &&
         (!model || r.model_name === model) &&
         (!source || r.source === source) &&
         condPass(r, cond));
       // 차트는 3사 비교가 목적이라 통신사 필터를 적용하지 않는다.
       const chartRows = STORES.filter(r =>
         (!region || r.region === region) &&
-        (!sub || r.subscription_type === sub) &&
+        (!sub || effSub(r) === sub) &&
         (!model || r.model_name === model) &&
         (!source || r.source === source) &&
         condPass(r, cond));
@@ -2445,17 +2467,34 @@
         lines.push(`<b>플래그십 움직임</b> — ${lead[0]}가 ${lead[1]}종 최저가 주도 (예: ${wideFlag.m} ${wideFlag.best.c} ${HI(M(wideFlag.best.med))} ↔ ${wideFlag.worst.c} ${M(wideFlag.worst.med)}). ${others}는 추종 또는 가격 열위.`);
       } else headline = `오늘 카카오 성지 — 3사 라벨 시세표가 부족합니다 (수집 누적 시 비교 강화).`;
 
-      if (payback) lines.push(`<b>최대 현금 페이백</b> — ${payback.model_name} ${payback.carrier} ${payback.subscription_type || ""} ${payTxt(payback)} (${payback.author || "?"}·${payback.region || "?"}). 특정 스팟 공세 신호.`);
-      if (lowSpot) lines.push(`<b>저가 단말 공략</b> — ${lowModel.m} ${lowSpot.carrier} ${lowSpot.subscription_type || ""} ${payTxt(lowSpot)} (${lowSpot.author || "?"}·${lowSpot.region || "?"}). 보급형으로 가입 유치.`);
+      const subTxt = r => `${effSub(r)}${subAssumed(r) ? "*" : ""}`;
+      if (payback) lines.push(`<b>최대 현금 페이백</b> — ${payback.model_name} ${payback.carrier} ${subTxt(payback)} ${payTxt(payback)} (${payback.author || "?"}·${payback.region || "?"}). 특정 스팟 공세 신호.`);
+      if (lowSpot) lines.push(`<b>저가 단말 공략</b> — ${lowModel.m} ${lowSpot.carrier} ${subTxt(lowSpot)} ${payTxt(lowSpot)} (${lowSpot.author || "?"}·${lowSpot.region || "?"}). 보급형으로 가입 유치.`);
       if (topNeg) lines.push(`<b>권역 강화</b> — ${NEG(topNeg[0])}에 차비 매물 ${HI(topNeg[1] + "건")} 집중. 해당 지역 경쟁 심화 스팟, 일별 추적 필요.`);
+
+      // 전일 대비 리베이트 변화 — kakao_history 롤링 비교 (가격 인하 = 리베이트 추가)
+      const KC = DATA.kakaoChanges || {};
+      if (KC.base_date && ((KC.agg || []).length || (KC.stores || []).length)) {
+        (KC.agg || []).filter(a => Math.min(a.diff, a.min_diff) < 0).slice(0, 2).forEach(a => {
+          const d = Math.abs(Math.min(a.diff, a.min_diff));
+          lines.push(`<b>리베이트 추가 감지</b> — ${a.carrier} ${a.model} ${a.sub} 중앙 ${M(a.prev_median)}→${HI(M(a.median))}, 전일(${KC.base_date}) 대비 ${NEG("▼" + M(d))} 인하 (매장 ${a.count}곳 관측). 경쟁 공세 신호 — 대응 단가 검토.`);
+        });
+        const cut = (KC.agg || []).filter(a => a.diff > 0).sort((x, y) => y.diff - x.diff)[0];
+        if (cut) lines.push(`<b>리베이트 축소</b> — ${cut.carrier} ${cut.model} ${cut.sub} 중앙 ${M(cut.prev_median)}→${M(cut.median)} (▲${M(cut.diff)}). 재고 소진/정책 회수 가능성.`);
+        const st = (KC.stores || []).filter(s => s.diff < 0)[0];
+        if (st) lines.push(`<b>매장 단위 최대 인하</b> — ${st.author} ${st.carrier} ${st.model} 최저가 ${M(st.prev_min)}→${HI(M(st.min))} (${NEG("▼" + M(Math.abs(st.diff)))}). 스팟 드라이브 시작점 후보.`);
+      } else if (!KC.base_date) {
+        lines.push(`<b>전일 대비</b> — 오늘부터 일별 히스토리 누적 시작. 내일부터 통신사·매장 단위 리베이트 추가/축소가 자동 감지됩니다.`);
+      }
 
       if (lead && lead[1] >= 2) recs.push(`<b>${lead[0]}</b> 플래그십 ${lead[1]}종 현금완납 최저 — 번이 유출 위험. ${CARRIERS.filter(c => c !== lead[0]).join("/")} 추가지원금 상향·매장 인센티브 대응 검토.`);
       if (wideFlag && wideFlag.gap >= 200000) recs.push(`<b>${wideFlag.m}</b> 3사 격차 ${M(wideFlag.gap)}로 큼 — 고가 통신사 즉시 가격 정합성 점검.`);
       if (topNeg) recs.push(`<b>${topNeg[0]}</b> 등 차비 집중 권역은 경쟁사 권역 드라이브 조기 포착 대상 — 일별 모니터링.`);
       recs.push(`박스플롯에서 박스가 길거나 이상치 많은 단말은 정책 난립 구간 — 가이드 단가 통제 우선순위.`);
 
+      const assumedN = chartRows.filter(subAssumed).length;
       el.innerHTML = window.aiReportHTML({
-        count: `${stores}개 매장 · ${chartRows.length}건 · 스팟 경쟁동향`,
+        count: `${stores}개 매장 · ${chartRows.length}건 · 스팟 경쟁동향${assumedN ? ` · 미표기 ${assumedN}건 MNP 간주*` : ""}`,
         headline, lines, recs,
         recTitle: "경쟁 대응 제언 (판매정책 관점)",
       });

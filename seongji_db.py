@@ -188,7 +188,8 @@ def aggregate_daily(conn: sqlite3.Connection, snapshot: date) -> int:
              min_source, min_url, updated_at)
         SELECT
             a.snapshot_date, a.model_name, a.carrier, a.sub, a.n,
-            a.mn, NULL, NULL, NULL, a.mx, CAST(a.av AS INTEGER),
+            a.mn, p25.cash_price, med.cash_price, p75.cash_price,
+            a.mx, CAST(a.av AS INTEGER),
             r.source, r.url, ?
         FROM agg a
         LEFT JOIN ranked r
@@ -197,6 +198,20 @@ def aggregate_daily(conn: sqlite3.Connection, snapshot: date) -> int:
          AND r.carrier       = a.carrier
          AND r.sub           = a.sub
          AND r.rn = 1
+        -- 분위수: rank 기반(하위 중앙값). SQLite 에 percentile 함수가 없어 rn 조인으로 계산.
+        -- 기존 코드는 NULL 을 넣어 전일 대비(median) 분석이 동작하지 않았음 (2026-07-08 수정).
+        LEFT JOIN ranked med
+          ON med.snapshot_date = a.snapshot_date AND med.model_name = a.model_name
+         AND med.carrier = a.carrier AND med.sub = a.sub
+         AND med.rn = (a.n + 1) / 2
+        LEFT JOIN ranked p25
+          ON p25.snapshot_date = a.snapshot_date AND p25.model_name = a.model_name
+         AND p25.carrier = a.carrier AND p25.sub = a.sub
+         AND p25.rn = MAX(1, (a.n + 3) / 4)
+        LEFT JOIN ranked p75
+          ON p75.snapshot_date = a.snapshot_date AND p75.model_name = a.model_name
+         AND p75.carrier = a.carrier AND p75.sub = a.sub
+         AND p75.rn = MAX(1, (a.n * 3 + 3) / 4)
         """,
         (snapshot.isoformat(), datetime.utcnow().isoformat()),
     )

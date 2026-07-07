@@ -26,7 +26,7 @@ DAYS = 30
 BOX_WINDOW_DAYS = 14
 HISTORY_DAYS = 30
 KAKAO_SOURCES = ("kakao", "kakao_ocr")
-NON_SITE = KAKAO_SOURCES + ("naver_cafe", "naver_web")
+NON_SITE = KAKAO_SOURCES + ("naver_cafe", "naver_web", "naver_blog")
 
 
 def _conn():
@@ -143,7 +143,7 @@ def build_seongji(cur) -> dict:
         WHERE po.source IN ({ph})
         ORDER BY posted_at DESC NULLS LAST, po.id DESC LIMIT 25
     """
-    for srcs in (("kakao", "kakao_ocr"), ("naver_cafe", "naver_web")):
+    for srcs in (("kakao", "kakao_ocr"), ("naver_cafe", "naver_web", "naver_blog")):
         feed += _rows(cur, feed_sql.format(ph=",".join(["%s"] * len(srcs))), srcs)
     feed.sort(key=lambda r: (r["posted_at"] or ""), reverse=True)
 
@@ -163,7 +163,15 @@ def build_seongji(cur) -> dict:
         "rows": len(kakao),
         "models": len({r["model_name"] for r in kakao}),
         "negative": sum(1 for r in kakao if (r["cash_price"] or 0) < 0),
+        "subMissing": sum(1 for r in kakao if r["subscription_type"] not in ("MNP", "기변", "신규")),
     }
+
+    # 전일 대비 리베이트 변화 — snapshot_date를 문자열로 맞춘 뒤 히스토리 반영
+    import kakao_history
+    for r in kakao:
+        r["snapshot_date"] = _s(r["snapshot_date"])
+    kakao_changes = kakao_history.compute_changes(
+        kakao_history.record(kakao, latest), latest)
 
     return {
         "generatedAt": today.isoformat(), "latestSnapshot": latest,
@@ -172,6 +180,7 @@ def build_seongji(cur) -> dict:
         "subscriptionTypes": ["신규", "MNP", "기변"],
         "daily": daily, "boxStats": box_stats, "detail": detail,
         "runs": runs, "feed": feed, "kakaoStores": kakao, "kakaoSummary": ksum,
+        "kakaoChanges": kakao_changes,
     }
 
 

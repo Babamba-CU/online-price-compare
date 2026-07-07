@@ -35,7 +35,7 @@ from bs4 import BeautifulSoup
 from seongji_db import (
     init_db, connect, upsert_post, insert_prices, log_run, aggregate_daily,
 )
-from seongji_parser import parse_post_text, to_db_rows
+from seongji_parser import _extract_models, parse_post_text, parse_seongji_lines, to_db_rows
 
 logging.basicConfig(
     level=logging.INFO,
@@ -79,23 +79,37 @@ def _get(url: str) -> requests.Response | None:
 
 
 def crawl_ppomppu(max_pages: int = 2) -> Iterable[Post]:
-    """뽐뿌 휴대폰 뽐뿌 게시판."""
-    base = "https://www.ppomppu.co.kr/zboard/zboard.php?id=phone"
-    for page in range(1, max_pages + 1):
-        url = f"{base}&page={page}"
-        r = _get(url)
-        if not r:
-            continue
-        soup = BeautifulSoup(r.content, "lxml")
-        # 게시글 리스트 — 클래스명은 자주 바뀌므로 a[href*=view.php] 휴리스틱
-        for a in soup.select('a[href*="view.php"]'):
-            href = a.get("href", "")
-            title = a.get_text(strip=True)
-            if not title or len(title) < 6:
+    """뽐뿌 휴대폰(id=phone) + 업체 시세글(id=sponsor) 게시판.
+
+    실측(2026-07-08): robots.txt 는 두 게시판 모두 허용. sponsor 광고글이 실제
+    시세정보 원천인 경우가 많아 함께 수집. no= 파라미터로 중복 제거(같은 글이
+    제목/말머리 링크로 2~3중 수집되는 문제).
+    """
+    import re as _re
+    seen_no: set[str] = set()
+    for board in ("phone", "sponsor"):
+        base = f"https://www.ppomppu.co.kr/zboard/zboard.php?id={board}"
+        for page in range(1, max_pages + 1):
+            r = _get(f"{base}&page={page}")
+            if not r:
                 continue
-            full = "https://www.ppomppu.co.kr/zboard/" + href.lstrip("./")
-            yield Post(source="ppomppu", url=full, title=title)
-        time.sleep(SLEEP_BETWEEN)
+            soup = BeautifulSoup(r.content, "lxml")
+            for a in soup.select('a[href*="view.php"]'):
+                href = a.get("href", "")
+                # 다른 게시판(regulation/notice 등) 혼입 차단 + 글번호 필수
+                if f"id={board}" not in href:
+                    continue
+                m = _re.search(r"[?&]no=(\d+)", href)
+                if not m or m.group(1) in seen_no:
+                    continue
+                title = a.get_text(strip=True)
+                if not title or len(title) < 6:
+                    continue
+                seen_no.add(m.group(1))
+                full = "https://www.ppomppu.co.kr/zboard/" + href.lstrip("./")
+                yield Post(source="ppomppu", url=full, title=title,
+                           source_post_id=m.group(1))
+            time.sleep(SLEEP_BETWEEN)
 
 
 def crawl_algosa(max_pages: int = 1) -> Iterable[Post]:
@@ -151,19 +165,30 @@ def crawl_sajangnim(max_pages: int = 1) -> Iterable[Post]:
 
 
 def crawl_moyoplan(max_pages: int = 1) -> Iterable[Post]:
-    """모요 — SPA 라 메타 + 메인 페이지에 노출된 카드 텍스트만."""
-    r = _get("https://www.moyoplan.com/")
-    if not r:
-        return
-    soup = BeautifulSoup(r.content, "lxml")
-    text = soup.get_text("\n", strip=True)
-    if text:
-        yield Post(
-            source="moyoplan",
-            url="https://www.moyoplan.com/",
-            title="moyoplan main",
-            body=text[:5000],
-        )
+    """모요 — SPA 라 메인 정적 텍스트 수율 0 (실측). 성지비교 sitemap 경유로 개선.
+
+    sitemap 인덱스에 sitemap-holyland-compare.xml(성지 비교 페이지 목록)이 존재.
+    개별 페이지도 SSR 미포함이면 수율 0 — best-effort 유지, 실질 수집은
+    api.moyoplan.com JSON 직수집(후속 과제)이 필요.
+    """
+    sm = _get("https://assets.moyoplan.com/sitemap/sitemap-holyland-compare.xml")
+    urls: list[str] = []
+    if sm is not None:
+        soup = BeautifulSoup(sm.content, "xml" if "xml" in (sm.headers.get("Content-Type") or "") else "lxml")
+        urls = [loc.get_text(strip=True) for loc in soup.find_all("loc")][:5]
+    if not urls:
+        urls = ["https://www.moyoplan.com/"]
+    for u in urls:
+        r = _get(u)
+        if not r:
+            continue
+        soup = BeautifulSoup(r.content, "lxml")
+        text = soup.get_text("\n", strip=True)
+        if text and len(text) > 200:
+            yield Post(source="moyoplan", url=u,
+                       title=(soup.title.get_text(strip=True) if soup.title else "moyoplan"),
+                       body=text[:5000])
+        time.sleep(SLEEP_BETWEEN)
 
 
 def crawl_modusj(max_pages: int = 1) -> Iterable[Post]:
@@ -192,6 +217,14 @@ CRAWLERS: dict[str, Callable[..., Iterable[Post]]] = {
     "moyoplan":  crawl_moyoplan,
     "modusj":    crawl_modusj,
 }
+
+# 실측(2026-07-08) 기준 기본 실행 소스 — 죽은 사이트는 제외해 런타임 단축.
+#  · algosa/sajangnim: 도메인 소멸(DNS NXDOMAIN)  · ppasak: 앱 중단(404)
+#  · moyoplan/modusj: SPA — 정적 수율 0이나 요청 1~5회로 저렴해 감시 겸 유지
+DEFAULT_SOURCES = ["ppomppu", "moyoplan", "modusj"]
+
+# 본문 fetch 는 제목에 모델이 검출된 게시글만, 소스당 상한 (정중한 수집)
+BODY_FETCH_CAP = 15
 
 
 # ------------------------------------------------------------------
@@ -225,29 +258,46 @@ def run(sources: list[str], max_pages: int, fetch_bodies: bool) -> None:
         err_msg: str | None = None
         status = "success"
         try:
+            body_budget = BODY_FETCH_CAP
             with connect() as conn:
                 for post in CRAWLERS[src](max_pages=max_pages):
                     fetched += 1
                     try:
-                        body = fetch_body(post) if fetch_bodies else post.body
-                        prices = parse_post_text(post.title, body)
-                        if not prices:
+                        # 본문 fetch 는 제목에 모델이 검출된 게시글만 (수율 실측:
+                        # 제목만 5/38 → 본문 포함 시 게시글당 3~12 가격행)
+                        body = post.body
+                        title_models = _extract_models(post.title)
+                        if fetch_bodies and not body and title_models and body_budget > 0:
+                            body = fetch_body(post)
+                            body_budget -= 1
+                            time.sleep(SLEEP_BETWEEN)
+                        # 라인 파서 우선(시세표/멀티모델 정밀), 없으면 게시글 파서
+                        prices = parse_seongji_lines(post.title, body)
+                        priced = [p for p in prices if p.cash_price is not None]
+                        if not priced:
+                            prices = parse_post_text(post.title, body)
+                            priced = [p for p in prices if p.cash_price is not None]
+                        if not prices and not priced:
                             continue
                         post_id = upsert_post(conn, {
                             "source":     post.source,
+                            "source_post_id": post.source_post_id,
                             "url":        post.url,
                             "title":      post.title,
                             "posted_at":  post.posted_at,
                             "crawled_at": datetime.now(timezone.utc).isoformat(),
-                            "raw_text":   (body or "")[:2000],
+                            "raw_text":   ((post.title or "") + "\n" + (body or ""))[:2000],
                         })
-                        rows = to_db_rows(prices, today)
+                        rows = [
+                            r for r in to_db_rows(priced or prices, today)
+                            if r.get("cash_price") is None
+                            or (-500_000 <= r["cash_price"] <= 2_500_000
+                                and r.get("confidence", 0) >= 0.6)
+                        ]
                         parsed += insert_prices(conn, post_id, rows)
                     except Exception as e:        # noqa: BLE001
                         errors += 1
                         log.exception("parse fail: %s", post.url)
-                    if fetch_bodies:
-                        time.sleep(SLEEP_BETWEEN)
                 if errors and parsed == 0:
                     status = "failed"
                 elif errors:
@@ -281,11 +331,12 @@ def run(sources: list[str], max_pages: int, fetch_bodies: bool) -> None:
 def main() -> int:
     p = argparse.ArgumentParser(description="성지폰 단가 크롤러")
     p.add_argument("--sources", nargs="+",
-                   default=list(CRAWLERS.keys()),
+                   default=DEFAULT_SOURCES,
                    choices=list(CRAWLERS.keys()))
     p.add_argument("--max-pages", type=int, default=2)
-    p.add_argument("--fetch-bodies", action="store_true",
-                   help="게시글 본문까지 받아서 파싱 (느림)")
+    p.add_argument("--fetch-bodies", action="store_true", default=True,
+                   help="모델 제목 게시글 본문 파싱 (기본 on, 소스당 상한)")
+    p.add_argument("--no-fetch-bodies", dest="fetch_bodies", action="store_false")
     args = p.parse_args()
     run(args.sources, args.max_pages, args.fetch_bodies)
     return 0
