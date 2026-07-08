@@ -1,0 +1,131 @@
+name: Deploy to Lightsail
+
+# main 에 앱 관련 변경이 푸시될 때마다 Lightsail 컨테이너 서비스로 자동 배포한다.
+# GitHub 러너(ubuntu-latest, amd64, 클래식 docker 스토어)에서 실행하므로
+# 로컬 Docker 29 + colima containerd 스토어와 lightsailctl 비호환 문제를 우회한다.
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.py'
+      - '**.js'
+      - 'index.html'
+      - 'Dockerfile'
+      - 'requirements.txt'
+      - 'vendor/**'
+      - 'seongji_sources.json'
+      - 'seongji_vision_data.json'
+      - 'seongji_kakao_history.json'
+      - 'deploy/lightsail/**'
+      - '.github/workflows/deploy-lightsail.yml'
+  workflow_dispatch:        # GitHub UI 에서 수동 배포 허용
+
+concurrency:
+  group: deploy-lightsail   # 동시 배포 방지 (뒤 커밋이 앞 배포를 취소)
+  cancel-in-progress: true
+
+env:
+  SERVICE_NAME: seongji-price-monitor
+  REGION: ap-northeast-2
+  IMAGE_LABEL: app
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ap-northeast-2
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Preflight — AWS 자격증명 확인
+        run: |
+          if [ -z "${AWS_ACCESS_KEY_ID}" ] || [ -z "${AWS_SECRET_ACCESS_KEY}" ]; then
+            echo "::error::AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY 시크릿이 없습니다. Settings > Secrets and variables > Actions 에 추가하세요."
+            exit 1
+          fi
+          aws sts get-caller-identity >/dev/null
+
+      - name: lightsailctl 설치
+        run: |
+          sudo curl -fsSL -o /usr/local/bin/lightsailctl \
+            https://s3.us-west-2.amazonaws.com/lightsailctl/latest/linux-amd64/lightsailctl
+          sudo chmod +x /usr/local/bin/lightsailctl
+          lightsailctl --version || true
+
+      - name: 서비스 존재 확인 (없으면 생성)
+        run: |
+          if ! aws lightsail get-container-services --service-name "$SERVICE_NAME" --region "$REGION" >/dev/null 2>&1; then
+            echo "서비스 생성..."
+            aws lightsail create-container-service --service-name "$SERVICE_NAME" \
+              --power nano --scale 1 --region "$REGION"
+            until [ "$(aws lightsail get-container-services --service-name "$SERVICE_NAME" --region "$REGION" --query 'containerServices[0].state' --output text)" = "READY" ]; do
+              echo "  서비스 READY 대기..."; sleep 15
+            done
+          fi
+
+      - name: Docker 이미지 빌드 (linux/amd64)
+        run: docker build --platform linux/amd64 -t "$SERVICE_NAME:latest" .
+
+      - name: 이미지 푸시 → 참조 추출
+        id: push
+        run: |
+          OUT=$(aws lightsail push-container-image \
+            --service-name "$SERVICE_NAME" --label "$IMAGE_LABEL" \
+            --image "$SERVICE_NAME:latest" --region "$REGION" 2>&1)
+          echo "$OUT"
+          REF=$(echo "$OUT" | grep -oE ':[a-zA-Z0-9._-]+\.'"$IMAGE_LABEL"'\.[0-9]+' | tail -n1)
+          if [ -z "$REF" ]; then echo "::error::푸시 이미지 참조를 찾지 못함"; exit 1; fi
+          echo "image_ref=$REF" >> "$GITHUB_OUTPUT"
+          echo "이미지 참조: $REF"
+
+      - name: 배포 명세 생성 (이미지 + NAVER 키 주입)
+        env:
+          IMAGE_REF: ${{ steps.push.outputs.image_ref }}
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+        run: |
+          python3 - > /tmp/containers.json <<'PY'
+          import json, os
+          with open("deploy/lightsail/containers.json", encoding="utf-8") as f:
+              data = json.load(f)
+          ref = os.environ["IMAGE_REF"]
+          nid = os.environ.get("NAVER_CLIENT_ID", "")
+          nsec = os.environ.get("NAVER_CLIENT_SECRET", "")
+          for spec in data.values():
+              spec["image"] = ref
+              env = spec.setdefault("environment", {})
+              if nid and nsec:
+                  env["NAVER_CLIENT_ID"] = nid
+                  env["NAVER_CLIENT_SECRET"] = nsec
+          print(json.dumps(data, ensure_ascii=False))
+          PY
+          if [ -z "${NAVER_CLIENT_ID}" ] || [ -z "${NAVER_CLIENT_SECRET}" ]; then
+            echo "::warning::NAVER 키 시크릿 미설정 — 컨테이너는 합성/카카오 데이터만 생성합니다."
+          fi
+
+      - name: 배포 생성
+        run: |
+          aws lightsail create-container-service-deployment \
+            --service-name "$SERVICE_NAME" --region "$REGION" \
+            --containers "file:///tmp/containers.json" \
+            --public-endpoint "file://deploy/lightsail/public-endpoint.json"
+
+      - name: RUNNING 대기 + 헬스체크
+        run: |
+          URL="https://$SERVICE_NAME.62h5ewkf735c4.$REGION.cs.amazonlightsail.com"
+          for i in $(seq 1 40); do
+            ST=$(aws lightsail get-container-services --service-name "$SERVICE_NAME" --region "$REGION" --query 'containerServices[0].state' --output text)
+            VER=$(aws lightsail get-container-services --service-name "$SERVICE_NAME" --region "$REGION" --query 'containerServices[0].currentDeployment.version' --output text)
+            echo "[$i] state=$ST version=$VER"
+            [ "$ST" = "RUNNING" ] && break
+            sleep 15
+          done
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" "$URL/health" || echo 000)
+          echo "/health → $CODE"
+          [ "$CODE" = "200" ] || { echo "::error::헬스체크 실패($CODE)"; exit 1; }
+          echo "배포 완료: $URL"

@@ -1,0 +1,39 @@
+# Lightsail 자동 배포 (항상 최신)
+
+`main` 에 앱 변경이 푸시되면 GitHub Actions가 자동으로 Lightsail에 배포한다.
+워크플로: [`.github/workflows/deploy-lightsail.yml`](../../.github/workflows/deploy-lightsail.yml)
+
+## 왜 CI 배포인가
+로컬 `deploy.sh` 는 Docker 29 + colima의 **containerd 이미지 스토어**와 `lightsailctl` 이
+호환되지 않아, 새 이미지를 못 올리고 옛 이미지로 폴백한다(2026-07-08 확인).
+GitHub 러너(ubuntu, amd64, 클래식 docker 스토어)에서 빌드·푸시하면 이 문제가 없다.
+→ **로컬에서 배포하지 말고 push 하면 CI가 배포**하도록 일원화.
+
+## 한 번만 설정 — GitHub Secrets 등록
+GitHub 저장소 → **Settings → Secrets and variables → Actions → New repository secret**
+
+| Secret | 값 | 필수 |
+|---|---|---|
+| `AWS_ACCESS_KEY_ID` | Lightsail 권한 IAM 액세스 키 | ✅ |
+| `AWS_SECRET_ACCESS_KEY` | 위 키의 시크릿 | ✅ |
+| `NAVER_CLIENT_ID` | 네이버 검색 API 키 | 선택(없으면 네이버 수집 skip) |
+| `NAVER_CLIENT_SECRET` | 네이버 검색 API 시크릿 | 선택 |
+
+- IAM 사용자에 최소 권한: `lightsail:GetContainerServices`, `lightsail:CreateContainerService`,
+  `lightsail:RegisterContainerImage`, `lightsail:CreateContainerServiceDeployment`
+  (간단히는 `AmazonLightsailFullAccess` 관리형 정책).
+- NAVER 키를 넣지 않으면 배포는 되고 네이버 수집만 건너뛴다(경고만 표시).
+
+## 동작
+- **트리거**: `main` 에 `*.py`/`*.js`/`index.html`/`Dockerfile`/`vendor/**`/`deploy/lightsail/**` 등
+  앱 파일이 푸시될 때 + 수동 실행(`workflow_dispatch`).
+- **단계**: 자격증명 확인 → lightsailctl 설치 → 이미지 빌드(amd64) → 푸시 → 배포 명세 생성(이미지 참조 +
+  NAVER 키 주입, 커밋된 `containers.json` 은 `environment: {}` 유지) → 배포 → RUNNING 대기 + `/health` 200 확인.
+- **동시성**: 뒤 커밋이 진행 중 배포를 취소(`cancel-in-progress`)해 항상 최신 커밋만 반영.
+
+## 수동 배포
+GitHub → **Actions → Deploy to Lightsail → Run workflow**.
+
+## 확인
+Actions 로그 마지막 단계에 `배포 완료: https://…amazonlightsail.com` 과 `/health → 200` 출력.
+라이브: https://seongji-price-monitor.62h5ewkf735c4.ap-northeast-2.cs.amazonlightsail.com/
