@@ -441,6 +441,10 @@
       background: #FFF8DB; color: #8A6D00;
       border: 1px solid #EFE0A3;
     }
+    .src-baseline {
+      font-size: 11px; color: var(--ink3); font-style: italic;
+      margin-left: 4px; cursor: help;
+    }
 
     /* ===== 실시간 수집 피드 (Naver Search API) ===== */
     .feed-list {
@@ -770,6 +774,7 @@
       <div class="table-title">
         최신일자 사이트별 단가 상세 (정렬: 현금완납가 오름차순)
         <span class="sub-note">출고가·공통/추가지원금은 공시지원금 DB 와 join · 성지RB = 출고가−공통−추가−현금완납가</span>
+        <span class="sub-note" id="sjDetailNote"></span>
       </div>
       <div class="table-wrapper">
         <table id="sjDetailTable">
@@ -1890,8 +1895,15 @@
     function renderDetailTable(rows) {
       const tbody = document.getElementById("sjDetailTbody");
       const empty = document.getElementById("sjEmptyState");
-      if (rows.length === 0) { tbody.innerHTML = ""; empty.style.display = "block"; return; }
+      const note = document.getElementById("sjDetailNote");
+      if (rows.length === 0) { tbody.innerHTML = ""; empty.style.display = "block"; if (note) note.textContent = ""; return; }
       empty.style.display = "none";
+      if (note) {
+        const base = rows.filter(r => !r.url || /example\.com/.test(r.url)).length;
+        const real = rows.length - base;
+        note.innerHTML = `· 실측 ${real}건 · <span style="color:var(--ink3)">기준선(합성) ${base}건</span>`
+          + (real === 0 ? ' — 실제 성지 사이트 대부분 폐쇄/SPA라 링크 없는 기준선 위주(실단가는 <b>카카오 성지</b> 탭 참고)' : '');
+      }
       const html = rows.slice(0, 300).map(r => {
         const carrier = r.carrier || "?";
         if (r.carrier && !CARRIERS.includes(carrier)) return "";   // 알뜰 행 숨김 (미상은 표시)
@@ -1930,7 +1942,9 @@
           <td>${r.plan_name || "-"}</td>
           <td style="text-align:center">${r.plan_duration_mo ? r.plan_duration_mo + "M" : "-"}</td>
           <td><span class="source-badge${(r.source || "").startsWith("naver") ? " naver" : (r.source || "").startsWith("kakao") ? " kakao" : ""}">${r.source || "-"}</span>
-              <a href="${r.url}" target="_blank" rel="noopener noreferrer">${(r.title || "열기").slice(0, 30)}…</a></td>
+              ${(!r.url || /example\.com/.test(r.url))
+                ? '<span class="src-baseline" title="합성 기준선 데이터 — 실제 게시글 링크 아님">기준선(합성)</span>'
+                : `<a href="${r.url}" target="_blank" rel="noopener noreferrer">${(r.title || "열기").slice(0, 30)}…</a>`}</td>
         </tr>`;
       }).join("");
       tbody.innerHTML = html;
