@@ -16,8 +16,8 @@ Anthropic API 호출로 치환한다. GitHub Actions 등 어디서든 무인 실
 
 환경변수:
   ANTHROPIC_API_KEY       (필수)
-  VISION_MODEL            기본 claude-haiku-4-5   (비용 최적 — 사용자 선택)
-  VISION_ESCALATE_MODEL   기본 claude-sonnet-5    (저신뢰 시 1회 재판독)
+  VISION_MODEL            기본 claude-sonnet-5    (사용자 확정 — Sonnet 기준 동작)
+  VISION_ESCALATE_MODEL   기본 claude-sonnet-5    (기본과 같으면 에스컬레이션 비활성)
   VISION_MAX_IMAGES       기본 40
 """
 from __future__ import annotations
@@ -36,7 +36,7 @@ BASE = Path(__file__).parent
 VISION_DATA_PATH = BASE / "seongji_vision_data.json"
 MANIFEST_DEFAULT = "/tmp/sise_batch/manifest.json"
 
-MODEL = os.getenv("VISION_MODEL", "claude-haiku-4-5")
+MODEL = os.getenv("VISION_MODEL", "claude-sonnet-5")
 ESCALATE_MODEL = os.getenv("VISION_ESCALATE_MODEL", "claude-sonnet-5")
 MAX_IMAGES = int(os.getenv("VISION_MAX_IMAGES", "40"))
 ESCALATE_CONF = 0.7          # 평균 confidence 미만이면 상위 모델 재판독
