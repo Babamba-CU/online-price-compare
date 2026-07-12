@@ -41,3 +41,16 @@ docker run -d --name price -p 8080:8080 --env-file deploy/onprem/.env price-onpr
   또는 `build_from_pg.py` 를 사내 cron 으로 더 자주 실행.
 - **API 방식**으로 가려면: `build_from_pg` 의 쿼리를 그대로 Flask 엔드포인트로 노출해 프론트가
   fetch 하도록 전환 가능(현재는 정적 빌드 방식이 가장 단순·견고).
+
+## git 미러 모드 — 재배포 없이 GitLab 커밋만으로 최신화 (권장)
+컨테이너에 아래 환경변수를 주면, 실행 중에 사내 GitLab 의 최신 커밋 파일
+(`index.html`, `seongji_data.js`, `subsidy_data.js`)을 주기적으로 받아 `/tmp` 에서 우선 서빙한다.
+**화면/데이터가 GitLab 에 커밋되면 재배포·재시작 없이 N분 내 반영**된다. (DB 연결 없이도 동작)
+```bash
+GIT_RAW_BASE=https://gitlab.tde.sktelecom.com/MAMF/online-price/-/raw/main
+GIT_SYNC_TOKEN=<read_repository 권한 토큰>   # 비공개 저장소일 때
+GIT_SYNC_MINUTES=60                          # 폴링 주기(기본 60분)
+```
+- 검증 통과 파일만 원자적으로 교체 — 절반 다운로드/오류 페이지로 라이브가 깨지지 않음.
+- 우선순위: `/tmp/git_sync` 사본 > 이미지 내장 파일. 코드(파이썬) 변경은 여전히 재배포 필요.
+- `DATA_SOURCE=postgres` 와 병행 시 git 미러가 우선 서빙됨 — 한쪽만 쓰는 것을 권장.

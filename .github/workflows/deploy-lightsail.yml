@@ -88,6 +88,8 @@ jobs:
           IMAGE_REF: ${{ steps.push.outputs.image_ref }}
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+          GIT_RAW_BASE: ${{ secrets.GIT_RAW_BASE }}
+          GIT_SYNC_TOKEN: ${{ secrets.GIT_SYNC_TOKEN }}
         run: |
           python3 - > /tmp/containers.json <<'PY'
           import json, os
@@ -96,12 +98,18 @@ jobs:
           ref = os.environ["IMAGE_REF"]
           nid = os.environ.get("NAVER_CLIENT_ID", "")
           nsec = os.environ.get("NAVER_CLIENT_SECRET", "")
+          graw = os.environ.get("GIT_RAW_BASE", "")
+          gtok = os.environ.get("GIT_SYNC_TOKEN", "")
           for spec in data.values():
               spec["image"] = ref
               env = spec.setdefault("environment", {})
               if nid and nsec:
                   env["NAVER_CLIENT_ID"] = nid
                   env["NAVER_CLIENT_SECRET"] = nsec
+              if graw:                       # git 미러 모드 — 커밋만으로 배포 없이 최신화
+                  env["GIT_RAW_BASE"] = graw
+                  if gtok:
+                      env["GIT_SYNC_TOKEN"] = gtok
           print(json.dumps(data, ensure_ascii=False))
           PY
           if [ -z "${NAVER_CLIENT_ID}" ] || [ -z "${NAVER_CLIENT_SECRET}" ]; then

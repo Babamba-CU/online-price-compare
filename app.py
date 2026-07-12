@@ -43,7 +43,19 @@ TZ_NAME        = os.getenv("TZ", "Asia/Seoul")
 # DATA_SOURCE=postgres → 사내망 모드: 수집 대신 사내 PostgreSQL 에서 *_data.js 빌드
 DATA_SOURCE    = os.getenv("DATA_SOURCE", "").lower()
 
+# GIT_RAW_BASE 설정 시 → git 미러 모드: 저장소에 커밋된 최신 화면·데이터 파일을
+# 주기적으로 받아 /tmp/git_sync 에 저장하고, 그 사본을 우선 서빙한다 (배포 불필요).
+import git_data_sync
+GIT_SYNC_MINUTES = int(os.getenv("GIT_SYNC_MINUTES", "60"))
+
 app = Flask(__name__, static_folder=None)
+
+
+def _serve_dir(path: str) -> str:
+    """git 미러 사본이 있으면 그 디렉터리를, 없으면 이미지 내장 파일 디렉터리를 반환."""
+    if git_data_sync.enabled() and (git_data_sync.LIVE_DIR / path).is_file():
+        return str(git_data_sync.LIVE_DIR)
+    return BASE_DIR
 
 
 # === 데이터 갱신 (성지폰 + 공시지원금) =========================================
@@ -118,6 +130,10 @@ def start_scheduler() -> None:
     job = refresh_from_pg if DATA_SOURCE == "postgres" else refresh_data
     # 기동 직후 1회 갱신 — Flask/health 를 막지 않도록 별도 스레드에서 실행
     threading.Thread(target=job, name="refresh-startup", daemon=True).start()
+    # git 미러 기동 동기화 — APScheduler 유무와 무관하게 1회는 즉시 수행
+    if git_data_sync.enabled():
+        threading.Thread(target=git_data_sync.sync_once,
+                         name="git-sync-startup", daemon=True).start()
 
     try:
         from apscheduler.schedulers.background import BackgroundScheduler
@@ -136,6 +152,18 @@ def start_scheduler() -> None:
         misfire_grace_time=3600,   # 컨테이너가 잠깐 멈췄다 떠도 1시간 내면 보충 실행
         coalesce=True,             # 밀린 실행은 1회로 합침
     )
+
+    # git 미러 모드 — 저장소 커밋 → 배포 없이 N분 내 라이브 반영
+    if git_data_sync.enabled():
+        scheduler.add_job(
+            git_data_sync.sync_once,
+            "interval", minutes=GIT_SYNC_MINUTES,
+            id="git_sync", replace_existing=True,
+            misfire_grace_time=600, coalesce=True,
+        )
+        print(f"[scheduler] git 미러 등록: {GIT_SYNC_MINUTES}분마다 "
+              f"{os.getenv('GIT_RAW_BASE')} → /tmp/git_sync", file=sys.stderr, flush=True)
+
     scheduler.start()
     print(f"[scheduler] 일일 갱신 등록: 매일 "
           f"{REFRESH_HOUR:02d}:{REFRESH_MINUTE:02d} {TZ_NAME} "
@@ -151,7 +179,7 @@ def health():
 
 @app.route("/")
 def index():
-    return send_from_directory(BASE_DIR, INDEX_FILE)
+    return send_from_directory(_serve_dir(INDEX_FILE), INDEX_FILE)
 
 
 @app.route("/<path:path>")
@@ -159,11 +187,12 @@ def static_files(path):
     """
     정적 자원 서빙. ../ 등 경로 탈출은 send_from_directory 가 차단.
     .py / .db / .sql / .sh 등 민감 파일은 화이트리스트 외 거부.
+    git 미러 모드에서는 /tmp/git_sync 의 최신 사본을 우선 서빙.
     """
     ext = os.path.splitext(path)[1].lower()
     if ext not in ALLOWED_EXTENSIONS:
         abort(404)
-    return send_from_directory(BASE_DIR, path)
+    return send_from_directory(_serve_dir(path), path)
 
 
 @app.errorhandler(404)

@@ -18,6 +18,13 @@ GitHub 저장소 → **Settings → Secrets and variables → Actions → New re
 | `AWS_SECRET_ACCESS_KEY` | 위 키의 시크릿 | ✅ |
 | `NAVER_CLIENT_ID` | 네이버 검색 API 키 | 선택(없으면 네이버 수집 skip) |
 | `NAVER_CLIENT_SECRET` | 네이버 검색 API 시크릿 | 선택 |
+| `GIT_RAW_BASE` | git 미러 모드 raw URL (예: `https://raw.githubusercontent.com/Babamba-CU/online-price-compare/main`) | 선택 — 설정 시 **데이터·화면은 커밋만으로 배포 없이 최신화** |
+| `GIT_SYNC_TOKEN` | 위 저장소 읽기 토큰(비공개 repo 시 — GitHub fine-grained PAT, contents:read) | 선택 |
+
+### git 미러 모드 (배포 빈도 최소화)
+`GIT_RAW_BASE` 를 설정하면 컨테이너가 60분(기본)마다 저장소의 `index.html`/`*_data.js` 를
+직접 받아 `/tmp` 에서 우선 서빙한다 → **데이터/화면 변경은 커밋만으로 반영, 재배포는
+파이썬 코드 변경 때만** 필요. Lightsail 은 사내 GitLab 에 접근 불가하므로 GitHub raw 를 쓴다.
 
 - IAM 사용자에 최소 권한: `lightsail:GetContainerServices`, `lightsail:CreateContainerService`,
   `lightsail:RegisterContainerImage`, `lightsail:CreateContainerServiceDeployment`
