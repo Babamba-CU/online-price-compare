@@ -44,6 +44,15 @@ PRICE_SANITY = (-500_000, 3_000_000)
 VALID_STORAGE = {64, 128, 256, 512, 1024, 2048}
 
 # 구조화 출력 스키마 — 시세표 1장 → 행 목록
+# 주의: 구조화 출력 검증기는 유니온 타입 배열("type": ["string","null"])을 지원하지
+# 않는다 — nullable 은 반드시 anyOf 로 표현해야 함 (2026-07-13 실측 400 오류로 확인).
+def _nullable(inner: dict, description: str | None = None) -> dict:
+    out = {"anyOf": [inner, {"type": "null"}]}
+    if description:
+        out["description"] = description
+    return out
+
+
 SCHEMA = {
     "type": "object",
     "properties": {
@@ -51,10 +60,8 @@ SCHEMA = {
             "type": "boolean",
             "description": "이 이미지가 휴대폰 단가/시세표인지 (매장사진·행사포스터·조건안내는 false)",
         },
-        "board_date": {
-            "type": ["string", "null"],
-            "description": "시세표에 표기된 기준일 YYYY-MM-DD (없으면 null)",
-        },
+        "board_date": _nullable({"type": "string"},
+                                "시세표에 표기된 기준일 YYYY-MM-DD (없으면 null)"),
         "rows": {
             "type": "array",
             "items": {
@@ -64,21 +71,20 @@ SCHEMA = {
                         "type": "string",
                         "description": "정규화 모델명 (예: Galaxy S26 Ultra, iPhone 17 Pro Max, Galaxy Z Flip 7)",
                     },
-                    "storage_gb": {"type": ["integer", "null"]},
-                    "carrier": {"type": ["string", "null"], "enum": ["SKT", "KT", "LGU+", "알뜰", None]},
-                    "subscription_type": {"type": ["string", "null"], "enum": ["MNP", "기변", "신규", None]},
-                    "contract_type": {"type": ["string", "null"], "enum": ["공시", "선약", "자급", None]},
+                    "storage_gb": _nullable({"type": "integer"}),
+                    "carrier": _nullable({"type": "string", "enum": ["SKT", "KT", "LGU+", "알뜰"]}),
+                    "subscription_type": _nullable({"type": "string", "enum": ["MNP", "기변", "신규"]}),
+                    "contract_type": _nullable({"type": "string", "enum": ["공시", "선약", "자급"]}),
                     "cash_price": {
                         "type": "integer",
                         "description": "현금완납가, 원 단위 정수. 만원 표기는 ×10000. 음수 = 차비(페이백) 지급",
                     },
-                    "plan_name": {"type": ["string", "null"]},
-                    "plan_fee": {"type": ["integer", "null"], "description": "요금제 월정액 정가(원)"},
+                    "plan_name": _nullable({"type": "string"}),
+                    "plan_fee": _nullable({"type": "integer"}, "요금제 월정액 정가(원)"),
                     "estimated": {"type": "boolean", "description": "월청구 공식 등으로 추정한 값이면 true"},
-                    "add_condition": {
-                        "type": ["string", "null"],
-                        "description": "부가 조건. 결합/제휴카드/온누리 체감가 행은 반드시 해당 키워드 포함",
-                    },
+                    "add_condition": _nullable(
+                        {"type": "string"},
+                        "부가 조건. 결합/제휴카드/온누리 체감가 행은 반드시 해당 키워드 포함"),
                     "confidence": {"type": "number", "description": "0~1"},
                 },
                 "required": ["model_name", "storage_gb", "carrier", "subscription_type",
