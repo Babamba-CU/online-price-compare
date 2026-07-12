@@ -36,6 +36,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 25
+    # 데이터 전용 커밋([data-only])은 git 미러 모드가 라이브 반영 — 이미지 재빌드 불필요
+    if: ${{ !contains(github.event.head_commit.message, '[data-only]') }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

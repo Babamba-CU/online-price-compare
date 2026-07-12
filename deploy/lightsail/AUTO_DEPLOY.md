@@ -20,6 +20,7 @@ GitHub 저장소 → **Settings → Secrets and variables → Actions → New re
 | `NAVER_CLIENT_SECRET` | 네이버 검색 API 시크릿 | 선택 |
 | `GIT_RAW_BASE` | git 미러 모드 raw URL (예: `https://raw.githubusercontent.com/Babamba-CU/online-price-compare/main`) | 선택 — 설정 시 **데이터·화면은 커밋만으로 배포 없이 최신화** |
 | `GIT_SYNC_TOKEN` | 위 저장소 읽기 토큰(비공개 repo 시 — GitHub fine-grained PAT, contents:read) | 선택 |
+| `ANTHROPIC_API_KEY` | Claude API 키 (console.anthropic.com) — **daily-vision.yml**이 카카오 시세표 이미지를 무인 판독하는 데 사용 (Haiku 4.5 기본, 월 ~$8 수준) | 선택 — 없으면 이미지 판독 skip, 텍스트 수집만 |
 
 ### git 미러 모드 (배포 빈도 최소화)
 `GIT_RAW_BASE` 를 설정하면 컨테이너가 60분(기본)마다 저장소의 `index.html`/`*_data.js` 를
