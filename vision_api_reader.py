@@ -128,9 +128,12 @@ def read_image(client: anthropic.Anthropic, entry: dict, model: str) -> dict | N
         _log(f"{entry['file']} 읽기 실패: {e!r}")
         return None
     try:
-        resp = client.messages.create(
+        # 빽빽한 시세표는 출력이 8K 토큰을 훌쩍 넘김(실측) → 스트리밍 + 32K 상한.
+        # 표 전사 작업이라 thinking 은 끔(출력 예산·비용 절약, Sonnet 5는 미지정 시 adaptive).
+        with client.messages.stream(
             model=model,
-            max_tokens=8000,
+            max_tokens=32000,
+            thinking={"type": "disabled"},
             output_config={"format": {"type": "json_schema", "schema": SCHEMA}},
             messages=[{
                 "role": "user",
@@ -141,7 +144,8 @@ def read_image(client: anthropic.Anthropic, entry: dict, model: str) -> dict | N
                      "text": PROMPT.format(context=(entry.get("context") or "(없음)")[:600])},
                 ],
             }],
-        )
+        ) as stream:
+            resp = stream.get_final_message()
     except anthropic.RateLimitError:
         _log(f"{model} rate limit — SDK 재시도 소진, 이미지 스킵")
         return None
