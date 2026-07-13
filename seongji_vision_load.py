@@ -29,9 +29,11 @@ from seongji_db import aggregate_daily, connect, init_db, insert_prices, log_run
 DATA_PATH = Path(__file__).parent / "seongji_vision_data.json"
 PRICE_SANITY = (-500_000, 3_000_000)
 MIN_CONFIDENCE = 0.6
-# 신선도(사용자 확정 2026-07-13): 게시 7일 이내 판독분만 적재 — 옛 시세가
-# '오늘'로 재스탬프되어 최신처럼 보이는 왜곡 방지.
-FRESH_DAYS = int(os.getenv("VISION_FRESH_DAYS", "7"))
+# 신선도(사용자 확정 2026-07-13, 구현 수정): posted_at 은 신뢰 불가 —
+# 매장들이 옛 게시글의 이미지를 제자리 교체해 게시일이 2023~2025로 남는다(실측).
+# 대신 '자동화 판독분(reader 태그)만 적재'한다: 배치는 항상 채널의 현재 노출
+# 이미지를 받으므로 판독 시점이 곧 신선도. 6월 레거시 판독분(무태그)은 제외.
+INCLUDE_LEGACY = os.getenv("VISION_INCLUDE_LEGACY", "") == "1"
 # 비휴대폰 제외(사용자 확정): 워치/태블릿/버즈 등 — 저가·키즈폰은 유지
 NON_PHONE_RE = re.compile(r"(?i)watch|워치|buds|버즈|\btab\b|태블릿|ipad|아이패드|플립\s*워치")
 
@@ -65,20 +67,19 @@ def load() -> dict:
     n_posts = n_prices = 0
     snapshots: set[str] = set()
 
-    # 신선도 필터: 게시일(posted_at)이 FRESH_DAYS 이내인 판독분만 적재
-    cutoff = (date.today() - timedelta(days=FRESH_DAYS)).isoformat()
-    fresh, stale, nonphone = [], 0, 0
+    # 신선도 필터: 자동화 판독분(reader 태그)만 적재 — 레거시(6월 수동 판독)는
+    # 이미지 교체 여부를 알 수 없어 제외. 비휴대폰(워치 등)도 제외.
+    fresh, legacy, nonphone = [], 0, 0
     for it in items:
         if NON_PHONE_RE.search(it.get("model_name") or ""):
             nonphone += 1
             continue
-        posted = (it.get("posted_at") or "")[:10]
-        if posted and posted < cutoff:
-            stale += 1
+        if not it.get("reader") and not INCLUDE_LEGACY:
+            legacy += 1
             continue
         fresh.append(it)
-    if stale or nonphone:
-        _log(f"신선도 필터: {stale}행 제외(게시 {FRESH_DAYS}일 초과) · 비휴대폰 {nonphone}행 제외")
+    if legacy or nonphone:
+        _log(f"신선도 필터: 레거시 {legacy}행 제외(reader 태그 없음) · 비휴대폰 {nonphone}행 제외")
     items = fresh
 
     # 게시글 단위로 그룹화 (한 게시글 이미지에서 여러 행)

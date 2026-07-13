@@ -36,7 +36,7 @@ jobs:
           python-version: '3.12'
 
       - name: 의존성
-        run: pip install --quiet anthropic requests
+        run: pip install --quiet anthropic requests pillow
 
       - name: Preflight — ANTHROPIC_API_KEY 확인
         run: |

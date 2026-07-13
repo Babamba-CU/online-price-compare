@@ -69,7 +69,9 @@ SCHEMA = {
                 "properties": {
                     "model_name": {
                         "type": "string",
-                        "description": "정규화 모델명 (예: Galaxy S26 Ultra, iPhone 17 Pro Max, Galaxy Z Flip 7)",
+                        "description": ("정규화 모델명 — 영문 공식 표기로: 플러스→+, 울트라→Ultra, "
+                                        "프로맥스→Pro Max, 에어→Air (예: Galaxy S26+, Galaxy S26 Ultra, "
+                                        "iPhone 17 Pro Max, iPhone Air, Galaxy Z Flip 7, Galaxy A17)"),
                     },
                     "storage_gb": _nullable({"type": "integer"}),
                     "carrier": _nullable({"type": "string", "enum": ["SKT", "KT", "LGU+", "알뜰"]}),
@@ -130,12 +132,49 @@ def _log(msg: str) -> None:
     print(f"[vision-api] {msg}", file=sys.stderr, flush=True)
 
 
+def _image_blocks(path: str) -> list[dict] | None:
+    """이미지 → API image 블록 목록.
+
+    세로 2,400px 초과 시세표는 API가 2,576px로 자동 축소해 작은 행 라벨
+    ('현금가/적용가')이 뭉개진다(실측: 6,137px 이미지에서 행 혼입 발생).
+    → 원본 해상도를 유지한 채 세로로 겹침(150px) 분할해 여러 블록으로 전송.
+    """
+    MAX_H, OVERLAP = 2300, 150
+    try:
+        raw = Path(path).read_bytes()
+    except OSError as e:
+        _log(f"{path} 읽기 실패: {e!r}")
+        return None
+    try:
+        import io
+        from PIL import Image
+        img = Image.open(io.BytesIO(raw))
+        w, h = img.size
+    except Exception:  # pillow 없음/손상 — 단일 블록 폴백
+        return [{"type": "image", "source": {"type": "base64", "media_type": "image/jpeg",
+                                             "data": base64.standard_b64encode(raw).decode()}}]
+    if h <= int(MAX_H * 1.15):
+        return [{"type": "image", "source": {"type": "base64", "media_type": "image/jpeg",
+                                             "data": base64.standard_b64encode(raw).decode()}}]
+    blocks = []
+    y = 0
+    while y < h:
+        piece = img.crop((0, y, w, min(y + MAX_H, h))).convert("RGB")
+        buf = io.BytesIO()
+        piece.save(buf, format="JPEG", quality=88)
+        blocks.append({"type": "image", "source": {"type": "base64", "media_type": "image/jpeg",
+                                                   "data": base64.standard_b64encode(buf.getvalue()).decode()}})
+        if y + MAX_H >= h:
+            break
+        y += MAX_H - OVERLAP
+    _log(f"{Path(path).name}: 세로 {h}px → {len(blocks)}조각 분할 전송(원본 해상도 유지)")
+    return blocks
+
+
 def read_image(client: anthropic.Anthropic, entry: dict, model: str) -> dict | None:
     """이미지 1장 판독. 반환: 스키마 준수 dict 또는 None(호출 실패)."""
-    try:
-        img_b64 = base64.standard_b64encode(Path(entry["file"]).read_bytes()).decode()
-    except OSError as e:
-        _log(f"{entry['file']} 읽기 실패: {e!r}")
+    blocks = _image_blocks(entry["file"])
+    if blocks is None:
         return None
     try:
         # 빽빽한 시세표는 출력이 8K 토큰을 훌쩍 넘김(실측) → 스트리밍 + 32K 상한.
@@ -148,10 +187,12 @@ def read_image(client: anthropic.Anthropic, entry: dict, model: str) -> dict | N
             messages=[{
                 "role": "user",
                 "content": [
-                    {"type": "image",
-                     "source": {"type": "base64", "media_type": "image/jpeg", "data": img_b64}},
+                    *blocks,
                     {"type": "text",
-                     "text": PROMPT.format(context=(entry.get("context") or "(없음)")[:600])},
+                     "text": (("이미지가 세로로 길어 여러 조각으로 나뉘어 있다 — 위에서 아래로 이어지는 "
+                               "하나의 시세표다. 열 헤더는 첫 조각에 있고, 조각 경계에 겹침이 있으니 "
+                               "중복 행은 한 번만 추출하라.\n\n" if len(blocks) > 1 else "")
+                              + PROMPT.format(context=(entry.get("context") or "(없음)")[:600]))},
                 ],
             }],
         ) as stream:
@@ -190,6 +231,12 @@ def to_items(entry: dict, result: dict) -> list[dict]:
     """판독 결과 → seongji_vision_data.json 아이템 (기존 세션 판독과 동일 스키마)."""
     today = date.today().isoformat()
     snap = result.get("board_date") or today
+    # 기준일 sanity: 40일 이상 과거/미래면 연도 오독(예: 2026→2025)으로 보고 오늘로 대체
+    try:
+        if abs((date.fromisoformat(snap) - date.today()).days) > 40:
+            snap = today
+    except ValueError:
+        snap = today
     items = []
     for row in result.get("rows", []):
         if not _sane(row) or row.get("confidence", 0) < 0.5:
