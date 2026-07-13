@@ -18,8 +18,10 @@ JSON 스키마:
 from __future__ import annotations
 
 import json
+import os
+import re
 import sys
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from seongji_db import aggregate_daily, connect, init_db, insert_prices, log_run, upsert_post
@@ -29,14 +31,13 @@ PRICE_SANITY = (-500_000, 3_000_000)
 MIN_CONFIDENCE = 0.6
 # 신선도(사용자 확정 2026-07-13): 게시 7일 이내 판독분만 적재 — 옛 시세가
 # '오늘'로 재스탬프되어 최신처럼 보이는 왜곡 방지.
-FRESH_DAYS = int(__import__("os").getenv("VISION_FRESH_DAYS", "7"))
+FRESH_DAYS = int(os.getenv("VISION_FRESH_DAYS", "7"))
 # 비휴대폰 제외(사용자 확정): 워치/태블릿/버즈 등 — 저가·키즈폰은 유지
 NON_PHONE_RE = re.compile(r"(?i)watch|워치|buds|버즈|\btab\b|태블릿|ipad|아이패드|플립\s*워치")
 
 # 사용자 확정 제외 규칙 (2026-06-13):
 #  - 결합(인터넷+TV)·제휴카드 조건 포함가 → 순수 단말 시세가 아니므로 제외
 #  - 온누리상품권 반영 '체감가' → 실결제액 왜곡이므로 제외
-import re
 EXCLUDE_CONDITION_RE = re.compile(
     r"결합|인터넷\s*\+?\s*TV|제휴\s*카드|온누리|체감가")
 
@@ -65,7 +66,7 @@ def load() -> dict:
     snapshots: set[str] = set()
 
     # 신선도 필터: 게시일(posted_at)이 FRESH_DAYS 이내인 판독분만 적재
-    cutoff = (date.today() - __import__("datetime").timedelta(days=FRESH_DAYS)).isoformat()
+    cutoff = (date.today() - timedelta(days=FRESH_DAYS)).isoformat()
     fresh, stale, nonphone = [], 0, 0
     for it in items:
         if NON_PHONE_RE.search(it.get("model_name") or ""):
