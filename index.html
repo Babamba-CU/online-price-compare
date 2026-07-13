@@ -2137,8 +2137,8 @@
       const m = cond.match(/시세표기준일\s*(\d{4}-\d{2}-\d{2})/);
       return { est: cond.includes("월청구추정"), boardDate: m ? m[1] : null };
     }
-    // 결합(인터넷+TV)·제휴카드·온누리 체감가 등 조건부 가격 여부
-    const COND_RE = /결합|인터넷|TV|제휴|온누리|체감/;
+    // 결합(인터넷+TV)·제휴카드·온누리 체감가·이벤트/페스티벌 적용가 등 조건부 가격 여부
+    const COND_RE = /결합|인터넷|TV|제휴|온누리|체감|페스티벌|이벤트|적용가|추가페이백/;
     const isConditional = r => COND_RE.test(r.add_condition || "");
 
     // 가입유형 미표기 → MNP(번호이동) 간주 — 통계 근거: 미표기 행 가격이 88.5% 조합에서
