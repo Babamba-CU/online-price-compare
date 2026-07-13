@@ -19,6 +19,7 @@ jobs:
     timeout-minutes: 45
     permissions:
       contents: write
+      actions: write   # 데이터 커밋 후 배포 워크플로 직접 호출용
     env:
       TZ: Asia/Seoul
       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -67,6 +68,13 @@ jobs:
           fi
           git commit -m "일일 카카오 시세표 자동 수집 $(date +%F) [data-only]
 
-          - Claude API(Vision) 무인 판독 + 텍스트 수집 + 재빌드
-          - 라이브 반영은 git 미러 모드가 담당 (배포 불필요)"
+          - Claude API(Vision) 무인 판독 + 텍스트 수집 + 재빌드"
           git push
+          echo "COMMITTED=1" >> "$GITHUB_ENV"
+
+      - name: 5) 배포 체인 호출
+        # GITHUB_TOKEN 푸시는 워크플로를 트리거하지 못함(재귀 방지) → 직접 dispatch
+        if: env.COMMITTED == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run deploy-lightsail.yml --ref main
