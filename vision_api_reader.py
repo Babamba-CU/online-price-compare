@@ -100,6 +100,9 @@ SCHEMA = {
     "additionalProperties": False,
 }
 
+# 주의: 이 프롬프트에는 예시 JSON의 리터럴 중괄호({cash_price: ...})가 들어 있다.
+# str.format() 을 쓰면 {cash_price} 를 치환 필드로 오인해 KeyError 가 난다(2026-07-14 CI 크래시 원인).
+# 유일한 치환자 {context} 는 반드시 .replace("{context}", ...) 로만 채운다 — .format() 금지.
 PROMPT = """한국 휴대폰 성지 매장의 카카오채널 게시 이미지다. 시세표라면 표를 판독해 휴대폰 단가 행을 추출하라.
 
 ## 1단계: 표 구조 먼저 파악하라 (추출 전에)
@@ -196,7 +199,7 @@ def read_image(client: anthropic.Anthropic, entry: dict, model: str) -> dict | N
                      "text": (("이미지가 세로로 길어 여러 조각으로 나뉘어 있다 — 위에서 아래로 이어지는 "
                                "하나의 시세표다. 열 헤더는 첫 조각에 있고, 조각 경계에 겹침이 있으니 "
                                "중복 행은 한 번만 추출하라.\n\n" if len(blocks) > 1 else "")
-                              + PROMPT.format(context=(entry.get("context") or "(없음)")[:600]))},
+                              + PROMPT.replace("{context}", (entry.get("context") or "(없음)")[:600]))},
                 ],
             }],
         ) as stream:
