@@ -44858,6 +44858,1930 @@
      "median": 160000,
      "min": 160000
     }
+   ]
+  },
+  "2026-08-12": {
+   "agg": [
+    {
+     "model": "Galaxy A17",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 26,
+     "median": -190000,
+     "min": -320000
+    },
+    {
+     "model": "Galaxy A17",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 18,
+     "median": -150000,
+     "min": -300000
+    },
+    {
+     "model": "Galaxy A17",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 24,
+     "median": -20000,
+     "min": -230000
+    },
+    {
+     "model": "Galaxy A17",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 8,
+     "median": -50000,
+     "min": -170000
+    },
+    {
+     "model": "Galaxy Buddy5",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 5,
+     "median": -200000,
+     "min": -350000
+    },
+    {
+     "model": "Galaxy Buddy5",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 2,
+     "median": -20000,
+     "min": -20000
+    },
+    {
+     "model": "Galaxy Quantum6",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 4,
+     "median": -230000,
+     "min": -280000
+    },
+    {
+     "model": "Galaxy Quantum6",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 5,
+     "median": -110000,
+     "min": -110000
+    },
+    {
+     "model": "Galaxy Quantum6",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 4,
+     "median": -110000,
+     "min": -110000
+    },
+    {
+     "model": "Galaxy Quantum6",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 4,
+     "median": -110000,
+     "min": -110000
+    },
+    {
+     "model": "Galaxy Quantum6",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 9,
+     "median": -50000,
+     "min": -160000
+    },
+    {
+     "model": "Galaxy Quantum6",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 4,
+     "median": -30000,
+     "min": -30000
+    },
+    {
+     "model": "Galaxy S25",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 49,
+     "median": -190000,
+     "min": -500000
+    },
+    {
+     "model": "Galaxy S25",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 48,
+     "median": -120000,
+     "min": -420000
+    },
+    {
+     "model": "Galaxy S25",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 61,
+     "median": 30000,
+     "min": -400000
+    },
+    {
+     "model": "Galaxy S25",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 60,
+     "median": 135000,
+     "min": -290000
+    },
+    {
+     "model": "Galaxy S25",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 83,
+     "median": 70000,
+     "min": -250000
+    },
+    {
+     "model": "Galaxy S25",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 79,
+     "median": 380000,
+     "min": -500000
+    },
+    {
+     "model": "Galaxy S25 Edge",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 65,
+     "median": -10000,
+     "min": -350000
+    },
+    {
+     "model": "Galaxy S25 Edge",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 69,
+     "median": -20000,
+     "min": -460000
+    },
+    {
+     "model": "Galaxy S25 Edge",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 64,
+     "median": -10000,
+     "min": -310000
+    },
+    {
+     "model": "Galaxy S25 Edge",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 64,
+     "median": 40000,
+     "min": -480000
+    },
+    {
+     "model": "Galaxy S25 Edge",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 79,
+     "median": 150000,
+     "min": -410000
+    },
+    {
+     "model": "Galaxy S25 Edge",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 73,
+     "median": 430000,
+     "min": -230000
+    },
+    {
+     "model": "Galaxy S25 FE",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 58,
+     "median": -40000,
+     "min": -500000
+    },
+    {
+     "model": "Galaxy S25 FE",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 57,
+     "median": 150000,
+     "min": -480000
+    },
+    {
+     "model": "Galaxy S25 FE",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 50,
+     "median": -410000,
+     "min": -500000
+    },
+    {
+     "model": "Galaxy S25 FE",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 54,
+     "median": -10000,
+     "min": -400000
+    },
+    {
+     "model": "Galaxy S25 FE",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 58,
+     "median": -90000,
+     "min": -350000
+    },
+    {
+     "model": "Galaxy S25 FE",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 56,
+     "median": 160000,
+     "min": -100000
+    },
+    {
+     "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 54,
+     "median": 345000,
+     "min": -280000
+    },
+    {
+     "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 51,
+     "median": 330000,
+     "min": -240000
+    },
+    {
+     "model": "Galaxy S25 Ultra",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 67,
+     "median": 570000,
+     "min": -320000
+    },
+    {
+     "model": "Galaxy S25 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 66,
+     "median": 660000,
+     "min": -180000
+    },
+    {
+     "model": "Galaxy S25 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 86,
+     "median": 580000,
+     "min": -210000
+    },
+    {
+     "model": "Galaxy S25 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 76,
+     "median": 880000,
+     "min": -100000
+    },
+    {
+     "model": "Galaxy S25+",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 46,
+     "median": -40000,
+     "min": -420000
+    },
+    {
+     "model": "Galaxy S25+",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 46,
+     "median": 10000,
+     "min": -490000
+    },
+    {
+     "model": "Galaxy S25+",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 57,
+     "median": 220000,
+     "min": -460000
+    },
+    {
+     "model": "Galaxy S25+",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 58,
+     "median": 310000,
+     "min": -360000
+    },
+    {
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 79,
+     "median": 250000,
+     "min": -460000
+    },
+    {
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 68,
+     "median": 575000,
+     "min": -360000
+    },
+    {
+     "model": "Galaxy S26",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 108,
+     "median": -30000,
+     "min": -440000
+    },
+    {
+     "model": "Galaxy S26",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 108,
+     "median": 90000,
+     "min": -280000
+    },
+    {
+     "model": "Galaxy S26",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 102,
+     "median": 140000,
+     "min": -460000
+    },
+    {
+     "model": "Galaxy S26",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 102,
+     "median": 170000,
+     "min": -450000
+    },
+    {
+     "model": "Galaxy S26",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 129,
+     "median": 220000,
+     "min": -490000
+    },
+    {
+     "model": "Galaxy S26",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 124,
+     "median": 370000,
+     "min": -380000
+    },
+    {
+     "model": "Galaxy S26 Ultra",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 121,
+     "median": 510000,
+     "min": -50000
+    },
+    {
+     "model": "Galaxy S26 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 122,
+     "median": 610000,
+     "min": 10000
+    },
+    {
+     "model": "Galaxy S26 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 116,
+     "median": 670000,
+     "min": -10000
+    },
+    {
+     "model": "Galaxy S26 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 115,
+     "median": 700000,
+     "min": 70000
+    },
+    {
+     "model": "Galaxy S26 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 119,
+     "median": 740000,
+     "min": 40000
+    },
+    {
+     "model": "Galaxy S26 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 111,
+     "median": 900000,
+     "min": 120000
+    },
+    {
+     "model": "Galaxy S26+",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 124,
+     "median": 195000,
+     "min": -480000
+    },
+    {
+     "model": "Galaxy S26+",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 124,
+     "median": 300000,
+     "min": -390000
+    },
+    {
+     "model": "Galaxy S26+",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 128,
+     "median": 435000,
+     "min": -290000
+    },
+    {
+     "model": "Galaxy S26+",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 113,
+     "median": 430000,
+     "min": -450000
+    },
+    {
+     "model": "Galaxy S26+",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 113,
+     "median": 470000,
+     "min": -330000
+    },
+    {
+     "model": "Galaxy S26+",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 123,
+     "median": 575000,
+     "min": -180000
+    },
+    {
+     "model": "Galaxy Wide8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 10,
+     "median": -150000,
+     "min": -230000
+    },
+    {
+     "model": "Galaxy Z Flip 7",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 50,
+     "median": 230000,
+     "min": -70000
+    },
+    {
+     "model": "Galaxy Z Flip 7",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 41,
+     "median": 310000,
+     "min": 10000
+    },
+    {
+     "model": "Galaxy Z Flip 7",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 41,
+     "median": 370000,
+     "min": 70000
+    },
+    {
+     "model": "Galaxy Z Flip 7",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 65,
+     "median": 350000,
+     "min": 50000
+    },
+    {
+     "model": "Galaxy Z Flip 7",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 49,
+     "median": 360000,
+     "min": 110000
+    },
+    {
+     "model": "Galaxy Z Flip 7",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 64,
+     "median": 730000,
+     "min": 130000
+    },
+    {
+     "model": "Galaxy Z Flip 7 FE",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 12,
+     "median": 340000,
+     "min": -200000
+    },
+    {
+     "model": "Galaxy Z Flip 7 FE",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 10,
+     "median": 260000,
+     "min": -40000
+    },
+    {
+     "model": "Galaxy Z Flip 7 FE",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 10,
+     "median": 410000,
+     "min": 110000
+    },
+    {
+     "model": "Galaxy Z Flip 7 FE",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 12,
+     "median": 420000,
+     "min": 120000
+    },
+    {
+     "model": "Galaxy Z Flip 7 FE",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 10,
+     "median": 420000,
+     "min": 120000
+    },
+    {
+     "model": "Galaxy Z Flip 7 FE",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 10,
+     "median": 430000,
+     "min": 130000
+    },
+    {
+     "model": "Galaxy Z Fold 5",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 5,
+     "median": 300000,
+     "min": 0
+    },
+    {
+     "model": "Galaxy Z Fold 5",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 5,
+     "median": 640000,
+     "min": 340000
+    },
+    {
+     "model": "Galaxy Z Fold 7",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 62,
+     "median": 1170000,
+     "min": 370000
+    },
+    {
+     "model": "Galaxy Z Fold 7",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 45,
+     "median": 1200000,
+     "min": 390000
+    },
+    {
+     "model": "Galaxy Z Fold 7",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 62,
+     "median": 1270000,
+     "min": 370000
+    },
+    {
+     "model": "Galaxy Z Fold 7",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 45,
+     "median": 1250000,
+     "min": 320000
+    },
+    {
+     "model": "Galaxy Z Fold 7",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 64,
+     "median": 1250000,
+     "min": 430000
+    },
+    {
+     "model": "Galaxy Z Fold 7",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 65,
+     "median": 1560000,
+     "min": 490000
+    },
+    {
+     "model": "iPhone 15 Pro",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 15,
+     "median": 290000,
+     "min": -10000
+    },
+    {
+     "model": "iPhone 15 Pro",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 15,
+     "median": 450000,
+     "min": 150000
+    },
+    {
+     "model": "iPhone 16",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 60,
+     "median": -140000,
+     "min": -350000
+    },
+    {
+     "model": "iPhone 16",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 16,
+     "median": 30000,
+     "min": -270000
+    },
+    {
+     "model": "iPhone 16",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 59,
+     "median": 340000,
+     "min": -120000
+    },
+    {
+     "model": "iPhone 16",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 16,
+     "median": 200000,
+     "min": -100000
+    },
+    {
+     "model": "iPhone 16",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 19,
+     "median": 660000,
+     "min": 50000
+    },
+    {
+     "model": "iPhone 16",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 19,
+     "median": 730000,
+     "min": 430000
+    },
+    {
+     "model": "iPhone 16 Pro",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 35,
+     "median": 310000,
+     "min": -220000
+    },
+    {
+     "model": "iPhone 16 Pro",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 19,
+     "median": 350000,
+     "min": 20000
+    },
+    {
+     "model": "iPhone 16 Pro",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 35,
+     "median": 520000,
+     "min": 170000
+    },
+    {
+     "model": "iPhone 16 Pro",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 19,
+     "median": 520000,
+     "min": 190000
+    },
+    {
+     "model": "iPhone 16 Pro",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 19,
+     "median": 710000,
+     "min": 340000
+    },
+    {
+     "model": "iPhone 16 Pro",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 19,
+     "median": 650000,
+     "min": 630000
+    },
+    {
+     "model": "iPhone 16 Pro Max",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 31,
+     "median": 510000,
+     "min": 140000
+    },
+    {
+     "model": "iPhone 16 Pro Max",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 16,
+     "median": 680000,
+     "min": 380000
+    },
+    {
+     "model": "iPhone 16 Pro Max",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 16,
+     "median": 685000,
+     "min": 550000
+    },
+    {
+     "model": "iPhone 16 Pro Max",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 15,
+     "median": 1000000,
+     "min": 700000
+    },
+    {
+     "model": "iPhone 16 Pro Max",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 31,
+     "median": 1000000,
+     "min": 520000
+    },
+    {
+     "model": "iPhone 16 Pro Max",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 15,
+     "median": 1310000,
+     "min": 630000
+    },
+    {
+     "model": "iPhone 16e",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 11,
+     "median": -130000,
+     "min": -430000
+    },
+    {
+     "model": "iPhone 16e",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 11,
+     "median": -300000,
+     "min": -300000
+    },
+    {
+     "model": "iPhone 17",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 106,
+     "median": 30000,
+     "min": -500000
+    },
+    {
+     "model": "iPhone 17",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 105,
+     "median": 240000,
+     "min": -370000
+    },
+    {
+     "model": "iPhone 17",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 108,
+     "median": 210000,
+     "min": -350000
+    },
+    {
+     "model": "iPhone 17",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 105,
+     "median": 410000,
+     "min": -330000
+    },
+    {
+     "model": "iPhone 17",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 105,
+     "median": 420000,
+     "min": -240000
+    },
+    {
+     "model": "iPhone 17",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 108,
+     "median": 580000,
+     "min": -260000
+    },
+    {
+     "model": "iPhone 17 Pro",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 109,
+     "median": 520000,
+     "min": -160000
+    },
+    {
+     "model": "iPhone 17 Pro",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 107,
+     "median": 720000,
+     "min": -180000
+    },
+    {
+     "model": "iPhone 17 Pro",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 109,
+     "median": 700000,
+     "min": -80000
+    },
+    {
+     "model": "iPhone 17 Pro",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 108,
+     "median": 870000,
+     "min": -120000
+    },
+    {
+     "model": "iPhone 17 Pro",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 107,
+     "median": 920000,
+     "min": 0
+    },
+    {
+     "model": "iPhone 17 Pro",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 109,
+     "median": 1070000,
+     "min": -40000
+    },
+    {
+     "model": "iPhone 17 Pro Max",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 92,
+     "median": 1140000,
+     "min": 30000
+    },
+    {
+     "model": "iPhone 17 Pro Max",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 94,
+     "median": 1050000,
+     "min": -50000
+    },
+    {
+     "model": "iPhone 17 Pro Max",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 94,
+     "median": 1110000,
+     "min": 40000
+    },
+    {
+     "model": "iPhone 17 Pro Max",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 92,
+     "median": 1300000,
+     "min": 160000
+    },
+    {
+     "model": "iPhone 17 Pro Max",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 94,
+     "median": 1310000,
+     "min": 40000
+    },
+    {
+     "model": "iPhone 17 Pro Max",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 94,
+     "median": 1510000,
+     "min": 160000
+    },
+    {
+     "model": "iPhone 17e",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 15,
+     "median": 200000,
+     "min": -100000
+    },
+    {
+     "model": "iPhone 17e",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 17,
+     "median": 270000,
+     "min": -30000
+    },
+    {
+     "model": "iPhone 17e",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 15,
+     "median": 320000,
+     "min": 20000
+    },
+    {
+     "model": "iPhone 17e",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 15,
+     "median": 340000,
+     "min": 30000
+    },
+    {
+     "model": "iPhone 17e",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 15,
+     "median": 350000,
+     "min": 50000
+    },
+    {
+     "model": "iPhone 17e",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 17,
+     "median": 610000,
+     "min": 310000
+    },
+    {
+     "model": "iPhone Air",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 89,
+     "median": -250000,
+     "min": -500000
+    },
+    {
+     "model": "iPhone Air",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 95,
+     "median": 670000,
+     "min": -280000
+    },
+    {
+     "model": "iPhone Air",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 99,
+     "median": 580000,
+     "min": -230000
+    },
+    {
+     "model": "iPhone Air",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 97,
+     "median": 590000,
+     "min": -260000
+    },
+    {
+     "model": "iPhone Air",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 106,
+     "median": 710000,
+     "min": -460000
+    },
+    {
+     "model": "iPhone Air",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 108,
+     "median": 810000,
+     "min": -490000
+    },
+    {
+     "model": "Galaxy Buddy4",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 3,
+     "median": -180000,
+     "min": -470000
+    },
+    {
+     "model": "Galaxy Buddy4",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 3,
+     "median": 10000,
+     "min": -370000
+    },
+    {
+     "model": "Galaxy Jump4",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 8,
+     "median": -150000,
+     "min": -160000
+    },
+    {
+     "model": "Galaxy Wide8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 2,
+     "median": 135000,
+     "min": -130000
+    },
+    {
+     "model": "Galaxy A17",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 5,
+     "median": 380000,
+     "min": 340000
+    },
+    {
+     "model": "Galaxy S25 엣지",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 6,
+     "median": -350000,
+     "min": -350000
+    },
+    {
+     "model": "Galaxy S25 엣지",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 6,
+     "median": -30000,
+     "min": -190000
+    },
+    {
+     "model": "Galaxy S25 엣지",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 6,
+     "median": -50000,
+     "min": -80000
+    },
+    {
+     "model": "Galaxy S25 엣지",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 5,
+     "median": 20000,
+     "min": 20000
+    },
+    {
+     "model": "Galaxy S25 엣지",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 6,
+     "median": 470000,
+     "min": 360000
+    },
+    {
+     "model": "Galaxy S25FE",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 8,
+     "median": -350000,
+     "min": -420000
+    },
+    {
+     "model": "Galaxy S25FE",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 9,
+     "median": -120000,
+     "min": -120000
+    },
+    {
+     "model": "Galaxy S25FE",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 12,
+     "median": -20000,
+     "min": -90000
+    },
+    {
+     "model": "Galaxy S25FE",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 6,
+     "median": 40000,
+     "min": -40000
+    },
+    {
+     "model": "Galaxy S25FE",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 7,
+     "median": 50000,
+     "min": 50000
+    },
+    {
+     "model": "Galaxy S25FE",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 11,
+     "median": 220000,
+     "min": 160000
+    },
+    {
+     "model": "Galaxy S25U",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 3,
+     "median": 610000,
+     "min": 610000
+    },
+    {
+     "model": "Galaxy S25U",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 3,
+     "median": 650000,
+     "min": 650000
+    },
+    {
+     "model": "Galaxy S25U",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 3,
+     "median": 700000,
+     "min": 700000
+    },
+    {
+     "model": "Galaxy S25U",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 3,
+     "median": 730000,
+     "min": 730000
+    },
+    {
+     "model": "Galaxy S25U",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 2,
+     "median": 780000,
+     "min": 780000
+    },
+    {
+     "model": "Galaxy S25U",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 3,
+     "median": 920000,
+     "min": 910000
+    },
+    {
+     "model": "iPhone 17E",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 24,
+     "median": 370000,
+     "min": -240000
+    },
+    {
+     "model": "iPhone 17E",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 24,
+     "median": 370000,
+     "min": -90000
+    },
+    {
+     "model": "iPhone 17E",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 24,
+     "median": 80000,
+     "min": -190000
+    },
+    {
+     "model": "iPhone 17E",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 24,
+     "median": 230000,
+     "min": -40000
+    },
+    {
+     "model": "iPhone 17E",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 28,
+     "median": 270000,
+     "min": 150000
+    },
+    {
+     "model": "iPhone 17E",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 28,
+     "median": 610000,
+     "min": 490000
+    },
+    {
+     "model": "Galaxy A17",
+     "carrier": "SKT",
+     "sub": "신규",
+     "count": 14,
+     "median": -130000,
+     "min": -300000
+    },
+    {
+     "model": "Galaxy A36",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 2,
+     "median": 270000,
+     "min": 270000
+    },
+    {
+     "model": "Galaxy A36",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 2,
+     "median": 390000,
+     "min": 390000
+    },
+    {
+     "model": "Galaxy Jump4",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 7,
+     "median": 150000,
+     "min": 150000
+    },
+    {
+     "model": "Galaxy Quantum 6",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 2,
+     "median": 120000,
+     "min": -160000
+    },
+    {
+     "model": "Galaxy Wide 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 2,
+     "median": 35000,
+     "min": -150000
+    },
+    {
+     "model": "Galaxy A175",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 2,
+     "median": 335000,
+     "min": -100000
+    },
+    {
+     "model": "Galaxy Z Flip7",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 3,
+     "median": 740000,
+     "min": 160000
+    },
+    {
+     "model": "Galaxy Z Flip7",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 3,
+     "median": 730000,
+     "min": 350000
+    },
+    {
+     "model": "Galaxy Z Flip7",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 3,
+     "median": 770000,
+     "min": 360000
+    },
+    {
+     "model": "Galaxy Z Flip7",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 3,
+     "median": 710000,
+     "min": 440000
+    },
+    {
+     "model": "Galaxy Z Flip7",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 3,
+     "median": 780000,
+     "min": 580000
+    },
+    {
+     "model": "Galaxy Z Flip7",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 3,
+     "median": 520000,
+     "min": 480000
+    },
+    {
+     "model": "Galaxy Z Fold7",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 4,
+     "median": 740000,
+     "min": 370000
+    },
+    {
+     "model": "Galaxy Z Fold7",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 4,
+     "median": 770000,
+     "min": 370000
+    },
+    {
+     "model": "Galaxy Z Fold7",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 4,
+     "median": 740000,
+     "min": 430000
+    },
+    {
+     "model": "Galaxy Z Fold7",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 4,
+     "median": 710000,
+     "min": 320000
+    },
+    {
+     "model": "Galaxy Z Fold7",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 4,
+     "median": 760000,
+     "min": 390000
+    },
+    {
+     "model": "Galaxy Z Fold7",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 4,
+     "median": 570000,
+     "min": 490000
+    },
+    {
+     "model": "Galaxy S25 엣지",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 2,
+     "median": -155000,
+     "min": -350000
+    },
+    {
+     "model": "Galaxy A17",
+     "carrier": "KT",
+     "sub": "신규",
+     "count": 10,
+     "median": -225000,
+     "min": -300000
+    },
+    {
+     "model": "Galaxy A17",
+     "carrier": "LGU+",
+     "sub": "신규",
+     "count": 10,
+     "median": -165000,
+     "min": -300000
+    },
+    {
+     "model": "Galaxy Quantum6",
+     "carrier": "SKT",
+     "sub": "신규",
+     "count": 4,
+     "median": 130000,
+     "min": 130000
+    },
+    {
+     "model": "Galaxy Wide8",
+     "carrier": "SKT",
+     "sub": "신규",
+     "count": 3,
+     "median": 80000,
+     "min": 80000
+    },
+    {
+     "model": "갤럭시 버디5",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 2,
+     "median": -225000,
+     "min": -250000
+    },
+    {
+     "model": "갤럭시와이드8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 2,
+     "median": -205000,
+     "min": -260000
+    },
+    {
+     "model": "갤럭시와이드8",
+     "carrier": "SKT",
+     "sub": "신규",
+     "count": 2,
+     "median": 80000,
+     "min": 80000
+    },
+    {
+     "model": "갤럭시퀀텀6",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 2,
+     "median": -160000,
+     "min": -160000
+    },
+    {
+     "model": "갤럭시퀀텀6",
+     "carrier": "SKT",
+     "sub": "신규",
+     "count": 2,
+     "median": 130000,
+     "min": 130000
+    },
+    {
+     "model": "Galaxy A17S",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 2,
+     "median": -180000,
+     "min": -180000
+    },
+    {
+     "model": "Galaxy A17S",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 2,
+     "median": -20000,
+     "min": -20000
+    },
+    {
+     "model": "Galaxy S24 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 3,
+     "median": 420000,
+     "min": 420000
+    },
+    {
+     "model": "Galaxy S24 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 3,
+     "median": 460000,
+     "min": 460000
+    },
+    {
+     "model": "Galaxy S24 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 2,
+     "median": 780000,
+     "min": 780000
+    },
+    {
+     "model": "Galaxy S24 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 2,
+     "median": 780000,
+     "min": 780000
+    },
+    {
+     "model": "Galaxy S24+",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 3,
+     "median": 420000,
+     "min": 420000
+    },
+    {
+     "model": "Galaxy S24+",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 3,
+     "median": 460000,
+     "min": 460000
+    },
+    {
+     "model": "Galaxy S24+",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 2,
+     "median": 810000,
+     "min": 810000
+    },
+    {
+     "model": "Galaxy S24+",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 2,
+     "median": 1100000,
+     "min": 1100000
+    },
+    {
+     "model": "iPhone 13",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 3,
+     "median": 350000,
+     "min": 350000
+    },
+    {
+     "model": "iPhone 13",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 3,
+     "median": 450000,
+     "min": 450000
+    },
+    {
+     "model": "iPhone 13",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 3,
+     "median": 760000,
+     "min": 760000
+    },
+    {
+     "model": "iPhone 13",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 3,
+     "median": 810000,
+     "min": 810000
+    },
+    {
+     "model": "iPhone 15",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 6,
+     "median": 840000,
+     "min": 840000
+    },
+    {
+     "model": "iPhone 15",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 6,
+     "median": 940000,
+     "min": 940000
+    },
+    {
+     "model": "iPhone 15 Pro",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 3,
+     "median": 840000,
+     "min": 840000
+    },
+    {
+     "model": "iPhone 15 Pro",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 3,
+     "median": 940000,
+     "min": 940000
+    },
+    {
+     "model": "iPhone 16+",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 2,
+     "median": 520000,
+     "min": 520000
+    },
+    {
+     "model": "iPhone 16+",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 2,
+     "median": 620000,
+     "min": 620000
+    },
+    {
+     "model": "iPhone 16+",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 2,
+     "median": 650000,
+     "min": 650000
+    },
+    {
+     "model": "iPhone 16+",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 2,
+     "median": 730000,
+     "min": 730000
+    },
+    {
+     "model": "iPhone 16E",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 3,
+     "median": 630000,
+     "min": 630000
+    },
+    {
+     "model": "iPhone 16E",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 5,
+     "median": 640000,
+     "min": -280000
+    },
+    {
+     "model": "iPhone 16E",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 3,
+     "median": 690000,
+     "min": 690000
+    },
+    {
+     "model": "iPhone 16E",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 5,
+     "median": 700000,
+     "min": -440000
+    },
+    {
+     "model": "Galaxy A16",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 5,
+     "median": -300000,
+     "min": -300000
+    },
+    {
+     "model": "Galaxy Z Flip 6",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 4,
+     "median": 210000,
+     "min": 160000
+    },
+    {
+     "model": "Galaxy Z Flip 6",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 2,
+     "median": 210000,
+     "min": 160000
+    },
+    {
+     "model": "Galaxy Z Flip 6",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 6,
+     "median": 360000,
+     "min": 310000
+    },
+    {
+     "model": "Galaxy A16",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 4,
+     "median": -320000,
+     "min": -320000
+    },
+    {
+     "model": "Galaxy A16",
+     "carrier": "SKT",
+     "sub": "신규",
+     "count": 4,
+     "median": -250000,
+     "min": -250000
+    },
+    {
+     "model": "Galaxy A16",
+     "carrier": "KT",
+     "sub": "신규",
+     "count": 4,
+     "median": -240000,
+     "min": -240000
+    },
+    {
+     "model": "Galaxy A16",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 4,
+     "median": -220000,
+     "min": -220000
+    },
+    {
+     "model": "Galaxy A16",
+     "carrier": "LGU+",
+     "sub": "신규",
+     "count": 4,
+     "median": -200000,
+     "min": -200000
+    },
+    {
+     "model": "키즈폰",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 3,
+     "median": -330000,
+     "min": -330000
+    },
+    {
+     "model": "키즈폰",
+     "carrier": "LGU+",
+     "sub": "신규",
+     "count": 3,
+     "median": -290000,
+     "min": -290000
+    },
+    {
+     "model": "키즈폰",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 3,
+     "median": -250000,
+     "min": -250000
+    },
+    {
+     "model": "키즈폰",
+     "carrier": "SKT",
+     "sub": "신규",
+     "count": 3,
+     "median": -240000,
+     "min": -240000
+    },
+    {
+     "model": "키즈폰",
+     "carrier": "KT",
+     "sub": "신규",
+     "count": 3,
+     "median": -200000,
+     "min": -200000
+    },
+    {
+     "model": "키즈폰",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 3,
+     "median": -190000,
+     "min": -190000
+    },
+    {
+     "model": "효도폰",
+     "carrier": "LGU+",
+     "sub": "신규",
+     "count": 3,
+     "median": -310000,
+     "min": -310000
+    },
+    {
+     "model": "효도폰",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 3,
+     "median": -290000,
+     "min": -290000
+    },
+    {
+     "model": "효도폰",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 3,
+     "median": -290000,
+     "min": -290000
+    },
+    {
+     "model": "효도폰",
+     "carrier": "SKT",
+     "sub": "신규",
+     "count": 3,
+     "median": -270000,
+     "min": -270000
+    },
+    {
+     "model": "효도폰",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 3,
+     "median": -220000,
+     "min": -220000
+    },
+    {
+     "model": "효도폰",
+     "carrier": "KT",
+     "sub": "신규",
+     "count": 3,
+     "median": -210000,
+     "min": -210000
+    },
+    {
+     "model": "Galaxy S25 옛지",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 2,
+     "median": -460000,
+     "min": -460000
+    },
+    {
+     "model": "Galaxy S25 옛지",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 2,
+     "median": 40000,
+     "min": 40000
+    },
+    {
+     "model": "Galaxy S25 옛지",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 2,
+     "median": 160000,
+     "min": 160000
+    }
    ],
    "stores": [
     {
@@ -51672,7 +53596,7 @@
     }
    ]
   },
-  "2026-08-12": {
+  "2026-08-13": {
    "agg": [
     {
      "model": "Galaxy A17",
