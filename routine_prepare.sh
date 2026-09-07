@@ -40,7 +40,7 @@ else
     || echo "[routine] pip 설치 실패 — 이미 설치돼 있길 기대하고 계속" >&2
   echo "[routine] 동기화" >&2
   git pull --ff-only origin main >/dev/null 2>&1 || echo "[routine] git pull 실패 — 현재 체크아웃 상태로 계속" >&2
-  if git fetch -q origin sise-batch:refs/remotes/origin/sise-batch 2>/dev/null; then
+  if git fetch -q origin "+sise-batch:refs/remotes/origin/sise-batch" 2>/dev/null; then
     echo "[routine] 배치 브랜치 sise-batch 수신 (GitHub Actions 가 미리 받은 이미지)" >&2
     rm -rf "$BATCH" && mkdir -p "$BATCH/results"
     git archive --format=tar origin/sise-batch | tar -x -C "$BATCH"
