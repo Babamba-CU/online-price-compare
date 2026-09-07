@@ -30,7 +30,10 @@ import sys
 from datetime import date
 from pathlib import Path
 
-import anthropic
+try:
+    import anthropic
+except ImportError:      # 루틴 경로(PROMPT·SCHEMA·to_items·merge 재사용)에는 SDK 가 필요 없다
+    anthropic = None
 
 BASE = Path(__file__).parent
 VISION_DATA_PATH = BASE / "seongji_vision_data.json"
@@ -296,6 +299,9 @@ def main() -> int:
 
     if not os.getenv("ANTHROPIC_API_KEY"):
         _log("ANTHROPIC_API_KEY 미설정 — 판독 건너뜀 (graceful skip)")
+        return 0
+    if anthropic is None:
+        _log("anthropic SDK 미설치 — API 판독 건너뜀 (pip install anthropic)")
         return 0
     mf = Path(args.manifest)
     if not mf.exists():

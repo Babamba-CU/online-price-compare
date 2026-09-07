@@ -1,0 +1,49 @@
+name: Fetch kakao price-table batch
+
+# 매일 KST 04:10 — 카카오 채널에서 아직 판독되지 않은 시세표 이미지(≤40장)를 받아
+# 판독 준비물(분할 조각·session_manifest.json·RULES.md)을 고아 브랜치 `sise-batch` 에 발행한다.
+# 클라우드 루틴(05:05 KST, claude.ai/code routines)이 이 브랜치를 받아 판독→병합→push 한다.
+# 이유: 클라우드 세션 샌드박스는 pf.kakao.com 으로의 egress 가 차단(403)되지만 GitHub 러너는 열려 있다.
+# 브랜치는 매일 단일 커밋으로 force-push 되므로 main 이력은 오염되지 않는다.
+on:
+  schedule:
+    - cron: '10 19 * * *'   # UTC 19:10 = KST 04:10 (다음날)
+  workflow_dispatch:
+
+concurrency:
+  group: sise-fetch
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --quiet pillow requests
+
+      - name: 신규 시세표 이미지 다운로드 + 판독 준비물 생성
+        run: |
+          rm -rf /tmp/sise_batch && mkdir -p /tmp/sise_batch
+          python seongji_vision_batch.py --channels 342 --per-channel 1 --recent-days 30 --max-images 40 \
+            || echo "::warning::이미지 다운로드 부분 실패 — 받은 것만으로 계속"
+          python vision_session_prep.py
+          date -u +%FT%TZ > /tmp/sise_batch/BATCH_CREATED_UTC
+          echo "images=$(ls /tmp/sise_batch/*.jpg 2>/dev/null | wc -l)" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 고아 브랜치 sise-batch 로 발행 (매일 교체)
+        run: |
+          cd /tmp/sise_batch
+          git init -q -b sise-batch
+          git config user.name  "sise-fetch-bot"
+          git config user.email "sise-fetch-bot@users.noreply.github.com"
+          git add -A
+          git commit -q -m "sise batch $(date +%F) — images=$(ls *.jpg 2>/dev/null | wc -l)"
+          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" HEAD:refs/heads/sise-batch

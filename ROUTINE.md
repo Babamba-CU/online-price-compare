@@ -54,13 +54,19 @@ bash routine_finalize.sh              # 3단계
 
 ## 클라우드 루틴 (2026-09-07 추가 — 맥이 꺼져 있어도 실행)
 
-로컬 예약작업과 **같은 3단계**를 Anthropic 클라우드 세션이 수행한다(claude.ai/code → Routines). 저장소가
-세션에 자동 체크아웃되고, 스크립트는 환경을 감지해(venv 없음 → `pip install pillow requests beautifulsoup4`)
-동작한다. 커밋 신원이 없으면 `seongji-routine`으로 설정하고 `git push origin HEAD:main` 한다.
+Anthropic 클라우드 세션(claude.ai/code → Routines, `성지폰 시세표 일일 루틴 (cloud)`)이 같은 3단계를 수행한다.
+**단, 클라우드 샌드박스는 `pf.kakao.com` egress 가 차단(403)** 되므로 다운로드는 GitHub Actions 가 대신한다:
 
-- 스케줄: 매일 **05:00 KST = `0 20 * * *` UTC**. 관리: https://claude.ai/code/routines
-- 실행 프롬프트는 로컬 예약작업과 동일한 3단계(`bash routine_prepare.sh 40` → 판독 → `bash routine_finalize.sh`),
-  경로만 저장소 체크아웃 루트 기준.
-- 로컬 예약작업(`daily-seongji-routine`)은 **중복 수집·push 경합 방지를 위해 비활성화**해 두고, 클라우드가
-  실패할 때만 수동 "Run now" 로 쓴다.
-- 클라우드 실행 로그 확인: 세션에서 `/schedule` → 해당 루틴 `list_runs` → `get_run_log`.
+```
+[04:10 KST  GitHub Actions sise-fetch.yml]   카카오 채널에서 신규 시세표 ≤40장 다운로드 + 분할·RULES.md
+                                             → 고아 브랜치 `sise-batch` 에 단일 커밋 force-push (main 오염 없음)
+[05:05 KST  클라우드 루틴]                    routine_prepare.sh 가 `sise-batch` 를 받아 /tmp/sise_batch 복원
+                                             → Claude 판독(results/) → routine_finalize.sh → push origin HEAD:main
+                                             → deploy-lightsail 자동 배포
+```
+
+- 스케줄: fetch `10 19 * * *` UTC(04:10 KST), 루틴 `0 20 * * *` UTC(05:05 KST). 관리: https://claude.ai/code/routines
+- 스크립트는 환경을 감지한다(venv 없음 → pip 설치 + 배치 브랜치 수신). 배치 브랜치가 없으면 직접 다운로드를 시도.
+- 커밋 신원이 없으면 `seongji-routine`으로 설정하고 `git push origin HEAD:main`.
+- 로컬 예약작업(`daily-seongji-routine`)은 **중복 수집·push 경합 방지를 위해 비활성화**, 클라우드 실패 시 수동 "Run now" 폴백.
+- 클라우드 실행 로그: 세션에서 `/schedule` → 해당 루틴 `list_runs` → `get_run_log`. fetch 워크플로: `gh run list --workflow=sise-fetch.yml`.
