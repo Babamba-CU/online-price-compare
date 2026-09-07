@@ -1,21 +1,29 @@
 #!/usr/bin/env bash
 # 일일 루틴 3단계 — 판독 결과 병합 → 전체 재빌드 → 데이터 커밋·push.
 # push 되면 deploy-lightsail.yml 이 자동 배포한다(데이터 파일 경로 트리거, ~4분).
-# 클로드 앱 예약 작업(ROUTINE.md)이 판독을 마친 뒤 호출한다. 사용: bash routine_finalize.sh
+# 이 맥과 클라우드 루틴 양쪽에서 동작(routine_prepare.sh 와 같은 환경 감지). 사용: bash routine_finalize.sh
 set -euo pipefail
 
-REPO="/Users/1108526/Documents/대시보드/온라인 단가비교"
-
-# shellcheck disable=SC1091
-source "$HOME/venvs/online-price/bin/activate"   # 사내 CA env 자동 로드
-export GH_CONFIG_DIR="$HOME/.ghconfig"           # git push 자격증명(gh credential helper)
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$REPO"
 
+if [ -f "$HOME/venvs/online-price/bin/activate" ]; then
+  # shellcheck disable=SC1091
+  source "$HOME/venvs/online-price/bin/activate"       # 사내 CA env 자동 로드
+  export GH_CONFIG_DIR="$HOME/.ghconfig"                # git push 자격증명(gh credential helper)
+  PY=python
+else
+  PY=python3
+fi
+# 커밋 신원이 없는 환경(클라우드)용 기본값 — 이미 설정돼 있으면 건드리지 않는다
+git config user.name  >/dev/null 2>&1 || git config user.name  "seongji-routine"
+git config user.email >/dev/null 2>&1 || git config user.email "seongji-routine@users.noreply.github.com"
+
 echo "[routine] 1/3 판독 결과 병합 + 스킵리스트 갱신" >&2
-python vision_session_merge.py
+$PY vision_session_merge.py
 
 echo "[routine] 2/3 재수집·재빌드 (카카오 텍스트 + vision 적재 + 데이터 JS 생성)" >&2
-python daily_collect.py finalize
+$PY daily_collect.py finalize
 
 echo "[routine] 3/3 데이터 커밋·push" >&2
 DATA="seongji_vision_data.json vision_skiplist.json seongji_data.js seongji_kakao_history.json"
@@ -41,5 +49,6 @@ if [ "$(git rev-list --count HEAD..origin/main)" != "0" ]; then
   git add -- $DATA && git commit -q --amend --no-edit
   rm -rf "$KEEP"
 fi
-git push origin main
-echo "[routine] push 완료 → Lightsail 자동 배포 진행(~4분). 확인: gh run list --workflow=deploy-lightsail.yml --limit 1" >&2
+# 체크아웃 브랜치가 무엇이든 main 으로 push (클라우드 세션은 detached/다른 브랜치일 수 있음)
+git push origin HEAD:main
+echo "[routine] push 완료 → Lightsail 자동 배포 진행(~4분)" >&2
