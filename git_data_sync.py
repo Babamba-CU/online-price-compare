@@ -7,9 +7,14 @@ Git 원격 저장소(raw) → 컨테이너 데이터 미러 — "배포 없이 �
 
 환경변수:
   GIT_RAW_BASE     (필수 — 없으면 이 모듈 비활성)
-      GitLab: https://gitlab.tde.sktelecom.com/MAMF/online-price/-/raw/main
+      GitLab(API 경로, 권장): https://gitlab.tde.sktelecom.com/api/v4/projects/36013/repository/files
+          — 사내 GitLab 은 SSO 라서 웹 raw 경로(/-/raw/main)는 토큰을 줘도 302 → 로그인 페이지.
+            base 에 '/api/v4/projects/' 가 있으면 {base}/{파일}/raw?ref={GIT_SYNC_REF} 로 요청한다.
+            (36013 = 프로젝트 ID. 'MAMF%2Fonline-price' 처럼 URL 인코딩한 경로도 가능)
+      GitLab(웹 raw, SSO 없는 인스턴스): https://gitlab.example.com/MAMF/online-price/-/raw/main
       GitHub: https://raw.githubusercontent.com/Babamba-CU/online-price-compare/main
-  GIT_SYNC_TOKEN   (선택 — 비공개 저장소 읽기 토큰.
+  GIT_SYNC_REF     (선택 — API 경로일 때 브랜치/태그, 기본 main)
+  GIT_SYNC_TOKEN   (선택 — 비공개 저장소 읽기 토큰. GitLab API 경로는 read_api 스코프 필요.
                     호스트에 'gitlab' 포함 시 PRIVATE-TOKEN 헤더, 그 외 Authorization: token)
   GIT_SYNC_FILES   (선택 — 기본 "index.html,seongji_data.js,subsidy_data.js")
   GIT_SYNC_MINUTES (선택 — 폴링 주기, 기본 60분)
@@ -25,12 +30,12 @@ import hashlib
 import os
 import sys
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
 from urllib.request import Request, urlopen
 
 LIVE_DIR = Path("/tmp/git_sync")
 DEFAULT_FILES = "index.html,seongji_data.js,subsidy_data.js"
-TIMEOUT = 20
+TIMEOUT = 60   # 소켓 대기(초). seongji_data.js 가 10MiB 를 넘어 사내망에서 넉넉히
 
 # 파일별 최소 검증 — (최소 바이트, 반드시 포함해야 할 문자열)
 VALIDATORS: dict[str, tuple[int, str]] = {
@@ -65,11 +70,25 @@ def _headers() -> dict[str, str]:
     return h
 
 
+def _url(base: str, name: str) -> str:
+    base = base.rstrip("/")
+    if "/api/v4/projects/" in base:
+        # GitLab Repository Files API — SSO 인스턴스에서도 PRIVATE-TOKEN 으로 raw 를 받을 수 있는 유일한 경로
+        ref = os.getenv("GIT_SYNC_REF", "").strip() or "main"
+        return f"{base}/{quote(name, safe='')}/raw?ref={quote(ref, safe='')}"
+    return f"{base}/{name}"
+
+
 def _fetch(base: str, name: str) -> bytes | None:
-    url = f"{base.rstrip('/')}/{name}"
+    url = _url(base, name)
     try:
         req = Request(url, headers=_headers())
         with urlopen(req, timeout=TIMEOUT) as r:
+            final = r.geturl()
+            if "sign_in" in final or "/users/" in final:
+                _log(f"{name} 다운로드 실패: 로그인 페이지로 리다이렉트({final}) — "
+                     "SSO GitLab 은 GIT_RAW_BASE 를 API 경로(/api/v4/projects/<id>/repository/files)로 두세요")
+                return None
             return r.read()
     except Exception as e:  # noqa: BLE001
         _log(f"{name} 다운로드 실패: {e!r}")

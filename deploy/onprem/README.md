@@ -47,9 +47,17 @@ docker run -d --name price -p 8080:8080 --env-file deploy/onprem/.env price-onpr
 (`index.html`, `seongji_data.js`, `subsidy_data.js`)을 주기적으로 받아 `/tmp` 에서 우선 서빙한다.
 **화면/데이터가 GitLab 에 커밋되면 재배포·재시작 없이 N분 내 반영**된다. (DB 연결 없이도 동작)
 ```bash
-GIT_RAW_BASE=https://gitlab.tde.sktelecom.com/MAMF/online-price/-/raw/main
-GIT_SYNC_TOKEN=<read_repository 권한 토큰>   # 비공개 저장소일 때
+# 사내 GitLab 은 SSO 라서 웹 raw 경로(/-/raw/main)는 토큰을 줘도 302 → 로그인 페이지로 튕긴다.
+# 반드시 Repository Files API 경로를 쓴다 (36013 = MAMF/online-price 프로젝트 ID, 2026-09-08 확인).
+GIT_RAW_BASE=https://gitlab.tde.sktelecom.com/api/v4/projects/36013/repository/files
+GIT_SYNC_TOKEN=<read_api 스코프 토큰>          # 프로젝트 Access Token(Settings → Access Tokens, Reporter, read_api) 권장
+GIT_SYNC_REF=main                            # 브랜치(기본 main)
 GIT_SYNC_MINUTES=60                          # 폴링 주기(기본 60분)
+```
+사전 점검(사내망 PC):
+```bash
+curl -sS -o /dev/null -w '%{http_code}\n' -H "PRIVATE-TOKEN: $TOK" \
+  "https://gitlab.tde.sktelecom.com/api/v4/projects/36013/repository/files/seongji_data.js/raw?ref=main"   # 200 이면 OK
 ```
 - 검증 통과 파일만 원자적으로 교체 — 절반 다운로드/오류 페이지로 라이브가 깨지지 않음.
 - 우선순위: `/tmp/git_sync` 사본 > 이미지 내장 파일. 코드(파이썬) 변경은 여전히 재배포 필요.
