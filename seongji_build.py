@@ -10,6 +10,7 @@ from collections import defaultdict
 from datetime import date, timedelta
 from pathlib import Path
 
+from model_normalize import sort_key as model_sort_key
 from seongji_db import connect, init_db, aggregate_daily
 
 OUT_PATH = Path(__file__).parent / "seongji_data.js"
@@ -20,9 +21,11 @@ BOX_WINDOW_DAYS = 14   # 박스플롯은 최근 N 일 관측치를 분포로 사
 KAKAO_SOURCES = ("kakao", "kakao_ocr")
 _KAKAO_IN = "(" + ",".join(f"'{s}'" for s in KAKAO_SOURCES) + ")"
 
-# 기존 "성지폰 단가 비교" 뷰(전국 온라인 시세)는 사이트 크롤러 소스만 보여준다.
-# 카카오(매장 좌표)·네이버(검색 피드)는 집계 차원/품질이 달라 제외.
-_NON_SITE = KAKAO_SOURCES + ("naver_cafe", "naver_web", "naver_blog")
+# "성지폰 단가 비교" 뷰(전국 온라인 시세)는 실판독 데이터(사이트 크롤러 + 카카오 시세표
+# 판독)를 모두 집계한다. 네이버(검색 피드)는 집계 차원/품질이 달라 제외.
+# 2026-09-07 변경: 기존엔 카카오 판독분까지 제외해, 실수집이 없는 사이트 크롤러 대신
+# 가짜 샘플 시드 8기종만 남아 신규 기종이 절대 뜨지 않던 구조를 수정.
+_NON_SITE = ("naver_cafe", "naver_web", "naver_blog")
 _NON_SITE_IN = "(" + ",".join(f"'{s}'" for s in _NON_SITE) + ")"
 
 
@@ -127,15 +130,15 @@ def build() -> dict:
                 "avg":               int(sum(vals) / len(vals)),
             })
 
-        # 4) 모델 옵션 (사이트 시세 뷰 전용 — 카카오 전용 모델 제외)
-        models = [r[0] for r in conn.execute(
+        # 4) 모델 옵션 — 실데이터에서 도출(하드코딩 목록 없음). 새 기종이 판독되면
+        #    자동으로 목록에 뜬다. 최신 세대가 위로 오도록 정렬(브랜드 → 세대 내림차순).
+        models = sorted({r[0] for r in conn.execute(
             f"""
             SELECT DISTINCT p.model_name
             FROM seongji_prices p JOIN seongji_posts po ON po.id = p.post_id
             WHERE po.source NOT IN {_NON_SITE_IN}
-            ORDER BY p.model_name
             """
-        )]
+        )}, key=model_sort_key)
 
         # 5) 크롤링 런 로그
         runs = [

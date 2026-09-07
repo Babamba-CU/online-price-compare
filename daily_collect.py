@@ -19,6 +19,7 @@
 """
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -58,7 +59,11 @@ def merge_and_build() -> None:
     """
     import seongji_db, seed_sample, seongji_vision_load, seongji_build
     seongji_db.DB_PATH.unlink(missing_ok=True)
-    seed_sample.seed()
+    seongji_db.init_db()
+    if os.getenv("SEONGJI_SEED") == "1":
+        # 개발/데모용 가짜 샘플 시드(seed_sample.MODELS 8기종·random 가격) — 운영 기본 OFF.
+        # 2026-09-07: 운영에서 매일 심겨 "성지폰 단가 비교" 탭이 가짜 8기종만 보이던 원인.
+        seed_sample.seed()
     _run([PY, str(BASE / "seongji_kakao.py")])                       # 카카오 텍스트
     _run([PY, str(BASE / "seongji_naver.py")])                       # 네이버 검색(키 없으면 skip)
     _run([PY, str(BASE / "seongji_crawler.py"), "--max-pages", "2"])  # 사이트(뽐뿌 등)

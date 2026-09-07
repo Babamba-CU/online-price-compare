@@ -24,6 +24,7 @@ import sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
+from model_normalize import normalize as normalize_model
 from seongji_db import aggregate_daily, connect, init_db, insert_prices, log_run, upsert_post
 
 DATA_PATH = Path(__file__).parent / "seongji_vision_data.json"
@@ -120,9 +121,12 @@ def load() -> dict:
                     it = {**it, "add_condition":
                           f"{it.get('add_condition') or ''} 시세표기준일 {orig}".strip()}
                 snapshots.add(snap)
+                # 기종명 정규화(패턴 기반, 신규 기종 자동 반영) — 원 표기는 model_raw 에 보존.
+                # Vision 이 "Galaxy S25FE"/"S25 FE"/"iPhone 17E"/"17e" 처럼 제각각 뱉어
+                # 같은 기종이 여러 항목으로 쪼개지던 문제 해결(2026-09-07).
                 price_rows.append({
                     "snapshot_date": snap,
-                    "model_name": it["model_name"],
+                    "model_name": normalize_model(it["model_name"]),
                     "model_raw": it.get("model_raw") or it["model_name"],
                     "carrier": it.get("carrier"),
                     "subscription_type": it.get("subscription_type"),
