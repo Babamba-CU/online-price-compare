@@ -62812,8 +62812,8 @@
      "model": "Galaxy A17",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 26,
-     "median": -190000,
+     "count": 31,
+     "median": -200000,
      "min": -320000
     },
     {
@@ -62826,9 +62826,17 @@
     },
     {
      "model": "Galaxy A17",
+     "carrier": "SKT",
+     "sub": "신규",
+     "count": 16,
+     "median": -130000,
+     "min": -300000
+    },
+    {
+     "model": "Galaxy A17",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 24,
+     "count": 26,
      "median": -20000,
      "min": -230000
     },
@@ -62844,17 +62852,49 @@
      "model": "Galaxy Buddy 5",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 9,
-     "median": -200000,
+     "count": 15,
+     "median": -220000,
      "min": -350000
     },
     {
      "model": "Galaxy Buddy 5",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 2,
+     "count": 5,
      "median": -20000,
-     "min": -20000
+     "min": -30000
+    },
+    {
+     "model": "Galaxy Jump 4",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 10,
+     "median": -150000,
+     "min": -200000
+    },
+    {
+     "model": "Galaxy Jump 4",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 8,
+     "median": 150000,
+     "min": 130000
+    },
+    {
+     "model": "Galaxy Jump 5",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 5,
+     "median": 90000,
+     "min": 20000
+    },
+    {
+     "model": "Galaxy Jump 5",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 3,
+     "median": 220000,
+     "min": 200000
     },
     {
      "model": "Galaxy Quantum 6",
@@ -62892,7 +62932,7 @@
      "model": "Galaxy Quantum 6",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 14,
+     "count": 19,
      "median": -50000,
      "min": -160000
     },
@@ -62900,15 +62940,31 @@
      "model": "Galaxy Quantum 6",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 5,
-     "median": -30000,
+     "count": 7,
+     "median": 70000,
      "min": -30000
+    },
+    {
+     "model": "Galaxy Quantum 6",
+     "carrier": "SKT",
+     "sub": "신규",
+     "count": 9,
+     "median": 130000,
+     "min": 130000
+    },
+    {
+     "model": "Galaxy Quantum 7",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 2,
+     "median": 230000,
+     "min": 230000
     },
     {
      "model": "Galaxy S25",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 50,
+     "count": 56,
      "median": -190000,
      "min": -500000
     },
@@ -62916,7 +62972,7 @@
      "model": "Galaxy S25",
      "carrier": "KT",
      "sub": "기변",
-     "count": 49,
+     "count": 56,
      "median": -120000,
      "min": -420000
     },
@@ -62924,7 +62980,7 @@
      "model": "Galaxy S25",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 62,
+     "count": 67,
      "median": 30000,
      "min": -400000
     },
@@ -62932,15 +62988,15 @@
      "model": "Galaxy S25",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 61,
-     "median": 130000,
+     "count": 67,
+     "median": 120000,
      "min": -290000
     },
     {
      "model": "Galaxy S25",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 83,
+     "count": 90,
      "median": 70000,
      "min": -250000
     },
@@ -62948,15 +63004,15 @@
      "model": "Galaxy S25",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 79,
-     "median": 380000,
+     "count": 85,
+     "median": 360000,
      "min": -500000
     },
     {
      "model": "Galaxy S25 Edge",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 72,
+     "count": 79,
      "median": -10000,
      "min": -350000
     },
@@ -62964,7 +63020,7 @@
      "model": "Galaxy S25 Edge",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 74,
+     "count": 81,
      "median": -20000,
      "min": -460000
     },
@@ -62972,15 +63028,15 @@
      "model": "Galaxy S25 Edge",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 71,
-     "median": -20000,
+     "count": 78,
+     "median": -40000,
      "min": -310000
     },
     {
      "model": "Galaxy S25 Edge",
      "carrier": "KT",
      "sub": "기변",
-     "count": 70,
+     "count": 77,
      "median": 30000,
      "min": -480000
     },
@@ -62988,7 +63044,7 @@
      "model": "Galaxy S25 Edge",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 88,
+     "count": 96,
      "median": 150000,
      "min": -410000
     },
@@ -62996,15 +63052,15 @@
      "model": "Galaxy S25 Edge",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 82,
-     "median": 430000,
+     "count": 90,
+     "median": 415000,
      "min": -230000
     },
     {
      "model": "Galaxy S25 FE",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 65,
+     "count": 66,
      "median": -40000,
      "min": -500000
     },
@@ -63020,7 +63076,7 @@
      "model": "Galaxy S25 FE",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 59,
+     "count": 60,
      "median": -350000,
      "min": -500000
     },
@@ -63036,7 +63092,7 @@
      "model": "Galaxy S25 FE",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 70,
+     "count": 71,
      "median": -90000,
      "min": -350000
     },
@@ -63044,7 +63100,7 @@
      "model": "Galaxy S25 FE",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 67,
+     "count": 68,
      "median": 160000,
      "min": -100000
     },
@@ -63052,7 +63108,7 @@
      "model": "Galaxy S25 Ultra",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 58,
+     "count": 65,
      "median": 350000,
      "min": -280000
     },
@@ -63060,15 +63116,15 @@
      "model": "Galaxy S25 Ultra",
      "carrier": "KT",
      "sub": "기변",
-     "count": 54,
-     "median": 410000,
+     "count": 61,
+     "median": 390000,
      "min": -240000
     },
     {
      "model": "Galaxy S25 Ultra",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 71,
+     "count": 76,
      "median": 570000,
      "min": -320000
     },
@@ -63076,7 +63132,7 @@
      "model": "Galaxy S25 Ultra",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 70,
+     "count": 76,
      "median": 660000,
      "min": -180000
     },
@@ -63084,7 +63140,7 @@
      "model": "Galaxy S25 Ultra",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 89,
+     "count": 96,
      "median": 580000,
      "min": -210000
     },
@@ -63092,7 +63148,7 @@
      "model": "Galaxy S25 Ultra",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 79,
+     "count": 85,
      "median": 880000,
      "min": -100000
     },
@@ -63100,7 +63156,7 @@
      "model": "Galaxy S25+",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 46,
+     "count": 50,
      "median": -40000,
      "min": -420000
     },
@@ -63108,7 +63164,7 @@
      "model": "Galaxy S25+",
      "carrier": "KT",
      "sub": "기변",
-     "count": 46,
+     "count": 50,
      "median": 10000,
      "min": -490000
     },
@@ -63116,7 +63172,7 @@
      "model": "Galaxy S25+",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 57,
+     "count": 62,
      "median": 220000,
      "min": -460000
     },
@@ -63124,7 +63180,7 @@
      "model": "Galaxy S25+",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 58,
+     "count": 64,
      "median": 310000,
      "min": -360000
     },
@@ -63132,15 +63188,15 @@
      "model": "Galaxy S25+",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 79,
-     "median": 250000,
+     "count": 86,
+     "median": 230000,
      "min": -460000
     },
     {
      "model": "Galaxy S25+",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 68,
+     "count": 74,
      "median": 575000,
      "min": -360000
     },
@@ -63148,95 +63204,143 @@
      "model": "Galaxy S26",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 109,
+     "count": 122,
      "median": -30000,
      "min": -440000
     },
     {
      "model": "Galaxy S26",
-     "carrier": "LGU+",
-     "sub": "기변",
-     "count": 109,
-     "median": 90000,
-     "min": -280000
-    },
-    {
-     "model": "Galaxy S26",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 104,
+     "count": 116,
      "median": 140000,
      "min": -460000
     },
     {
      "model": "Galaxy S26",
-     "carrier": "KT",
+     "carrier": "LGU+",
      "sub": "기변",
-     "count": 104,
-     "median": 170000,
-     "min": -450000
+     "count": 122,
+     "median": 90000,
+     "min": -350000
     },
     {
      "model": "Galaxy S26",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 130,
+     "count": 144,
      "median": 220000,
      "min": -490000
     },
     {
      "model": "Galaxy S26",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 116,
+     "median": 170000,
+     "min": -470000
+    },
+    {
+     "model": "Galaxy S26",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 125,
+     "count": 139,
      "median": 370000,
      "min": -380000
+    },
+    {
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 6,
+     "median": 5000,
+     "min": -120000
+    },
+    {
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 6,
+     "median": 90000,
+     "min": -120000
+    },
+    {
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 6,
+     "median": 140000,
+     "min": -110000
+    },
+    {
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 6,
+     "median": 250000,
+     "min": 180000
+    },
+    {
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 6,
+     "median": 160000,
+     "min": -90000
+    },
+    {
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 6,
+     "median": 200000,
+     "min": 30000
     },
     {
      "model": "Galaxy S26 Ultra",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 122,
+     "count": 136,
      "median": 510000,
      "min": -50000
     },
     {
      "model": "Galaxy S26 Ultra",
-     "carrier": "LGU+",
-     "sub": "기변",
-     "count": 123,
-     "median": 610000,
-     "min": 10000
-    },
-    {
-     "model": "Galaxy S26 Ultra",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 118,
+     "count": 130,
      "median": 670000,
      "min": -10000
     },
     {
      "model": "Galaxy S26 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 137,
+     "median": 610000,
+     "min": 0
+    },
+    {
+     "model": "Galaxy S26 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 134,
+     "median": 740000,
+     "min": 40000
+    },
+    {
+     "model": "Galaxy S26 Ultra",
      "carrier": "KT",
      "sub": "기변",
-     "count": 117,
+     "count": 129,
      "median": 700000,
      "min": 70000
     },
     {
      "model": "Galaxy S26 Ultra",
      "carrier": "SKT",
-     "sub": "MNP",
-     "count": 120,
-     "median": 740000,
-     "min": 40000
-    },
-    {
-     "model": "Galaxy S26 Ultra",
-     "carrier": "SKT",
      "sub": "기변",
-     "count": 112,
+     "count": 126,
      "median": 900000,
      "min": 120000
     },
@@ -63244,15 +63348,15 @@
      "model": "Galaxy S26+",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 125,
-     "median": 200000,
+     "count": 139,
+     "median": 190000,
      "min": -480000
     },
     {
      "model": "Galaxy S26+",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 125,
+     "count": 139,
      "median": 300000,
      "min": -390000
     },
@@ -63260,15 +63364,15 @@
      "model": "Galaxy S26+",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 129,
-     "median": 430000,
+     "count": 143,
+     "median": 420000,
      "min": -290000
     },
     {
      "model": "Galaxy S26+",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 115,
+     "count": 127,
      "median": 430000,
      "min": -450000
     },
@@ -63276,7 +63380,7 @@
      "model": "Galaxy S26+",
      "carrier": "KT",
      "sub": "기변",
-     "count": 115,
+     "count": 127,
      "median": 460000,
      "min": -330000
     },
@@ -63284,7 +63388,7 @@
      "model": "Galaxy S26+",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 124,
+     "count": 138,
      "median": 575000,
      "min": -180000
     },
@@ -63295,6 +63399,22 @@
      "count": 14,
      "median": -150000,
      "min": -260000
+    },
+    {
+     "model": "Galaxy Wide 8",
+     "carrier": "SKT",
+     "sub": "신규",
+     "count": 8,
+     "median": 80000,
+     "min": -160000
+    },
+    {
+     "model": "Galaxy Wide 9",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 2,
+     "median": 40000,
+     "min": 40000
     },
     {
      "model": "Galaxy Z Flip 7",
@@ -63348,7 +63468,7 @@
      "model": "Galaxy Z Flip 7 FE",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 12,
+     "count": 13,
      "median": 340000,
      "min": -200000
     },
@@ -63372,7 +63492,7 @@
      "model": "Galaxy Z Flip 7 FE",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 12,
+     "count": 13,
      "median": 420000,
      "min": 120000
     },
@@ -63391,6 +63511,54 @@
      "count": 10,
      "median": 430000,
      "min": 130000
+    },
+    {
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 13,
+     "median": 420000,
+     "min": -160000
+    },
+    {
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 13,
+     "median": 440000,
+     "min": -160000
+    },
+    {
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 13,
+     "median": 500000,
+     "min": -110000
+    },
+    {
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 13,
+     "median": 680000,
+     "min": 260000
+    },
+    {
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 13,
+     "median": 630000,
+     "min": 90000
+    },
+    {
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 13,
+     "median": 770000,
+     "min": 280000
     },
     {
      "model": "Galaxy Z Fold 5",
@@ -63457,10 +63625,106 @@
      "min": 490000
     },
     {
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 12,
+     "median": 1170000,
+     "min": 500000
+    },
+    {
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 12,
+     "median": 1265000,
+     "min": 580000
+    },
+    {
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 12,
+     "median": 1270000,
+     "min": 680000
+    },
+    {
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 12,
+     "median": 1410000,
+     "min": 800000
+    },
+    {
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 12,
+     "median": 1330000,
+     "min": 800000
+    },
+    {
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 12,
+     "median": 1470000,
+     "min": 1010000
+    },
+    {
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 13,
+     "median": 1310000,
+     "min": 730000
+    },
+    {
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "count": 13,
+     "median": 1420000,
+     "min": 820000
+    },
+    {
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "count": 13,
+     "median": 1390000,
+     "min": 780000
+    },
+    {
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 13,
+     "median": 1520000,
+     "min": 980000
+    },
+    {
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 13,
+     "median": 1580000,
+     "min": 1100000
+    },
+    {
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 13,
+     "median": 1660000,
+     "min": 1230000
+    },
+    {
      "model": "iPhone 15 Pro",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 15,
+     "count": 17,
      "median": 290000,
      "min": -10000
     },
@@ -63468,7 +63732,7 @@
      "model": "iPhone 15 Pro",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 15,
+     "count": 17,
      "median": 450000,
      "min": 150000
     },
@@ -63476,7 +63740,7 @@
      "model": "iPhone 16",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 61,
+     "count": 65,
      "median": -140000,
      "min": -350000
     },
@@ -63572,7 +63836,7 @@
      "model": "iPhone 16 Pro Max",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 31,
+     "count": 32,
      "median": 510000,
      "min": 140000
     },
@@ -63596,7 +63860,7 @@
      "model": "iPhone 16 Pro Max",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 15,
+     "count": 16,
      "median": 1000000,
      "min": 700000
     },
@@ -63604,15 +63868,15 @@
      "model": "iPhone 16 Pro Max",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 31,
-     "median": 1000000,
+     "count": 32,
+     "median": 1015000,
      "min": 520000
     },
     {
      "model": "iPhone 16 Pro Max",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 15,
+     "count": 16,
      "median": 1310000,
      "min": 630000
     },
@@ -63652,7 +63916,7 @@
      "model": "iPhone 17",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 107,
+     "count": 116,
      "median": 30000,
      "min": -500000
     },
@@ -63660,7 +63924,7 @@
      "model": "iPhone 17",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 106,
+     "count": 115,
      "median": 240000,
      "min": -370000
     },
@@ -63668,7 +63932,7 @@
      "model": "iPhone 17",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 109,
+     "count": 118,
      "median": 210000,
      "min": -350000
     },
@@ -63676,7 +63940,7 @@
      "model": "iPhone 17",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 106,
+     "count": 115,
      "median": 410000,
      "min": -330000
     },
@@ -63684,7 +63948,7 @@
      "model": "iPhone 17",
      "carrier": "KT",
      "sub": "기변",
-     "count": 106,
+     "count": 113,
      "median": 420000,
      "min": -240000
     },
@@ -63692,7 +63956,7 @@
      "model": "iPhone 17",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 109,
+     "count": 118,
      "median": 580000,
      "min": -260000
     },
@@ -63700,7 +63964,7 @@
      "model": "iPhone 17 Pro",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 110,
+     "count": 121,
      "median": 520000,
      "min": -160000
     },
@@ -63708,15 +63972,15 @@
      "model": "iPhone 17 Pro",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 108,
-     "median": 705000,
+     "count": 119,
+     "median": 690000,
      "min": -180000
     },
     {
      "model": "iPhone 17 Pro",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 110,
+     "count": 121,
      "median": 700000,
      "min": -80000
     },
@@ -63724,7 +63988,7 @@
      "model": "iPhone 17 Pro",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 109,
+     "count": 120,
      "median": 870000,
      "min": -120000
     },
@@ -63732,23 +63996,23 @@
      "model": "iPhone 17 Pro",
      "carrier": "KT",
      "sub": "기변",
-     "count": 108,
-     "median": 920000,
+     "count": 119,
+     "median": 910000,
      "min": 0
     },
     {
      "model": "iPhone 17 Pro",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 110,
-     "median": 1070000,
+     "count": 121,
+     "median": 1050000,
      "min": -40000
     },
     {
      "model": "iPhone 17 Pro Max",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 92,
+     "count": 100,
      "median": 1140000,
      "min": 30000
     },
@@ -63756,23 +64020,23 @@
      "model": "iPhone 17 Pro Max",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 94,
-     "median": 1050000,
+     "count": 102,
+     "median": 960000,
      "min": -50000
     },
     {
      "model": "iPhone 17 Pro Max",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 94,
-     "median": 1110000,
+     "count": 102,
+     "median": 1130000,
      "min": 40000
     },
     {
      "model": "iPhone 17 Pro Max",
      "carrier": "KT",
      "sub": "기변",
-     "count": 92,
+     "count": 100,
      "median": 1300000,
      "min": 160000
     },
@@ -63780,7 +64044,7 @@
      "model": "iPhone 17 Pro Max",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 94,
+     "count": 102,
      "median": 1310000,
      "min": 40000
     },
@@ -63788,15 +64052,15 @@
      "model": "iPhone 17 Pro Max",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 94,
-     "median": 1510000,
+     "count": 102,
+     "median": 1530000,
      "min": 160000
     },
     {
      "model": "iPhone 17e",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 39,
+     "count": 42,
      "median": 90000,
      "min": -190000
     },
@@ -63804,7 +64068,7 @@
      "model": "iPhone 17e",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 45,
+     "count": 48,
      "median": 270000,
      "min": -30000
     },
@@ -63812,7 +64076,7 @@
      "model": "iPhone 17e",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 39,
+     "count": 42,
      "median": 370000,
      "min": -90000
     },
@@ -63820,23 +64084,23 @@
      "model": "iPhone 17e",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 39,
-     "median": 340000,
+     "count": 42,
+     "median": 350000,
      "min": -240000
     },
     {
      "model": "iPhone 17e",
      "carrier": "KT",
      "sub": "기변",
-     "count": 39,
-     "median": 260000,
+     "count": 42,
+     "median": 250000,
      "min": -40000
     },
     {
      "model": "iPhone 17e",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 45,
+     "count": 48,
      "median": 610000,
      "min": 310000
     },
@@ -63844,7 +64108,7 @@
      "model": "iPhone Air",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 89,
+     "count": 97,
      "median": -250000,
      "min": -500000
     },
@@ -63852,7 +64116,7 @@
      "model": "iPhone Air",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 95,
+     "count": 103,
      "median": 670000,
      "min": -280000
     },
@@ -63860,7 +64124,7 @@
      "model": "iPhone Air",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 99,
+     "count": 109,
      "median": 580000,
      "min": -230000
     },
@@ -63868,7 +64132,7 @@
      "model": "iPhone Air",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 97,
+     "count": 107,
      "median": 590000,
      "min": -260000
     },
@@ -63876,17 +64140,25 @@
      "model": "iPhone Air",
      "carrier": "KT",
      "sub": "기변",
-     "count": 106,
-     "median": 710000,
+     "count": 116,
+     "median": 680000,
      "min": -460000
     },
     {
      "model": "iPhone Air",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 108,
-     "median": 810000,
+     "count": 118,
+     "median": 785000,
      "min": -490000
+    },
+    {
+     "model": "무너폰",
+     "carrier": "LGU+",
+     "sub": "신규",
+     "count": 2,
+     "median": -105000,
+     "min": -230000
     },
     {
      "model": "Galaxy Buddy 4",
@@ -63905,14 +64177,6 @@
      "min": -370000
     },
     {
-     "model": "Galaxy Jump 4",
-     "carrier": "KT",
-     "sub": "MNP",
-     "count": 8,
-     "median": -150000,
-     "min": -160000
-    },
-    {
      "model": "Galaxy Wide 8",
      "carrier": "SKT",
      "sub": "기변",
@@ -63921,20 +64185,20 @@
      "min": -130000
     },
     {
+     "model": "Muneo Phone 2",
+     "carrier": "LGU+",
+     "sub": "신규",
+     "count": 2,
+     "median": 25000,
+     "min": -210000
+    },
+    {
      "model": "Galaxy A17",
      "carrier": "SKT",
      "sub": "기변",
      "count": 5,
      "median": 380000,
      "min": 340000
-    },
-    {
-     "model": "Galaxy A17",
-     "carrier": "SKT",
-     "sub": "신규",
-     "count": 14,
-     "median": -130000,
-     "min": -300000
     },
     {
      "model": "Galaxy A36",
@@ -63951,14 +64215,6 @@
      "count": 2,
      "median": 390000,
      "min": 390000
-    },
-    {
-     "model": "Galaxy Jump 4",
-     "carrier": "KT",
-     "sub": "기변",
-     "count": 7,
-     "median": 150000,
-     "min": 150000
     },
     {
      "model": "Galaxy A175",
@@ -63983,22 +64239,6 @@
      "count": 10,
      "median": -165000,
      "min": -300000
-    },
-    {
-     "model": "Galaxy Quantum 6",
-     "carrier": "SKT",
-     "sub": "신규",
-     "count": 7,
-     "median": 130000,
-     "min": 130000
-    },
-    {
-     "model": "Galaxy Wide 8",
-     "carrier": "SKT",
-     "sub": "신규",
-     "count": 6,
-     "median": 80000,
-     "min": 80000
     },
     {
      "model": "Galaxy A17S",
@@ -64439,6 +64679,22 @@
      "count": 3,
      "median": -210000,
      "min": -210000
+    },
+    {
+     "model": "iPhone 15",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "count": 2,
+     "median": 185000,
+     "min": 80000
+    },
+    {
+     "model": "iPhone 15",
+     "carrier": "SKT",
+     "sub": "기변",
+     "count": 2,
+     "median": 240000,
+     "min": 190000
     }
    ],
    "stores": [
@@ -64468,6 +64724,18 @@
     },
     {
      "author": "가산 휴대폰 성지",
+     "model": "Galaxy Jump 4",
+     "carrier": "KT",
+     "min": -60000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "Galaxy Jump 5",
+     "carrier": "KT",
+     "min": 100000
+    },
+    {
+     "author": "가산 휴대폰 성지",
      "model": "Galaxy Quantum 6",
      "carrier": "LGU+",
      "min": -280000
@@ -64483,6 +64751,12 @@
      "model": "Galaxy Quantum 6",
      "carrier": "SKT",
      "min": -50000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "Galaxy Quantum 7",
+     "carrier": "SKT",
+     "min": 230000
     },
     {
      "author": "가산 휴대폰 성지",
@@ -64594,6 +64868,24 @@
     },
     {
      "author": "가산 휴대폰 성지",
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "min": -40000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "min": 80000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "min": 310000
+    },
+    {
+     "author": "가산 휴대폰 성지",
      "model": "Galaxy S26 Ultra",
      "carrier": "LGU+",
      "min": 120000
@@ -64636,6 +64928,12 @@
     },
     {
      "author": "가산 휴대폰 성지",
+     "model": "Galaxy Wide 9",
+     "carrier": "SKT",
+     "min": 40000
+    },
+    {
+     "author": "가산 휴대폰 성지",
      "model": "Galaxy Z Flip 7",
      "carrier": "KT",
      "min": -70000
@@ -64672,6 +64970,24 @@
     },
     {
      "author": "가산 휴대폰 성지",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "min": 380000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "min": 500000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "min": 580000
+    },
+    {
+     "author": "가산 휴대폰 성지",
      "model": "Galaxy Z Fold 5",
      "carrier": "LGU+",
      "min": 0
@@ -64693,6 +65009,42 @@
      "model": "Galaxy Z Fold 7",
      "carrier": "SKT",
      "min": 1090000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "min": 1070000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "min": 1260000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "min": 1330000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "min": 1270000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "min": 1390000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "min": 1520000
     },
     {
      "author": "가산 휴대폰 성지",
@@ -64857,6 +65209,36 @@
      "min": 290000
     },
     {
+     "author": "가산 휴대폰 성지",
+     "model": "무너폰",
+     "carrier": "LGU+",
+     "min": -230000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "무너폰2",
+     "carrier": "LGU+",
+     "min": -210000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "포켓몬폰3",
+     "carrier": "SKT",
+     "min": -190000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "포켓피스폰",
+     "carrier": "SKT",
+     "min": -80000
+    },
+    {
+     "author": "가산 휴대폰 성지",
+     "model": "폼폼푸린폰",
+     "carrier": "KT",
+     "min": -50000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy A17",
      "carrier": "SKT",
@@ -64876,9 +65258,21 @@
     },
     {
      "author": "굳폰 아산성지",
+     "model": "Galaxy Buddy 5",
+     "carrier": "LGU+",
+     "min": -300000
+    },
+    {
+     "author": "굳폰 아산성지",
      "model": "Galaxy Jump 4",
      "carrier": "KT",
-     "min": -160000
+     "min": -200000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy Jump 5",
+     "carrier": "KT",
+     "min": 20000
     },
     {
      "author": "굳폰 아산성지",
@@ -64888,21 +65282,27 @@
     },
     {
      "author": "굳폰 아산성지",
-     "model": "Galaxy S25",
-     "carrier": "KT",
-     "min": -200000
+     "model": "Galaxy Quantum 7",
+     "carrier": "SKT",
+     "min": 230000
     },
     {
      "author": "굳폰 아산성지",
      "model": "Galaxy S25",
-     "carrier": "LGU+",
-     "min": -100000
+     "carrier": "KT",
+     "min": -450000
     },
     {
      "author": "굳폰 아산성지",
      "model": "Galaxy S25",
      "carrier": "SKT",
-     "min": 50000
+     "min": -170000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy S25",
+     "carrier": "LGU+",
+     "min": -110000
     },
     {
      "author": "굳폰 아산성지",
@@ -64914,13 +65314,13 @@
      "author": "굳폰 아산성지",
      "model": "Galaxy S25 Edge",
      "carrier": "KT",
-     "min": -10000
+     "min": -190000
     },
     {
      "author": "굳폰 아산성지",
      "model": "Galaxy S25 Edge",
      "carrier": "SKT",
-     "min": 150000
+     "min": 10000
     },
     {
      "author": "굳폰 아산성지",
@@ -64944,25 +65344,25 @@
      "author": "굳폰 아산성지",
      "model": "Galaxy S25 Ultra",
      "carrier": "KT",
-     "min": 350000
-    },
-    {
-     "author": "굳폰 아산성지",
-     "model": "Galaxy S25 Ultra",
-     "carrier": "LGU+",
-     "min": 450000
+     "min": 90000
     },
     {
      "author": "굳폰 아산성지",
      "model": "Galaxy S25 Ultra",
      "carrier": "SKT",
-     "min": 590000
+     "min": 370000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "LGU+",
+     "min": 440000
     },
     {
      "author": "굳폰 아산성지",
      "model": "Galaxy S25+",
      "carrier": "KT",
-     "min": -10000
+     "min": -250000
     },
     {
      "author": "굳폰 아산성지",
@@ -64974,49 +65374,73 @@
      "author": "굳폰 아산성지",
      "model": "Galaxy S25+",
      "carrier": "SKT",
-     "min": 250000
+     "min": 230000
     },
     {
      "author": "굳폰 아산성지",
      "model": "Galaxy S26",
      "carrier": "LGU+",
-     "min": -140000
+     "min": -220000
     },
     {
      "author": "굳폰 아산성지",
      "model": "Galaxy S26",
      "carrier": "KT",
-     "min": 40000
+     "min": -120000
     },
     {
      "author": "굳폰 아산성지",
      "model": "Galaxy S26",
      "carrier": "SKT",
-     "min": 240000
+     "min": -10000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "min": -40000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "min": 80000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "min": 270000
     },
     {
      "author": "굳폰 아산성지",
      "model": "Galaxy S26 Ultra",
      "carrier": "LGU+",
-     "min": 420000
+     "min": 330000
     },
     {
      "author": "굳폰 아산성지",
      "model": "Galaxy S26 Ultra",
      "carrier": "KT",
-     "min": 590000
+     "min": 440000
     },
     {
      "author": "굳폰 아산성지",
      "model": "Galaxy S26 Ultra",
      "carrier": "SKT",
-     "min": 780000
+     "min": 540000
     },
     {
      "author": "굳폰 아산성지",
      "model": "Galaxy S26+",
      "carrier": "LGU+",
-     "min": 90000
+     "min": -10000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy S26+",
+     "carrier": "SKT",
+     "min": 200000
     },
     {
      "author": "굳폰 아산성지",
@@ -65026,15 +65450,15 @@
     },
     {
      "author": "굳폰 아산성지",
-     "model": "Galaxy S26+",
+     "model": "Galaxy Wide 8",
      "carrier": "SKT",
-     "min": 440000
+     "min": -160000
     },
     {
      "author": "굳폰 아산성지",
-     "model": "Galaxy Wide 8",
+     "model": "Galaxy Wide 9",
      "carrier": "SKT",
-     "min": -130000
+     "min": 40000
     },
     {
      "author": "굳폰 아산성지",
@@ -65074,6 +65498,24 @@
     },
     {
      "author": "굳폰 아산성지",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "min": 380000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "min": 470000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "min": 580000
+    },
+    {
+     "author": "굳폰 아산성지",
      "model": "Galaxy Z Fold 7",
      "carrier": "KT",
      "min": 1170000
@@ -65089,6 +65531,72 @@
      "model": "Galaxy Z Fold 7",
      "carrier": "SKT",
      "min": 1330000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "min": 1070000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "min": 1260000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "min": 1330000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "min": 1270000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "min": 1360000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "min": 1520000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Muneo Phone",
+     "carrier": "LGU+",
+     "min": -230000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Muneo Phone 2",
+     "carrier": "LGU+",
+     "min": -210000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Pocket Peace Phone",
+     "carrier": "SKT",
+     "min": -80000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Pokemon Phone 3",
+     "carrier": "SKT",
+     "min": -190000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Pompompurin Phone",
+     "carrier": "KT",
+     "min": -320000
     },
     {
      "author": "굳폰 아산성지",
@@ -65130,7 +65638,7 @@
      "author": "굳폰 아산성지",
      "model": "iPhone 16 Pro Max",
      "carrier": "LGU+",
-     "min": 440000
+     "min": 430000
     },
     {
      "author": "굳폰 아산성지",
@@ -65154,7 +65662,7 @@
      "author": "굳폰 아산성지",
      "model": "iPhone 17",
      "carrier": "LGU+",
-     "min": -10000
+     "min": -200000
     },
     {
      "author": "굳폰 아산성지",
@@ -65166,43 +65674,43 @@
      "author": "굳폰 아산성지",
      "model": "iPhone 17",
      "carrier": "SKT",
-     "min": 190000
+     "min": 160000
     },
     {
      "author": "굳폰 아산성지",
      "model": "iPhone 17 Pro",
      "carrier": "LGU+",
-     "min": 490000
+     "min": 290000
     },
     {
      "author": "굳폰 아산성지",
      "model": "iPhone 17 Pro",
      "carrier": "KT",
-     "min": 650000
+     "min": 640000
     },
     {
      "author": "굳폰 아산성지",
      "model": "iPhone 17 Pro",
      "carrier": "SKT",
-     "min": 700000
-    },
-    {
-     "author": "굳폰 아산성지",
-     "model": "iPhone 17 Pro Max",
-     "carrier": "KT",
-     "min": 1100000
+     "min": 660000
     },
     {
      "author": "굳폰 아산성지",
      "model": "iPhone 17 Pro Max",
      "carrier": "LGU+",
-     "min": 1110000
+     "min": 890000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "KT",
+     "min": 1090000
     },
     {
      "author": "굳폰 아산성지",
      "model": "iPhone 17 Pro Max",
      "carrier": "SKT",
-     "min": 1180000
+     "min": 1150000
     },
     {
      "author": "굳폰 아산성지",
@@ -65232,13 +65740,13 @@
      "author": "굳폰 아산성지",
      "model": "iPhone Air",
      "carrier": "SKT",
-     "min": 580000
+     "min": 450000
     },
     {
      "author": "굳폰 아산성지",
      "model": "iPhone Air",
      "carrier": "KT",
-     "min": 610000
+     "min": 520000
     },
     {
      "author": "대구 휴대폰성지 직폰 동성로점",
@@ -65514,7 +66022,25 @@
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy A17",
      "carrier": "SKT",
-     "min": -130000
+     "min": -200000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy Buddy 5",
+     "carrier": "LGU+",
+     "min": -220000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy Jump 5",
+     "carrier": "KT",
+     "min": 90000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy Quantum 6",
+     "carrier": "SKT",
+     "min": 50000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -65525,14 +66051,14 @@
     {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S25",
-     "carrier": "LGU+",
-     "min": 50000
+     "carrier": "KT",
+     "min": -60000
     },
     {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S25",
-     "carrier": "KT",
-     "min": 160000
+     "carrier": "LGU+",
+     "min": -10000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -65550,7 +66076,7 @@
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S25 Edge",
      "carrier": "KT",
-     "min": -80000
+     "min": -110000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -65580,13 +66106,13 @@
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S25 Ultra",
      "carrier": "LGU+",
-     "min": 600000
+     "min": 510000
     },
     {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S25 Ultra",
      "carrier": "KT",
-     "min": 700000
+     "min": 530000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -65626,6 +66152,24 @@
     },
     {
      "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "min": 50000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "min": 100000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "min": 140000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S26 Ultra",
      "carrier": "LGU+",
      "min": 400000
@@ -65652,19 +66196,73 @@
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S26+",
      "carrier": "SKT",
-     "min": 220000
+     "min": 210000
     },
     {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S26+",
      "carrier": "KT",
-     "min": 330000
+     "min": 280000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "min": 420000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "min": 460000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "min": 680000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "min": 1170000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "min": 1330000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "min": 1270000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "min": 1310000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "min": 1350000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "min": 1590000
     },
     {
      "author": "따르릉통신 둔촌동역점",
      "model": "iPhone 16",
      "carrier": "LGU+",
-     "min": -90000
+     "min": -130000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -65718,7 +66316,7 @@
      "author": "따르릉통신 둔촌동역점",
      "model": "iPhone 17 Pro Max",
      "carrier": "KT",
-     "min": 1230000
+     "min": 1180000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -66354,7 +66952,7 @@
      "author": "울산 휴대폰성지 직폰 덕하점",
      "model": "Galaxy S26+",
      "carrier": "KT",
-     "min": 400000
+     "min": 380000
     },
     {
      "author": "울산 휴대폰성지 직폰 덕하점",
@@ -66376,6 +66974,24 @@
     },
     {
      "author": "울산 휴대폰성지 직폰 덕하점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "min": 500000
+    },
+    {
+     "author": "울산 휴대폰성지 직폰 덕하점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "min": 520000
+    },
+    {
+     "author": "울산 휴대폰성지 직폰 덕하점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "min": 690000
+    },
+    {
+     "author": "울산 휴대폰성지 직폰 덕하점",
      "model": "Galaxy Z Fold 7",
      "carrier": "LGU+",
      "min": 1200000
@@ -66391,6 +67007,42 @@
      "model": "Galaxy Z Fold 7",
      "carrier": "KT",
      "min": 1330000
+    },
+    {
+     "author": "울산 휴대폰성지 직폰 덕하점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "min": 1180000
+    },
+    {
+     "author": "울산 휴대폰성지 직폰 덕하점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "min": 1280000
+    },
+    {
+     "author": "울산 휴대폰성지 직폰 덕하점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "min": 1300000
+    },
+    {
+     "author": "울산 휴대폰성지 직폰 덕하점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "min": 1400000
+    },
+    {
+     "author": "울산 휴대폰성지 직폰 덕하점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "min": 1410000
+    },
+    {
+     "author": "울산 휴대폰성지 직폰 덕하점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "min": 1580000
     },
     {
      "author": "울산 휴대폰성지 직폰 덕하점",
@@ -67277,6 +67929,12 @@
     {
      "author": "휴대폰성지 따르릉 둔촌점",
      "model": "Galaxy A17",
+     "carrier": "SKT",
+     "min": -200000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy A17",
      "carrier": "LGU+",
      "min": -170000
     },
@@ -67290,7 +67948,7 @@
      "author": "휴대폰성지 따르릉 둔촌점",
      "model": "Galaxy Jump 5",
      "carrier": "KT",
-     "min": 170000
+     "min": 90000
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
@@ -67302,7 +67960,7 @@
      "author": "휴대폰성지 따르릉 둔촌점",
      "model": "Galaxy Quantum 6",
      "carrier": "SKT",
-     "min": 80000
+     "min": 50000
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
@@ -67313,14 +67971,14 @@
     {
      "author": "휴대폰성지 따르릉 둔촌점",
      "model": "Galaxy S25",
-     "carrier": "LGU+",
-     "min": 50000
+     "carrier": "KT",
+     "min": -60000
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
      "model": "Galaxy S25",
-     "carrier": "KT",
-     "min": 160000
+     "carrier": "LGU+",
+     "min": -10000
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
@@ -67338,7 +67996,7 @@
      "author": "휴대폰성지 따르릉 둔촌점",
      "model": "Galaxy S25 Edge",
      "carrier": "KT",
-     "min": -80000
+     "min": -110000
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
@@ -67368,13 +68026,13 @@
      "author": "휴대폰성지 따르릉 둔촌점",
      "model": "Galaxy S25 Ultra",
      "carrier": "LGU+",
-     "min": 600000
+     "min": 510000
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
      "model": "Galaxy S25 Ultra",
      "carrier": "KT",
-     "min": 700000
+     "min": 530000
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
@@ -67410,7 +68068,25 @@
      "author": "휴대폰성지 따르릉 둔촌점",
      "model": "Galaxy S26",
      "carrier": "KT",
-     "min": 130000
+     "min": 80000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "min": 50000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "min": 100000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "min": 140000
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
@@ -67440,13 +68116,67 @@
      "author": "휴대폰성지 따르릉 둔촌점",
      "model": "Galaxy S26+",
      "carrier": "SKT",
-     "min": 220000
+     "min": 210000
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
      "model": "Galaxy S26+",
      "carrier": "KT",
-     "min": 330000
+     "min": 280000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "min": 420000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "min": 460000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "min": 680000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "min": 1170000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "min": 1330000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "min": 1270000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "min": 1310000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "min": 1350000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "min": 1590000
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
@@ -67546,6 +68276,18 @@
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy S25",
+     "carrier": "KT",
+     "min": -380000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy S25",
+     "carrier": "SKT",
+     "min": -200000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
      "model": "Galaxy S25 Edge",
      "carrier": "KT",
      "min": -480000
@@ -67564,51 +68306,69 @@
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "min": -40000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "SKT",
+     "min": 340000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "min": 0
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
      "model": "Galaxy S26",
      "carrier": "KT",
-     "min": -460000
+     "min": -470000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
      "model": "Galaxy S26",
      "carrier": "SKT",
-     "min": -150000
+     "min": -220000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
      "model": "Galaxy S26 Ultra",
      "carrier": "LGU+",
-     "min": 10000
+     "min": -50000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
      "model": "Galaxy S26 Ultra",
      "carrier": "KT",
-     "min": 80000
+     "min": 70000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
      "model": "Galaxy S26 Ultra",
      "carrier": "SKT",
-     "min": 390000
+     "min": 320000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
      "model": "Galaxy S26+",
      "carrier": "LGU+",
-     "min": -330000
+     "min": -390000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
      "model": "Galaxy S26+",
      "carrier": "KT",
-     "min": -160000
+     "min": -270000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
      "model": "Galaxy S26+",
      "carrier": "SKT",
-     "min": 50000
+     "min": -20000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
@@ -67618,9 +68378,63 @@
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "min": -160000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "min": -110000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "min": 260000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
      "model": "Galaxy Z Fold 7",
      "carrier": "SKT",
      "min": 940000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "min": 500000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "min": 680000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "min": 800000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "min": 730000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "min": 780000
+    },
+    {
+     "author": "휴대폰성지 따르릉통신 사직점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "min": 1100000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
@@ -67650,13 +68464,13 @@
      "author": "휴대폰성지 따르릉통신 사직점",
      "model": "iPhone 17 Pro",
      "carrier": "KT",
-     "min": 190000
+     "min": 170000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
      "model": "iPhone 17 Pro",
      "carrier": "SKT",
-     "min": 510000
+     "min": 400000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
@@ -67668,7 +68482,7 @@
      "author": "휴대폰성지 따르릉통신 사직점",
      "model": "iPhone 17 Pro Max",
      "carrier": "KT",
-     "min": 640000
+     "min": 620000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
@@ -67680,13 +68494,13 @@
      "author": "휴대폰성지 따르릉통신 사직점",
      "model": "iPhone Air",
      "carrier": "KT",
-     "min": -10000
+     "min": -30000
     },
     {
      "author": "휴대폰성지 따르릉통신 사직점",
      "model": "iPhone Air",
      "carrier": "SKT",
-     "min": 310000
+     "min": 200000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -69382,27 +70196,45 @@
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Quantum 6",
+     "carrier": "SKT",
+     "min": 20000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy S25",
+     "carrier": "KT",
+     "min": -340000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy S25",
+     "carrier": "LGU+",
+     "min": -160000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S25",
      "carrier": "SKT",
-     "min": 220000
+     "min": -100000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S25 Edge",
      "carrier": "KT",
-     "min": 0
+     "min": -120000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S25 Edge",
      "carrier": "LGU+",
-     "min": 30000
+     "min": -110000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S25 Edge",
      "carrier": "SKT",
-     "min": 80000
+     "min": 20000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -69425,14 +70257,38 @@
     {
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "min": 130000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "LGU+",
+     "min": 320000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy S25 Ultra",
      "carrier": "SKT",
-     "min": 770000
+     "min": 410000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy S25+",
+     "carrier": "KT",
+     "min": -140000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy S25+",
+     "carrier": "LGU+",
+     "min": 10000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S25+",
      "carrier": "SKT",
-     "min": 420000
+     "min": 80000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -69450,7 +70306,7 @@
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S26",
      "carrier": "SKT",
-     "min": 70000
+     "min": 30000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -69468,7 +70324,7 @@
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S26 Ultra",
      "carrier": "SKT",
-     "min": 680000
+     "min": 580000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -69486,7 +70342,13 @@
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S26+",
      "carrier": "SKT",
-     "min": 330000
+     "min": 230000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Style Folder 2",
+     "carrier": "SKT",
+     "min": -310000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -69511,6 +70373,66 @@
      "model": "Galaxy Z Flip 7",
      "carrier": "SKT",
      "min": 160000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "min": 470000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "min": 510000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "min": 610000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Z Fold 6",
+     "carrier": "LGU+",
+     "min": 150000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "min": 1360000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "min": 1400000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "min": 1550000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Z Fold 8 Wide",
+     "carrier": "LGU+",
+     "min": 1150000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Z Fold 8 Wide",
+     "carrier": "KT",
+     "min": 1270000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Z Fold 8 Wide",
+     "carrier": "SKT",
+     "min": 1340000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -70859,20 +71781,20 @@
     {
      "author": "휴대폰성지 직폰 평택점",
      "model": "Galaxy S25 Edge",
+     "carrier": "KT",
+     "min": -310000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy S25 Edge",
      "carrier": "LGU+",
      "min": -180000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
      "model": "Galaxy S25 Edge",
-     "carrier": "KT",
-     "min": -120000
-    },
-    {
-     "author": "휴대폰성지 직폰 평택점",
-     "model": "Galaxy S25 Edge",
      "carrier": "SKT",
-     "min": 150000
+     "min": 40000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
@@ -70896,31 +71818,49 @@
      "author": "휴대폰성지 직폰 평택점",
      "model": "Galaxy S26",
      "carrier": "LGU+",
-     "min": -300000
+     "min": -370000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
      "model": "Galaxy S26",
      "carrier": "KT",
-     "min": -70000
+     "min": -100000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
      "model": "Galaxy S26",
      "carrier": "SKT",
-     "min": 130000
+     "min": 120000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "min": -120000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "min": -120000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "min": -90000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
      "model": "Galaxy S26 Ultra",
      "carrier": "LGU+",
-     "min": 250000
+     "min": 180000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
      "model": "Galaxy S26 Ultra",
      "carrier": "KT",
-     "min": 480000
+     "min": 450000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
@@ -70932,19 +71872,19 @@
      "author": "휴대폰성지 직폰 평택점",
      "model": "Galaxy S26+",
      "carrier": "LGU+",
-     "min": -100000
+     "min": -170000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
      "model": "Galaxy S26+",
      "carrier": "KT",
-     "min": 240000
+     "min": 110000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
      "model": "Galaxy S26+",
      "carrier": "SKT",
-     "min": 330000
+     "min": 320000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
@@ -70960,9 +71900,63 @@
     },
     {
      "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "min": 90000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "min": 240000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "min": 640000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
      "model": "Galaxy Z Fold 7",
      "carrier": "KT",
      "min": 1310000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "min": 750000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "min": 960000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "min": 1230000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "min": 980000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "min": 1110000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "min": 1480000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
@@ -71034,7 +72028,7 @@
      "author": "휴대폰성지 직폰 평택점",
      "model": "iPhone 17 Pro",
      "carrier": "KT",
-     "min": 640000
+     "min": 590000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
@@ -71045,20 +72039,20 @@
     {
      "author": "휴대폰성지 직폰 평택점",
      "model": "iPhone 17 Pro Max",
+     "carrier": "KT",
+     "min": 1030000
+    },
+    {
+     "author": "휴대폰성지 직폰 평택점",
+     "model": "iPhone 17 Pro Max",
      "carrier": "SKT",
      "min": 1040000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
-     "model": "iPhone 17 Pro Max",
-     "carrier": "KT",
-     "min": 1090000
-    },
-    {
-     "author": "휴대폰성지 직폰 평택점",
      "model": "iPhone 17e",
      "carrier": "KT",
-     "min": 0
+     "min": -10000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
@@ -71081,13 +72075,13 @@
     {
      "author": "휴대폰성지 직폰 평택점",
      "model": "iPhone Air",
-     "carrier": "SKT",
-     "min": 430000
+     "carrier": "KT",
+     "min": 390000
     },
     {
      "author": "휴대폰성지 직폰 평택점",
      "model": "iPhone Air",
-     "carrier": "KT",
+     "carrier": "SKT",
      "min": 430000
     },
     {
@@ -71119,6 +72113,300 @@
      "model": "Galaxy S25 FE",
      "carrier": "KT",
      "min": 20000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S25",
+     "carrier": "KT",
+     "min": -280000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S25",
+     "carrier": "SKT",
+     "min": -160000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S25",
+     "carrier": "LGU+",
+     "min": -120000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S25 Edge",
+     "carrier": "KT",
+     "min": -130000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S25 Edge",
+     "carrier": "LGU+",
+     "min": 80000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S25 Edge",
+     "carrier": "SKT",
+     "min": 100000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "min": 200000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "SKT",
+     "min": 260000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "LGU+",
+     "min": 1100000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S25+",
+     "carrier": "KT",
+     "min": -100000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "min": -20000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S25+",
+     "carrier": "LGU+",
+     "min": 80000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S26",
+     "carrier": "LGU+",
+     "min": -170000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S26",
+     "carrier": "KT",
+     "min": -80000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S26",
+     "carrier": "SKT",
+     "min": 20000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "min": 120000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "min": 130000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "min": 180000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "LGU+",
+     "min": 370000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "KT",
+     "min": 470000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "SKT",
+     "min": 560000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S26+",
+     "carrier": "LGU+",
+     "min": 30000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S26+",
+     "carrier": "KT",
+     "min": 120000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy S26+",
+     "carrier": "SKT",
+     "min": 220000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy Z Flip 7 FE",
+     "carrier": "SKT",
+     "min": 20000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "min": 410000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "min": 500000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "min": 600000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "min": 1060000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "min": 1260000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "min": 1310000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "min": 1300000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "min": 1390000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "min": 1540000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone 15",
+     "carrier": "SKT",
+     "min": 80000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone 15 Pro",
+     "carrier": "SKT",
+     "min": 290000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone 15 Pro Max",
+     "carrier": "SKT",
+     "min": 640000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone 17",
+     "carrier": "LGU+",
+     "min": 160000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone 17",
+     "carrier": "SKT",
+     "min": 210000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone 17",
+     "carrier": "KT",
+     "min": 300000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone 17 Pro",
+     "carrier": "LGU+",
+     "min": 320000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone 17 Pro",
+     "carrier": "SKT",
+     "min": 710000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone 17 Pro",
+     "carrier": "KT",
+     "min": 780000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "LGU+",
+     "min": 860000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "SKT",
+     "min": 1180000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "KT",
+     "min": 1210000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone Air",
+     "carrier": "LGU+",
+     "min": 400000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone Air",
+     "carrier": "KT",
+     "min": 580000
+    },
+    {
+     "author": "휴대폰성지-직폰-가산점(금천구)",
+     "model": "iPhone Air",
+     "carrier": "SKT",
+     "min": 610000
     }
    ]
   }
