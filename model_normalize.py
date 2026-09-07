@@ -137,6 +137,10 @@ def normalize(name: str | None) -> str:
                 return s            # 모르는 꼬리표(A17S 의 S 등) → 원형 유지
             if v not in variants:
                 variants.append(v)
+        # Z Fold 의 'Wide' 표기는 별도 기종이 아니라 기본형(사용자 확정 2026-09-08: "Z폴드 와이드 = Z폴드").
+        # 매장마다 "폴드8 WIDE" / "Z Fold 8" 로 갈려 같은 기종이 둘로 집계되던 것을 합친다.
+        if fam == "Z Fold" and "Wide" in variants:
+            variants.remove("Wide")
         sep = "" if fam in _LETTER_FAMILY else " "
         out = f"Galaxy {fam}{sep}{num}"
         for v in variants:

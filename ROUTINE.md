@@ -93,3 +93,21 @@ Anthropic 클라우드 세션(claude.ai/code → Routines, `성지폰 시세표 
 
 - 매장이 30일 넘게 새 표를 안 올리면 화면에서 빠진다(과거 관측은 `daily` 시계열에만 남음). 창을 넓히려면 `SEONGJI_CURRENT_DAYS` 환경변수.
 - 최근 창에 관측이 하나도 없으면 마지막 관측일 기준 창으로 대체하고 `kakaoSummary.stale=true` 로 표시한다.
+
+## 공시지원금 (2026-09-08 — 시드 폐기, 스마트초이스 실데이터)
+
+- 출처: 방통위 통신요금정보포털 **스마트초이스** 단말기 기준 조회(`subsidy_smartchoice.py`). 갤럭시 S·Z 폴드/플립·아이폰 전 단말(용량별, 95종)의
+  3사 공시지원금(번호이동/기기변경, 010신규는 번호이동값 준용)·출고가·요금제 구간을 받아 성지 시세표 기준 요금제(SKT 109k/KT 110k/LGU+ 115k)에
+  가장 가까운 구간을 대표값으로 적재한다. 전 구간은 `raw_payload.tiers`.
+- 흐름: CI `sise-fetch.yml`(04:10) 가 `subsidy_snapshot.json` 을 배치에 싣고 → 클라우드 루틴 `routine_prepare.sh` 가 리포로 복사 →
+  `daily_collect.py finalize` 가 스냅샷을 DB 에 적재해 `subsidy_data.js` 빌드 → 커밋(DATA 목록에 포함). 로컬 맥은 prepare 에서 직접 수집.
+  라이트세일 컨테이너(`app.py refresh_data`)는 매일 직접 수집하고 실패 시 커밋된 스냅샷을 쓴다. 종전 시드(`subsidy_seed.py`)는 `SUBSIDY_SEED=1` 일 때만.
+- 수동: `SSL_CERT_FILE=~/certs/ca-bundle.pem python3 subsidy_smartchoice.py` (약 2분) → `python3 subsidy_build.py`.
+
+## 이상치·조건부 (2026-09-08 점검 반영)
+
+- 26장 시세표 이미지 전수 대조 결과 판독 숫자는 전부 일치했으나, 매장별 표 자체가 **결합(인터넷+TV)·제휴카드 포함가**인 곳이 9곳(가산·굳폰/센텀/덕하/싸당 동작·평택·화성/직폰 평택·가산/사직 카드)이라
+  해당 표 전체를 `add_condition` 에 표기해 조건부로 뺐다. 판독 규칙(PROMPT)에도 표 전체 구매조건 기록을 추가했다.
+- 매장 간 이상치: 같은 오퍼의 매장 중앙값에서 30만원 넘게 벗어나면 `is_outlier`, 비교 가능한 오퍼의 절반 이상이 이탈한 매장은 표 전체를 이상치로(정직폰 본점·전주·화성 실측 — 시장보다 40~60만 낮음).
+  KPI·박스플롯·전일 대비·AI 리포트에서 제외하고 표에는 '이상치' 배지로 남긴다(`seongji_build._flag_outliers`).
+- 외부 대조: 알고사 김포 시세표(9/6)·정직폰 강서점 등과 비교해 비이상치 매장 중앙값이 ±10만 안에서 일치함을 확인.

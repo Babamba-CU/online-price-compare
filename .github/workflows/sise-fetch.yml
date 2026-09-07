@@ -35,6 +35,9 @@ jobs:
           python seongji_vision_batch.py --channels 342 --per-channel 1 --recent-days 30 --max-images 40 \
             || echo "::warning::이미지 다운로드 부분 실패 — 받은 것만으로 계속"
           python vision_session_prep.py
+          # 공시지원금(스마트초이스) 스냅샷 — 클라우드 루틴은 외부망이 막혀 여기서 받아 배치에 싣는다
+          python subsidy_smartchoice.py --no-db --out /tmp/sise_batch/subsidy_snapshot.json \
+            || echo "::warning::공시지원금 수집 실패 — 루틴은 기존 스냅샷을 사용"
           date -u +%FT%TZ > /tmp/sise_batch/BATCH_CREATED_UTC
           echo "images=$(ls /tmp/sise_batch/*.jpg 2>/dev/null | wc -l)" >> "$GITHUB_STEP_SUMMARY"
 

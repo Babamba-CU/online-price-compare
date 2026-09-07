@@ -42,8 +42,8 @@ def _aggregate(rows: list[dict]) -> dict:
         model, carrier = r.get("model_name"), r.get("carrier")
         if price is None or not model or carrier not in ("SKT", "KT", "LGU+"):
             continue
-        if r.get("is_conditional") or is_conditional(r.get("add_condition")):
-            continue    # 결합·제휴카드·적용가 등 조건부 가격은 변화 감지에서 제외
+        if r.get("is_conditional") or is_conditional(r.get("add_condition")) or r.get("is_outlier"):
+            continue    # 조건부 가격·매장 간 이상치는 변화 감지에서 제외
         sub = eff_sub(r.get("subscription_type"))
         groups[(model, carrier, sub)].append(price)
         if r.get("author"):     # 매장명 없는 행은 매장 단위 추적 불가 — 집계만 반영

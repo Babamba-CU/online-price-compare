@@ -47,6 +47,8 @@ def prepare(cap: int = DEFAULT_CAP) -> None:
     _run([PY, str(BASE / "seongji_vision_batch.py"),
           "--channels", "342", "--per-channel", str(PER_CHANNEL),
           "--recent-days", str(RECENT_DAYS), "--max-images", str(cap)])
+    # 3) 공시지원금 스냅샷 갱신 (스마트초이스, 네트워크) — 실패해도 기존 스냅샷으로 계속
+    _run([PY, str(BASE / "subsidy_smartchoice.py"), "--no-db"])
     print("[daily] prepare 완료 — /tmp/sise_batch/manifest.json 판독 준비됨", file=sys.stderr)
 
 
@@ -69,6 +71,16 @@ def merge_and_build() -> None:
     _run([PY, str(BASE / "seongji_crawler.py"), "--max-pages", "2"])  # 사이트(뽐뿌 등)
     seongji_vision_load.load()
     seongji_build.main()
+    # 공시지원금: 저장된 스냅샷(prepare/CI 가 갱신) → DB 재적재 → subsidy_data.js
+    import subsidy_db, subsidy_build, subsidy_smartchoice
+    subsidy_db.DB_PATH.unlink(missing_ok=True)
+    subsidy_db.init_db()
+    try:
+        src = subsidy_smartchoice.refresh(prefer_network=False)
+        subsidy_build.main()
+        print(f"[daily] 공시지원금 빌드 완료 — {src}", file=sys.stderr)
+    except Exception as e:  # noqa: BLE001
+        print(f"[daily] 공시지원금 빌드 건너뜀: {e!r}", file=sys.stderr)
     print("[daily] finalize(merge_and_build) 완료", file=sys.stderr)
 
 

@@ -102,7 +102,65 @@ def current_set(rows: list[dict], today: date) -> list[dict]:
         r["store_asof"] = store_asof.get(r.get("author") or "")
         r["is_conditional"] = is_conditional(r.get("add_condition"))
         r["snapshot_date"] = today_iso
+    _flag_outliers(out)
     return out
+
+
+OUTLIER_WON = 300_000        # 같은 오퍼(기종·통신사·가입유형·용량)의 매장 중앙값에서 이만큼 벗어나면 이상치
+OUTLIER_MIN_STORES = 4       # 매장 수가 이보다 적은 오퍼는 판정하지 않음
+STORE_SUSPECT_RATIO = 0.5    # 비교 가능 오퍼 중 이 비율 이상이 이탈하면 매장 전체 이상치
+STORE_SUSPECT_MIN_CMP = 10   # 매장 판정에 필요한 최소 비교 오퍼 수
+
+
+def _flag_outliers(rows: list[dict]) -> None:
+    """매장 간 비교로 이상치를 표시한다(is_outlier / group_median / group_stores / dev_from_median).
+
+    2026-09-08 점검: 한 매장(정직폰 화성점)의 값이 같은 조건의 다른 매장 중앙값보다 50~60만원 낮아
+    '최저가'와 성지RB 헤드라인을 독식했다(이미지 판독은 정확했고, 표 자체가 결합 포함가로 추정).
+    판독 오류든 조건 미표기든, 시장 중앙값에서 크게 벗어난 값은 기본 KPI 에서 빼고 표에는 배지로 남긴다.
+    비교는 조건부가 아닌 행끼리, 매장별 대표값(매장 내 최저가)으로 한다.
+    """
+    groups: dict[tuple, dict[str, int]] = defaultdict(dict)
+    for r in rows:
+        if r.get("is_conditional") or r.get("cash_price") is None:
+            continue
+        k = (r["model_name"], r.get("carrier"), r.get("subscription_type") or "MNP", r.get("storage_gb"))
+        a = r.get("author") or r.get("url") or "?"
+        if a not in groups[k] or r["cash_price"] < groups[k][a]:
+            groups[k][a] = r["cash_price"]
+    med: dict[tuple, tuple[int, int]] = {}
+    for k, per_store in groups.items():
+        if len(per_store) >= OUTLIER_MIN_STORES:
+            med[k] = (int(statistics.median(per_store.values())), len(per_store))
+    for r in rows:
+        k = (r["model_name"], r.get("carrier"), r.get("subscription_type") or "MNP", r.get("storage_gb"))
+        m = med.get(k)
+        r["group_median"] = m[0] if m else None
+        r["group_stores"] = m[1] if m else None
+        r["dev_from_median"] = (r["cash_price"] - m[0]) if (m and r.get("cash_price") is not None) else None
+        r["is_outlier"] = bool(m and not r.get("is_conditional") and r.get("cash_price") is not None
+                               and abs(r["cash_price"] - m[0]) > OUTLIER_WON)
+        r["outlier_reason"] = "offer" if r["is_outlier"] else None
+    # 매장 단위 판정: 비교 가능한 오퍼의 절반 이상이 이탈한 매장은 표 전체를 이상치로 본다
+    # (표 전체가 미표기 조건(결합·카드 포함 등)으로 시장과 다른 기준일 가능성 — 정직폰 본점·화성점 실측).
+    # 비교 대상이 없는 기종(그 매장만 파는 기종)까지 그 매장의 기준을 따르므로 함께 제외한다.
+    per_store: dict[str, list[int]] = defaultdict(lambda: [0, 0])
+    for r in rows:
+        if r.get("is_conditional") or r.get("group_median") is None:
+            continue
+        a = r.get("author") or r.get("url") or "?"
+        per_store[a][1] += 1
+        if r["is_outlier"]:
+            per_store[a][0] += 1
+    suspect = {a for a, (n_out, n_cmp) in per_store.items()
+               if n_cmp >= STORE_SUSPECT_MIN_CMP and n_out / n_cmp >= STORE_SUSPECT_RATIO}
+    for r in rows:
+        a = r.get("author") or r.get("url") or "?"
+        if a in suspect and not r.get("is_conditional"):
+            if not r["is_outlier"]:
+                r["is_outlier"] = True
+                r["outlier_reason"] = "store"
+        r["store_suspect"] = a in suspect
 
 
 def box_stats_from(rows: list[dict], window_days: int = BOX_WINDOW_DAYS) -> list[dict]:
@@ -111,7 +169,7 @@ def box_stats_from(rows: list[dict], window_days: int = BOX_WINDOW_DAYS) -> list
     buckets: dict[tuple[str, str, str], list[int]] = defaultdict(list)
     stores: dict[tuple[str, str, str], set] = defaultdict(set)
     for r in rows:
-        if r.get("cash_price") is None or r.get("is_conditional"):
+        if r.get("cash_price") is None or r.get("is_conditional") or r.get("is_outlier"):
             continue
         if r.get("age_days") is None or r["age_days"] > window_days:
             continue
@@ -151,6 +209,8 @@ def kakao_summary_from(rows: list[dict], window_days: int = CURRENT_WINDOW_DAYS)
         "negative":    sum(1 for r in rows if (r.get("cash_price") or 0) < 0),
         "subMissing":  sum(1 for r in rows if r.get("subscription_type") not in ("MNP", "기변", "신규")),
         "conditional": sum(1 for r in rows if r.get("is_conditional")),
+        "outliers":    sum(1 for r in rows if r.get("is_outlier")),
+        "suspectStores": sorted({r.get("author") for r in rows if r.get("store_suspect") and r.get("author")}),
         "windowDays":  window_days,
         "storesFresh7": sum(1 for x in store_list if x["age_days"] is not None and x["age_days"] <= 7),
         "storeList":   store_list,

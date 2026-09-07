@@ -21,6 +21,8 @@ download_and_prep() {
     || echo "[routine] 다운로드 부분 실패 — 받은 것만으로 계속" >&2
   echo "[routine] 세션 판독 준비 (긴 이미지 분할, RULES.md, results/)" >&2
   $PY vision_session_prep.py
+  echo "[routine] 공시지원금 스냅샷 갱신 (스마트초이스)" >&2
+  $PY subsidy_smartchoice.py --no-db || echo "[routine] 공시지원금 수집 실패 — 기존 스냅샷 유지" >&2
 }
 
 if [ -f "$HOME/venvs/online-price/bin/activate" ]; then
@@ -44,6 +46,11 @@ else
     echo "[routine] 배치 브랜치 sise-batch 수신 (GitHub Actions 가 미리 받은 이미지)" >&2
     rm -rf "$BATCH" && mkdir -p "$BATCH/results"
     git archive --format=tar origin/sise-batch | tar -x -C "$BATCH"
+    # 공시지원금 스냅샷(CI 가 스마트초이스에서 수집) — 샌드박스는 외부망이 막혀 배치로 받는다
+    if [ -f "$BATCH/subsidy_snapshot.json" ]; then
+      cp "$BATCH/subsidy_snapshot.json" "$REPO/subsidy_snapshot.json"
+      echo "[routine] 공시지원금 스냅샷 수신 ($(python3 -c "import json;print(json.load(open('$REPO/subsidy_snapshot.json'))['snapshot_date'])" 2>/dev/null || echo '?'))" >&2
+    fi
     echo "[routine] 배치 생성 시각(UTC): $(cat "$BATCH/BATCH_CREATED_UTC" 2>/dev/null || echo '?') · 이미지 $(ls "$BATCH"/*.jpg 2>/dev/null | wc -l | tr -d ' ')장" >&2
   else
     echo "[routine] 배치 브랜치 없음 — 직접 다운로드 시도(샌드박스에선 차단될 수 있음)" >&2

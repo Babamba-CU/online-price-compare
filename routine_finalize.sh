@@ -26,7 +26,7 @@ echo "[routine] 2/3 재수집·재빌드 (카카오 텍스트 + vision 적재 + 
 $PY daily_collect.py finalize
 
 echo "[routine] 3/3 데이터 커밋·push" >&2
-DATA="seongji_vision_data.json vision_skiplist.json seongji_data.js seongji_kakao_history.json"
+DATA="seongji_vision_data.json vision_skiplist.json seongji_data.js seongji_kakao_history.json subsidy_snapshot.json subsidy_data.js"
 # shellcheck disable=SC2086
 git add -- $DATA
 if git diff --cached --quiet; then

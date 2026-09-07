@@ -16,6 +16,7 @@ on:
       - 'seongji_sources.json'
       - 'seongji_vision_data.json'
       - 'seongji_kakao_history.json'
+      - 'subsidy_snapshot.json'
       - 'deploy/lightsail/**'
       - '.github/workflows/deploy-lightsail.yml'
   workflow_dispatch:        # GitHub UI 에서 수동 배포 허용

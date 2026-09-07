@@ -102,11 +102,22 @@ def refresh_data() -> None:
 
     # --- 공시지원금 ---
     try:
-        import subsidy_db, subsidy_seed, subsidy_build
+        import subsidy_db, subsidy_build, subsidy_smartchoice
         subsidy_db.DB_PATH.unlink(missing_ok=True)
-        subsidy_seed.seed()       # init_db + 검증된 3사 지원금 재적재 (오늘 기준)
+        subsidy_db.init_db()
+        # 2026-09-08: 5월 스크린샷+추정치 시드(subsidy_seed) 대신 스마트초이스 실데이터.
+        # 온라인 수집 실패(폐쇄망 등) 시 커밋된 subsidy_snapshot.json 을 쓴다. 시드는 SUBSIDY_SEED=1 일 때만.
+        try:
+            src = subsidy_smartchoice.refresh(prefer_network=True)
+        except Exception as e:  # noqa: BLE001
+            if os.getenv("SUBSIDY_SEED") == "1":
+                import subsidy_seed
+                subsidy_seed.seed()
+                src = f"시드(폴백: {e!r})"
+            else:
+                raise
         subsidy_build.main()      # subsidy_data.js 빌드
-        log("공시지원금 갱신 완료")
+        log(f"공시지원금 갱신 완료 — {src}")
     except Exception as e:  # noqa: BLE001
         log(f"공시지원금 갱신 실패: {e!r}")
 
