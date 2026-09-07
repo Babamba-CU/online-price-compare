@@ -1,9 +1,11 @@
 """
 카카오 성지 단가 롤링 히스토리 — 전일 대비 리베이트 변화 감지용.
 
-카카오/비전 데이터는 매일 최신 스냅샷으로 재스탬프되어 DB 안에 '어제'가 없다.
-그래서 빌드 때마다 (모델×통신사×가입유형) 집계와 (매장×모델×통신사) 최저가를
-JSON 파일에 날짜별로 누적하고, 직전 날짜와 비교해 변화를 산출한다.
+빌드 때마다 '현재 시세 집합'(매장별 최신 시세표, seongji_build 가 산출)의
+(모델×통신사×가입유형) 집계와 (매장×모델×통신사×가입유형×용량) 최저가를 JSON 파일에
+날짜별로 누적하고, 직전 날짜와 비교해 변화를 산출한다.
+2026-09-08: 입력이 '누적 전량 재스탬프 풀'에서 '현재 시세 집합'으로 바뀌어(재스탬프 폐지)
+과거 파일과 비교가 안 되므로 version=2 로 올리고 구버전 기록은 버린다. 조건부 행은 제외.
 
 - 파일: seongji_kakao_history.json (repo 커밋 — 5am 로컬 루틴이 갱신해 푸시)
 - 컨테이너에서는 앱 디렉터리가 읽기전용일 수 있어 저장 실패는 무시(읽기+당일 비교는 동작)
@@ -17,7 +19,10 @@ import statistics
 from collections import defaultdict
 from pathlib import Path
 
+from price_conditions import is_conditional
+
 HISTORY_PATH = Path(__file__).parent / "seongji_kakao_history.json"
+HISTORY_VERSION = 2     # 집계 의미가 바뀌면 올린다 — 다른 버전의 기록과는 비교하지 않는다
 KEEP_DAYS = 30          # 롤링 보존 일수
 MIN_GROUP_N = 2         # 집계 최소 관측수 (1건짜리 변동은 노이즈)
 CHANGE_MIN_WON = 30_000  # 이 금액 미만 변동은 무시
@@ -37,10 +42,12 @@ def _aggregate(rows: list[dict]) -> dict:
         model, carrier = r.get("model_name"), r.get("carrier")
         if price is None or not model or carrier not in ("SKT", "KT", "LGU+"):
             continue
+        if r.get("is_conditional") or is_conditional(r.get("add_condition")):
+            continue    # 결합·제휴카드·적용가 등 조건부 가격은 변화 감지에서 제외
         sub = eff_sub(r.get("subscription_type"))
         groups[(model, carrier, sub)].append(price)
         if r.get("author"):     # 매장명 없는 행은 매장 단위 추적 불가 — 집계만 반영
-            sk = (r["author"], model, carrier)
+            sk = (r["author"], model, carrier, sub, r.get("storage_gb"))
             if sk not in store_min or price < store_min[sk]:
                 store_min[sk] = price
 
@@ -50,8 +57,8 @@ def _aggregate(rows: list[dict]) -> dict:
         for (m, c, s), v in groups.items() if len(v) >= MIN_GROUP_N
     ]
     stores = [
-        {"author": a, "model": m, "carrier": c, "min": p}
-        for (a, m, c), p in store_min.items()
+        {"author": a, "model": m, "carrier": c, "sub": s, "storage_gb": g, "min": p}
+        for (a, m, c, s, g), p in store_min.items()
     ]
     return {"agg": agg, "stores": stores}
 
@@ -59,15 +66,18 @@ def _aggregate(rows: list[dict]) -> dict:
 def load() -> dict:
     if HISTORY_PATH.exists():
         try:
-            return json.loads(HISTORY_PATH.read_text(encoding="utf-8"))
+            hist = json.loads(HISTORY_PATH.read_text(encoding="utf-8"))
+            if hist.get("version") == HISTORY_VERSION:
+                return hist
         except (json.JSONDecodeError, OSError):
             pass
-    return {"days": {}}
+    return {"version": HISTORY_VERSION, "days": {}}
 
 
 def record(rows: list[dict], snapshot_date: str) -> dict:
     """오늘 집계를 히스토리에 반영. 저장 실패(읽기전용 FS)는 무시하고 메모리 결과 반환."""
     hist = load()
+    hist["version"] = HISTORY_VERSION
     hist["days"][snapshot_date] = _aggregate(rows)
     keep = sorted(hist["days"].keys())[-KEEP_DAYS:]
     hist["days"] = {d: hist["days"][d] for d in keep}
@@ -89,7 +99,7 @@ def compute_changes(hist: dict, latest_date: str) -> dict:
     반환: {
       base_date, latest_date,
       agg: [{model, carrier, sub, prev_median, median, diff, prev_min, min, min_diff, count}],
-      stores: [{author, model, carrier, prev_min, min, diff}],
+      stores: [{author, model, carrier, sub, storage_gb, prev_min, min, diff}],
     }
     diff < 0 = 가격 인하 = 리베이트 추가(공세), diff > 0 = 리베이트 축소.
     """
@@ -121,8 +131,9 @@ def compute_changes(hist: dict, latest_date: str) -> dict:
         })
     agg_changes.sort(key=lambda x: min(x["diff"], x["min_diff"]))
 
-    cur_s = _idx(latest_date, "stores", lambda x: (x["author"], x["model"], x["carrier"]))
-    prv_s = _idx(base, "stores", lambda x: (x["author"], x["model"], x["carrier"]))
+    skey = lambda x: (x["author"], x["model"], x["carrier"], x.get("sub"), x.get("storage_gb"))  # noqa: E731
+    cur_s = _idx(latest_date, "stores", skey)
+    prv_s = _idx(base, "stores", skey)
     store_changes = []
     for k, cur in cur_s.items():
         prev = prv_s.get(k)
@@ -132,7 +143,7 @@ def compute_changes(hist: dict, latest_date: str) -> dict:
         if abs(diff) < CHANGE_MIN_WON:
             continue
         store_changes.append({
-            "author": k[0], "model": k[1], "carrier": k[2],
+            "author": k[0], "model": k[1], "carrier": k[2], "sub": k[3], "storage_gb": k[4],
             "prev_min": prev["min"], "min": cur["min"], "diff": diff,
         })
     store_changes.sort(key=lambda x: x["diff"])

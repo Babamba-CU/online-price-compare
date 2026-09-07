@@ -163,6 +163,9 @@ def collect(snapshot: date | None = None) -> dict:
 
     linked_cutoff_ms = (datetime.now() - timedelta(days=LINKED_RECENT_DAYS)).timestamp() * 1000
 
+    # 교차링크 게시글은 게시한 채널의 매장명/지역으로 귀속(종전: 링크한 채널로 오귀속)
+    src_meta = {x["handle"]: (x.get("name") or "", x.get("region") or "") for x in sources}
+
     with connect() as conn:
         for s in sources:
             handle, name, region = s["handle"], s.get("name") or "", s.get("region") or ""
@@ -195,7 +198,8 @@ def collect(snapshot: date | None = None) -> dict:
                 time.sleep(REQUEST_SLEEP)
                 if (lit.get("published_at") or 0) < linked_cutoff_ms:
                     continue
-                p, pr = _ingest(conn, lit, lh, name, region)
+                l_name, l_region = src_meta.get(lh, (name, region))
+                p, pr = _ingest(conn, lit, lh, l_name, l_region)
                 n_posts += p
                 n_prices += pr
 

@@ -539,7 +539,41 @@
     .price-type.est  { background: #FFF8DB; color: #8A6D00; border: 1px solid #EFE0A3; }
     .cash-neg { color: var(--accent); font-weight: 700; }
     .cash-neg .pb { font-size: 10px; font-weight: 600; margin-left: 3px; }
-    .kk-restamp { font-size: 10px; color: var(--ink3); margin-left: 4px; }
+    /* 시세표 기준일 경과 배지 (≤7일 초록 · ≤30일 호박 · 그 외 회색) */
+    .age-badge {
+      display: inline-block; padding: 0 6px; border-radius: 6px; margin-left: 4px;
+      font-size: 10px; font-weight: 600; font-family: var(--font-mono); white-space: nowrap;
+      background: var(--bg-inset); color: var(--ink3); border: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .age-badge.fresh { background: #E6F6EC; color: #137A3A; border-color: #B7E3C6; }
+    .age-badge.warm  { background: #FFF8DB; color: #8A6D00; border-color: #EFE0A3; }
+    .age-badge.old   { background: var(--bg-inset); color: var(--ink3); border-color: var(--border); }
+    /* "더 보기" 행/버튼 (성지폰 상세·카카오 매장별) */
+    tbody tr.more-row td { text-align: center !important; padding: 8px !important; background: var(--bg-subtle) !important; }
+    .more-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
+      font-size: 12px; font-weight: 600; border: 1px solid var(--border-strong);
+      background: white; color: var(--ink2); border-radius: 9999px; cursor: pointer;
+      font-family: inherit;
+    }
+    .more-btn:hover { border-color: var(--brand); color: var(--brand); }
+    /* 매장별 시세표 최신성 리스트 */
+    .store-list {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 6px 18px; padding: 10px 16px;
+    }
+    .store-item { display: flex; gap: 8px; align-items: baseline; font-size: 12.5px; min-width: 0; }
+    .store-item .st-name { font-weight: 600; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; min-width: 0; }
+    .store-item .st-region { color: var(--ink3); font-size: 11px; white-space: nowrap; }
+    .store-item .st-date { font-family: var(--font-mono); font-size: 11px; color: var(--ink2); white-space: nowrap; }
+    .store-item .st-rows { font-family: var(--font-mono); font-size: 11px; color: var(--ink3); white-space: nowrap; }
+    /* 필터 행 안의 체크박스 */
+    .filter-check {
+      display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--ink2);
+      padding: var(--spacing-sm) 0; cursor: pointer; user-select: none;
+    }
+    .filter-check input { width: 15px; height: 15px; accent-color: var(--brand); }
 
     .empty-state {
       padding: 60px var(--spacing-xl); text-align: center;
@@ -707,8 +741,10 @@
     <div class="filters-section">
       <div class="filter-row">
         <div class="filter-input-group">
-          <label class="filter-input-label">기준일 (상세 테이블)</label>
-          <input type="date" id="sjFilterDate" onchange="seongjiRender()">
+          <label class="filter-input-label">시세표 기준일</label>
+          <select id="sjFilterDate" onchange="seongjiRender()">
+            <option value="" selected>전체 (현재 시세)</option>
+          </select>
         </div>
         <div class="filter-input-group">
           <label class="filter-input-label">통신사</label>
@@ -724,7 +760,7 @@
           <select id="sjFilterSub" onchange="seongjiRender()">
             <option value="" selected>전체</option>
             <option value="MNP">MNP</option>
-            <option value="010신규">010신규</option>
+            <option value="신규">신규</option>
             <option value="기변">기변</option>
           </select>
         </div>
@@ -735,6 +771,13 @@
             <option value="0.5" selected>0.5 (보통 이상)</option>
             <option value="0.7">0.7 (높음)</option>
           </select>
+        </div>
+        <div class="filter-input-group">
+          <label class="filter-input-label">가격 조건</label>
+          <label class="filter-check" title="결합(인터넷+TV)·제휴카드·온누리·이벤트 적용가 등 조건이 붙은 가격. 기본은 제외">
+            <input type="checkbox" id="sjIncludeCond" onchange="seongjiRender()">
+            <span>조건부(결합·카드) 포함</span>
+          </label>
         </div>
         <div class="filter-input-group">
           <label class="filter-input-label">단말기 (다중선택)</label>
@@ -772,7 +815,7 @@
 
     <div class="table-section">
       <div class="table-title">
-        최신일자 사이트별 단가 상세 (정렬: 현금완납가 오름차순)
+        현재 시세 사이트별 단가 상세 (정렬: 현금완납가 오름차순)
         <span class="sub-note">출고가·공통/추가지원금은 공시지원금 DB 와 join · 성지RB = 출고가−공통−추가−현금완납가</span>
         <span class="sub-note" id="sjDetailNote"></span>
       </div>
@@ -782,6 +825,7 @@
             <tr>
               <th>모델</th>
               <th>지역</th>
+              <th>기준일</th>
               <th>통신사</th>
               <th>가입유형</th>
               <th>약정</th>
@@ -799,6 +843,9 @@
           </thead>
           <tbody id="sjDetailTbody"></tbody>
         </table>
+      </div>
+      <div id="sjDetailMore" style="display:none;text-align:center;padding:10px 0 4px">
+        <button type="button" class="more-btn" id="sjDetailMoreBtn">더 보기</button>
       </div>
       <div id="sjEmptyState" class="empty-state" style="display:none">
         아직 적재된 데이터가 없습니다.<br>
@@ -881,12 +928,19 @@
 
     <div class="kpi-section" id="kkKpiSection"></div>
 
+    <div class="table-section" style="padding-bottom:0">
+      <details class="feed-details" id="kkStoreListSection" style="display:none">
+        <summary>매장별 시세표 최신성 <span class="sub-note" id="kkStoreListCount"></span></summary>
+        <div class="store-list" id="kkStoreList"></div>
+      </details>
+    </div>
+
     <div class="chart-section">
       <div class="chart-title">3사 현금완납가 비교 (매장 분포 박스플롯)</div>
       <div class="chart-help">
         통신사별 <b>박스플롯</b> — 박스 = 1~3분위(중간 50% 매장), 가운데 굵은 선 = 중앙값,
         수염 = 1.5×IQR 내 최저~최고, 속빈 점 = 이상치. 여러 매장의 <b>현금완납가</b> 분포를 3사로 비교합니다.
-        음수(차비) 포함 · 통신사 필터와 무관하게 3사 모두 표시.
+        음수(차비) 포함 · 통신사 필터와 무관하게 3사 모두 표시 · 매장 2곳 이상에서 관측된 단말만 (최대 24종).
       </div>
       <div class="legend">
         <div class="legend-item"><span class="legend-box skt"></span>SKT</div>
@@ -915,7 +969,7 @@
               <th>가입유형</th>
               <th>가격유형</th>
               <th>현금완납가</th>
-              <th>시세표 기준일</th>
+              <th>기준일</th>
               <th>원문</th>
             </tr>
           </thead>
@@ -1544,9 +1598,26 @@
       models: [], daily: [], detail: [], boxStats: [], runs: [], boxWindowDays: 14
     };
     const SUBSIDY = window.SUBSIDY_DATA || { offers: [], latestSnapshot: null };
+    const CURRENT_WINDOW = DATA.currentWindowDays || 30;
 
     let chartMetric = "cash_price";   // or "seongji_rb"
     let boxMarkers = [];
+
+    const escHtml = s => String(s ?? "").replace(/[&<>"']/g, c =>
+      ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    // 가입유형 미표기 → MNP 간주 (카카오 탭과 동일 규칙). 원본은 보존, 필터·join 차원만 정규화.
+    const KNOWN_SUBS = ["MNP", "기변", "신규"];
+    const effSub = r => KNOWN_SUBS.includes(r.subscription_type) ? r.subscription_type : "MNP";
+    const subAssumed = r => !KNOWN_SUBS.includes(r.subscription_type);
+    // 조건부 가격 (결합·제휴카드·온누리·이벤트 적용가 등) — 빌드의 is_conditional 우선, 없으면 정규식 폴백
+    const COND_RE = /결합|인터넷|TV|제휴|온누리|체감|페스티벌|이벤트|적용가|추가페이백/;
+    const isConditional = r => (typeof r.is_conditional === "boolean")
+      ? r.is_conditional : COND_RE.test(r.add_condition || "");
+    const includeCond = () => !!(document.getElementById("sjIncludeCond") || {}).checked;
+    // 시세표 기준일 경과 배지
+    const ageClass = a => (a == null ? "" : a <= 7 ? "fresh" : a <= 30 ? "warm" : "old");
+    const ageBadge = a => (a == null ? "" :
+      `<span class="age-badge ${ageClass(a)}">${a <= 0 ? "오늘" : a + "일 전"}</span>`);
 
     /* === subsidy lookup === */
     // (carrier, model_name, storage_gb, normalized_sub_type) → offer
@@ -1569,13 +1640,13 @@
     function lookupSubsidy(r) {
       buildSubsidyIndex();
       // 1) (carrier, model, storage, sub) 정확매칭
-      let hit = subsidyIndex.get(subsidyKey(r.carrier, r.model_name, r.storage_gb, r.subscription_type));
+      let hit = subsidyIndex.get(subsidyKey(r.carrier, r.model_name, r.storage_gb, effSub(r)));
       if (hit) return hit;
       // 2) storage 무시 폴백
       for (const o of subsidyIndex.values()) {
         if (o.carrier === r.carrier
             && o.model_name === r.model_name
-            && (SUB_MAP_SEONGJI_TO_SUBSIDY[r.subscription_type] || "MNP") === (o.subscription_type || "MNP")) {
+            && (SUB_MAP_SEONGJI_TO_SUBSIDY[effSub(r)] || "MNP") === (o.subscription_type || "MNP")) {
           return o;
         }
       }
@@ -1605,10 +1676,11 @@
       all.style.borderBottom = "1px solid var(--border)";
       all.innerHTML = `<input type="checkbox" id="sjModelAll" checked><span><b>전체 선택</b></span>`;
       menu.appendChild(all);
-      DATA.models.forEach(m => {
+      // DATA.models 는 빌드가 최신 기종순(브랜드 → 세대 내림차순)으로 정렬해 둔 순서 — 재정렬하지 않음
+      (DATA.models || []).forEach(m => {
         const lbl = document.createElement("label");
         lbl.className = "checkbox-item";
-        lbl.innerHTML = `<input type="checkbox" class="sj-model-cb" value="${m}" checked><span>${m}</span>`;
+        lbl.innerHTML = `<input type="checkbox" class="sj-model-cb" value="${escHtml(m)}" checked><span>${escHtml(m)}</span>`;
         menu.appendChild(lbl);
       });
       toggle.addEventListener("click", () => menu.classList.toggle("hidden"));
@@ -1642,17 +1714,18 @@
       const hasNaver = (DATA.feed || []).length > 0;
       const mix = hasNaver
         ? `<span><b>샘플 기준선</b> + 당일 Naver 실측 혼합</span>` : "";
+      const detail = DATA.detail || [];
+      const condN = detail.filter(isConditional).length;
       m.innerHTML = `
         <span>최종 빌드: <b>${DATA.generatedAt}</b></span>
-        <span>최신 스냅샷: <b>${DATA.latestSnapshot}</b></span>
-        <span>모델 ${DATA.models.length}종</span>
+        <span>표시 기준: <b>매장별 최신 시세표(최근 ${CURRENT_WINDOW}일)</b> ${detail.length.toLocaleString()}건</span>
+        <span>모델 ${(DATA.models || []).length}종</span>
         <span>3사 한정 (알뜰 제외)</span>
+        <span>조건부(결합·카드) ${condN.toLocaleString()}건 — 기본 제외</span>
         ${mix} ${runs}`;
     }
 
     /* === 실시간 수집 피드 (Naver Search API) === */
-    const escHtml = s => String(s ?? "").replace(/[&<>"']/g, c =>
-      ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
     function renderFeed() {
       const sec = document.getElementById("sjFeedSection");
       const feed = DATA.feed || [];
@@ -1693,10 +1766,16 @@
       });
       const cards = CARRIERS.map(c => {
         const row = carriers[c];
-        const price = row ? `${(row.cash_price / 10000).toLocaleString()}만` : "-";
-        const sub = row ? `${row.model_name} · ${row.source}` : "데이터 없음";
+        const isPay = !!row && row.cash_price < 0;   // 음수 = 차비(페이백) — 매장이 고객에게 지급
+        const price = !row ? "-"
+          : isPay ? `차비 ${(Math.abs(row.cash_price) / 10000).toLocaleString()}만`
+                  : `${(row.cash_price / 10000).toLocaleString()}만`;
+        const sub = row
+          ? `${escHtml(row.model_name)} · ${effSub(row)}${subAssumed(row) ? "*" : ""} · ${escHtml(row.author || row.source)}`
+            + `${isPay ? " · <b>매장이 지급</b>" : ""}${ageBadge(row.age_days)}`
+          : "데이터 없음";
         return `<div class="kpi-card">
-          <div class="kpi-label">${c} 최저가</div>
+          <div class="kpi-label">${c} 최저 현금완납가</div>
           <div class="kpi-value" style="color:${CARRIER_COLORS[c]}">${price}</div>
           <div class="kpi-sub">${sub}</div></div>`;
       }).join("");
@@ -1715,21 +1794,24 @@
         (DATA.boxStats || []).forEach(s => {
           if (!byMC[s.model_name]) return;
           if (!CARRIERS.includes(s.carrier)) return;
-          // 필터에 subType 이 지정돼 있으면 그것만
-          if (filtered.subTypeFilter && s.subscription_type !== filtered.subTypeFilter) return;
+          // 필터에 subType 이 지정돼 있으면 그것만 (미표기 통계는 MNP 로 간주)
+          if (filtered.subTypeFilter && (s.subscription_type || "MNP") !== filtered.subTypeFilter) return;
           const cur = byMC[s.model_name][s.carrier];
-          if (!cur) { byMC[s.model_name][s.carrier] = {...s}; }
+          if (!cur) { byMC[s.model_name][s.carrier] = { ...s, stores: (s.stores == null ? null : s.stores) }; }
           else {
             cur.max = Math.max(cur.max, s.max);
             cur.min = Math.min(cur.min, s.min);
             cur.p70 = Math.round((cur.p70 * cur.count + s.p70 * s.count) / (cur.count + s.count));
             cur.avg = Math.round((cur.avg * cur.count + s.avg * s.count) / (cur.count + s.count));
             cur.count += s.count;
+            // 가입유형별 매장수는 중복될 수 있어 합산 대신 최대값(보수적 하한)
+            cur.stores = (cur.stores != null && s.stores != null) ? Math.max(cur.stores, s.stores)
+                       : (cur.stores ?? s.stores ?? null);
           }
         });
       } else {
         // seongji_rb: detail 행마다 RB 계산, bucket 누적 후 통계
-        const acc = {};
+        const acc = {}, accStores = {};
         filtered.detailRows.forEach(r => {
           if (!CARRIERS.includes(r.carrier) || r.cash_price == null) return;
           if (!byMC[r.model_name]) return;
@@ -1738,6 +1820,7 @@
           if (rb.value == null) return;
           const key = `${r.model_name}__${r.carrier}`;
           (acc[key] = acc[key] || []).push(rb.value);
+          (accStores[key] = accStores[key] || new Set()).add(r.author || r.source || "?");
         });
         Object.keys(acc).forEach(k => {
           const [model, carrier] = k.split("__");
@@ -1750,6 +1833,7 @@
           byMC[model][carrier] = {
             model_name: model, carrier,
             count: vals.length,
+            stores: accStores[k] ? accStores[k].size : null,
             min: vals[0], max: vals[vals.length - 1],
             avg: Math.round(vals.reduce((s, x) => s + x, 0) / vals.length),
             p70: pct(0.70),
@@ -1877,7 +1961,7 @@
               ${m.model} / ${m.carrier} · ${metricLabel}
             </div>
             <div style="border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:4px">
-              관측치 ${s.count}건 (최근 ${(window.SEONGJI_DATA?.boxWindowDays ?? 14)}일)
+              관측 ${s.count}건${s.stores != null ? ` · 매장 ${s.stores}곳` : ""} (최근 ${(DATA.boxWindowDays ?? 14)}일)
             </div>
             <div>Max: ${man(s.max)}</div>
             <div>상위30%: ${man(s.p70)}</div>
@@ -1891,81 +1975,122 @@
       cvs.onmouseleave = () => { tip.style.display = "none"; cvs.style.cursor = "default"; };
     }
 
-    /* === 디테일 테이블 === */
+    /* === 디테일 테이블 — 현금완납가 오름차순, 300건씩 "더 보기" === */
+    const DETAIL_CHUNK = 300;
+    let detailSorted = [], detailShown = 0;
+
+    function detailRowHtml(r) {
+      const carrier = r.carrier || "?";
+      const cls = CARRIER_CLASS[carrier] || "";
+      const isEst = (r.add_condition || "").includes("월청구추정");
+      const isPay = r.cash_price != null && r.cash_price < 0;
+      const cond = isConditional(r);
+      let cash = "-";
+      if (r.cash_price != null) {
+        cash = isPay
+          ? `<span class="cash-neg" title="매장이 고객에게 지급(페이백)">${(Math.abs(r.cash_price) / 10000).toLocaleString()}만<span class="pb">차비</span></span>`
+          : `<span class="net-cell"${isEst ? ' title="월청구금액 기반 추정가"' : ""}>${isEst ? "~" : ""}${(r.cash_price / 10000).toLocaleString()}만</span>`;
+        if (cond) cash += `<span class="age-badge warm" title="${escHtml(r.add_condition)}">조건부</span>`;
+      }
+      const monthly = r.monthly_fee ? `${Number(r.monthly_fee).toLocaleString()}원` : "-";
+      const sub = lookupSubsidy(r);
+      const rb = calcSeongjiRB(r, sub);
+      const cellRet = sub ? `${(sub.retail_price || 0).toLocaleString()}` : "-";
+      const cellPub = sub ? `${(sub.subsidy_public || 0).toLocaleString()}` : "-";
+      const cellAdd = sub ? `${(sub.subsidy_additional || 0).toLocaleString()}` : "-";
+      let cellRB;
+      if (rb.value == null)        cellRB = `<span class="zero-cell">-</span>`;
+      else if (rb.clipped)         cellRB = `<span class="rb-clipped">0 이하 (공시 경로 유리)</span>`;
+      else                         cellRB = `<span class="rb-cell">${rb.value.toLocaleString()}</span><span class="won-suffix">원</span>`;
+      const regionCell = r.region
+        ? `<span style="white-space:nowrap">${escHtml(r.region)}</span>${r.author ? `<br><span style="font-size:11px;color:var(--ink3);white-space:nowrap">${escHtml(r.author)}</span>` : ""}`
+        : (r.author ? `<span style="font-size:11px;color:var(--ink3);white-space:nowrap">${escHtml(r.author)}</span>` : "-");
+      const boardDate = r.board_date || (r.posted_at || "").slice(0, 10) || "-";
+      const carrierChip = cls ? `<span class="${cls}">${escHtml(carrier)}</span>`
+                              : `<span style="color:var(--ink3)">-</span>`;
+      const subCell = `${effSub(r)}${subAssumed(r)
+        ? `<span style="color:var(--brand);cursor:help" title="미표기 — 성지 관행상 MNP(번호이동) 기준가로 간주">*</span>` : ""}`;
+      const isBaseline = !r.url || /example\.com/.test(r.url);
+      const srcCls = (r.source || "").startsWith("naver") ? " naver" : (r.source || "").startsWith("kakao") ? " kakao" : "";
+      return `<tr>
+        <td><b>${escHtml(r.model_name)}</b></td>
+        <td style="font-size:12px">${regionCell}</td>
+        <td style="font-size:11px;color:var(--ink3);white-space:nowrap">${escHtml(boardDate)}${ageBadge(r.age_days)}</td>
+        <td style="text-align:center">${carrierChip}</td>
+        <td style="text-align:center">${subCell}</td>
+        <td style="text-align:center">${escHtml(r.contract_type || "-")}</td>
+        <td style="text-align:center">${r.storage_gb ? r.storage_gb + "GB" : "-"}</td>
+        <td class="price-cell">${cellRet}${sub ? '<span class="won-suffix">원</span>' : ''}</td>
+        <td class="price-cell subsidy-cell">${cellPub}${sub ? '<span class="won-suffix">원</span>' : ''}</td>
+        <td class="price-cell">${cellAdd}${sub ? '<span class="won-suffix">원</span>' : ''}</td>
+        <td class="price-cell">${cellRB}</td>
+        <td class="price-cell">${cash}</td>
+        <td class="price-cell">${monthly}</td>
+        <td>${escHtml(r.plan_name || "-")}</td>
+        <td style="text-align:center">${r.plan_duration_mo ? r.plan_duration_mo + "M" : "-"}</td>
+        <td><span class="source-badge${srcCls}">${escHtml(r.source || "-")}</span>
+            ${isBaseline
+              ? '<span class="src-baseline" title="합성 기준선 데이터 — 실제 게시글 링크 아님">기준선(합성)</span>'
+              : `<a href="${escHtml(r.url)}" target="_blank" rel="noopener noreferrer">${escHtml((r.title || "열기").slice(0, 30))}…</a>`}</td>
+      </tr>`;
+    }
+
+    function appendDetailChunk() {
+      const tbody = document.getElementById("sjDetailTbody");
+      const more = document.getElementById("sjDetailMore");
+      const btn = document.getElementById("sjDetailMoreBtn");
+      const next = detailSorted.slice(detailShown, detailShown + DETAIL_CHUNK);
+      if (next.length) tbody.insertAdjacentHTML("beforeend", next.map(detailRowHtml).join(""));
+      detailShown += next.length;
+      const rest = detailSorted.length - detailShown;
+      if (more) more.style.display = rest > 0 ? "" : "none";
+      if (btn && rest > 0) btn.textContent = `더 보기 (+${rest.toLocaleString()}건 · ${DETAIL_CHUNK}건씩)`;
+    }
+
     function renderDetailTable(rows) {
       const tbody = document.getElementById("sjDetailTbody");
       const empty = document.getElementById("sjEmptyState");
       const note = document.getElementById("sjDetailNote");
-      if (rows.length === 0) { tbody.innerHTML = ""; empty.style.display = "block"; if (note) note.textContent = ""; return; }
+      const more = document.getElementById("sjDetailMore");
+      detailSorted = []; detailShown = 0;
+      if (rows.length === 0) {
+        tbody.innerHTML = ""; empty.style.display = "block";
+        if (note) note.textContent = ""; if (more) more.style.display = "none";
+        return;
+      }
       empty.style.display = "none";
       if (note) {
         const base = rows.filter(r => !r.url || /example\.com/.test(r.url)).length;
         const real = rows.length - base;
-        note.innerHTML = `· 실측 ${real}건 · <span style="color:var(--ink3)">기준선(합성) ${base}건</span>`
+        note.innerHTML = `· 실측 ${real.toLocaleString()}건 · <span style="color:var(--ink3)">기준선(합성) ${base.toLocaleString()}건</span>`
+          + (includeCond() ? ' · <span style="color:#8A6D00">조건부 포함</span>' : ' · 조건부 제외')
           + (real === 0 ? ' — 실제 성지 사이트 대부분 폐쇄/SPA라 링크 없는 기준선 위주(실단가는 <b>카카오 성지</b> 탭 참고)' : '');
       }
-      const html = rows.slice(0, 300).map(r => {
-        const carrier = r.carrier || "?";
-        if (r.carrier && !CARRIERS.includes(carrier)) return "";   // 알뜰 행 숨김 (미상은 표시)
-        const cls = CARRIER_CLASS[carrier] || "";
-        const isEst = (r.add_condition || "").includes("월청구추정");
-        const cash = r.cash_price != null
-          ? `<span class="net-cell"${isEst ? ' title="월청구금액 기반 추정가"' : ""}>${isEst ? "~" : ""}${(r.cash_price / 10000).toLocaleString()}만</span>` : "-";
-        const monthly = r.monthly_fee ? `${r.monthly_fee.toLocaleString()}원` : "-";
-        const sub = lookupSubsidy(r);
-        const rb = calcSeongjiRB(r, sub);
-        const cellRet = sub ? `${sub.retail_price.toLocaleString()}` : "-";
-        const cellPub = sub ? `${(sub.subsidy_public || 0).toLocaleString()}` : "-";
-        const cellAdd = sub ? `${(sub.subsidy_additional || 0).toLocaleString()}` : "-";
-        let cellRB;
-        if (rb.value == null)        cellRB = `<span class="zero-cell">-</span>`;
-        else if (rb.clipped)         cellRB = `<span class="rb-clipped">0 이하 (공시 경로 유리)</span>`;
-        else                         cellRB = `<span class="rb-cell">${rb.value.toLocaleString()}</span><span class="won-suffix">원</span>`;
-        const regionCell = r.region
-          ? `<span style="white-space:nowrap">${r.region}</span>${r.author ? `<br><span style="font-size:11px;color:var(--ink3);white-space:nowrap">${r.author}</span>` : ""}`
-          : "-";
-        const carrierChip = cls ? `<span class="${cls}">${carrier}</span>`
-                                : `<span style="color:var(--ink3)">-</span>`;
-        return `<tr>
-          <td><b>${r.model_name}</b></td>
-          <td style="font-size:12px">${regionCell}</td>
-          <td style="text-align:center">${carrierChip}</td>
-          <td style="text-align:center">${r.subscription_type || "-"}</td>
-          <td style="text-align:center">${r.contract_type || "-"}</td>
-          <td style="text-align:center">${r.storage_gb ? r.storage_gb + "GB" : "-"}</td>
-          <td class="price-cell">${cellRet}${sub ? '<span class="won-suffix">원</span>' : ''}</td>
-          <td class="price-cell subsidy-cell">${cellPub}${sub ? '<span class="won-suffix">원</span>' : ''}</td>
-          <td class="price-cell">${cellAdd}${sub ? '<span class="won-suffix">원</span>' : ''}</td>
-          <td class="price-cell">${cellRB}</td>
-          <td class="price-cell">${cash}</td>
-          <td class="price-cell">${monthly}</td>
-          <td>${r.plan_name || "-"}</td>
-          <td style="text-align:center">${r.plan_duration_mo ? r.plan_duration_mo + "M" : "-"}</td>
-          <td><span class="source-badge${(r.source || "").startsWith("naver") ? " naver" : (r.source || "").startsWith("kakao") ? " kakao" : ""}">${r.source || "-"}</span>
-              ${(!r.url || /example\.com/.test(r.url))
-                ? '<span class="src-baseline" title="합성 기준선 데이터 — 실제 게시글 링크 아님">기준선(합성)</span>'
-                : `<a href="${r.url}" target="_blank" rel="noopener noreferrer">${(r.title || "열기").slice(0, 30)}…</a>`}</td>
-        </tr>`;
-      }).join("");
-      tbody.innerHTML = html;
+      // 알뜰 행 숨김 (미상은 표시) → 현금완납가 오름차순 (미상은 맨 뒤)
+      detailSorted = rows.filter(r => !r.carrier || CARRIERS.includes(r.carrier))
+        .slice().sort((a, b) => (a.cash_price ?? 9e12) - (b.cash_price ?? 9e12));
+      tbody.innerHTML = "";
+      appendDetailChunk();
     }
 
     function render() {
       const sel = selectedModels();
-      const refDate = document.getElementById("sjFilterDate").value || DATA.latestSnapshot;
+      const boardDate = document.getElementById("sjFilterDate").value;   // "" = 전체(현재 시세)
       const carrier = document.getElementById("sjFilterCarrier").value;
       const sub = document.getElementById("sjFilterSub").value;
       const minConf = parseFloat(document.getElementById("sjFilterConf").value);
+      const withCond = includeCond();
 
       // 박스플롯 데이터
       const subTypeFilter = sub || null;
-      // detail 행 (RB 모드용 + 차트 모델 후보)
-      const filteredDetail = DATA.detail.filter(r => {
-        if (r.snapshot_date !== refDate && r.snapshot_date !== DATA.latestSnapshot) return false;
+      // detail 행 = 매장별 최신 시세표(현재 세트). 조건부 가격은 기본 제외, 차비(음수)는 정상 매물로 유지.
+      const filteredDetail = (DATA.detail || []).filter(r => {
+        if (boardDate && r.board_date !== boardDate) return false;
+        if (!withCond && isConditional(r)) return false;
         if (r.carrier && !CARRIERS.includes(r.carrier)) return false;  // 알뜰 제외 (미상은 허용)
         if (sel.size && !sel.has(r.model_name)) return false;
         if (carrier && r.carrier !== carrier) return false;
-        if (sub && r.subscription_type !== sub) return false;
+        if (sub && effSub(r) !== sub) return false;
         if ((r.confidence || 0) < minConf) return false;
         return true;
       });
@@ -1994,6 +2119,7 @@
       const el = document.getElementById("seongjiReport");
       if (!el) return;
       const M = window.aiMan;
+      const P = v => (v == null ? "-" : v < 0 ? "차비 " + M(-v) : M(v));   // 음수 = 차비(매장이 지급)
       // 모델×통신사 최저 현금완납가 (사이트 시세)
       const byMC = {};
       rows.forEach(r => {
@@ -2027,10 +2153,10 @@
       if (spots.length) {
         const s0 = spots[0], siteSet = new Set(spots.map(s => s.source));
         headline = `사이트 성지 시세 — 경쟁사 단가가 더 높은 스팟 <b>${HI(spots.length + "건")}</b> (${siteSet.size}개 사이트). `
-          + `최대는 <b>${s0.source}</b> ${s0.model} ${s0.cond} — ${s0.hi.c}가 ${s0.lo.c}보다 ${HI(M(s0.gap))} 비쌈.`;
+          + `최대는 <b>${escHtml(s0.source)}</b> ${escHtml(s0.model)} ${s0.cond} — ${s0.hi.c}가 ${s0.lo.c}보다 ${HI(M(s0.gap))} 비쌈.`;
         spots.slice(0, 3).forEach(s => lines.push(
-          `<b>${s.source}</b> · ${s.model} <b>${s.cond}</b> — ${s.hi.c} ${NEG(M(s.hi.p))} vs 최저 ${s.lo.c} ${HI(M(s.lo.p))} <span style="color:var(--ink3)">(격차 ${M(s.gap)})</span>. ${s.hi.c}가 이 사이트·조건서 단가 미대응.`));
-        recs.push(`<b>${s0.hi.c}</b>는 ${s0.source} 등에서 단가 미대응 구간 — 해당 사이트·조건 모니터링 및 대응 단가 검토.`);
+          `<b>${escHtml(s.source)}</b> · ${escHtml(s.model)} <b>${s.cond}</b> — ${s.hi.c} ${NEG(P(s.hi.p))} vs 최저 ${s.lo.c} ${HI(P(s.lo.p))} <span style="color:var(--ink3)">(격차 ${M(s.gap)})</span>. ${s.hi.c}가 이 사이트·조건서 단가 미대응.`));
+        recs.push(`<b>${s0.hi.c}</b>는 ${escHtml(s0.source)} 등에서 단가 미대응 구간 — 해당 사이트·조건 모니터링 및 대응 단가 검토.`);
       } else {
         const flags = SJ_FLAGSHIPS.filter(m => byMC[m]).map(m => {
           const byC = CARRIERS.map(c => ({ c, p: byMC[m][c] })).filter(o => o.p != null);
@@ -2040,8 +2166,8 @@
         }).filter(Boolean).sort((a, b) => b.gap - a.gap);
         if (flags.length) {
           const f0 = flags[0];
-          headline = `사이트 성지 시세 — 단말별 3사 현금완납가 격차. 최대 <b>${f0.m}</b> ${f0.best.c} ${HI(M(f0.best.p))} ↔ ${f0.worst.c} ${M(f0.worst.p)} (${HI(M(f0.gap))} 차).`;
-          flags.slice(0, 3).forEach(f => lines.push(`<b>${f.m}</b> — 최저 ${f.best.c} ${HI(M(f.best.p))}, 최고 ${f.worst.c} ${NEG(M(f.worst.p))} (격차 ${M(f.gap)}). ${f.worst.c} 온라인 단가 경쟁력 약함.`));
+          headline = `사이트 성지 시세 — 단말별 3사 현금완납가 격차. 최대 <b>${f0.m}</b> ${f0.best.c} ${HI(P(f0.best.p))} ↔ ${f0.worst.c} ${P(f0.worst.p)} (${HI(M(f0.gap))} 차).`;
+          flags.slice(0, 3).forEach(f => lines.push(`<b>${f.m}</b> — 최저 ${f.best.c} ${HI(P(f.best.p))}, 최고 ${f.worst.c} ${NEG(P(f.worst.p))} (격차 ${M(f.gap)}). ${f.worst.c} 온라인 단가 경쟁력 약함.`));
         } else headline = `사이트 성지 시세 요약 (합성 기준선 + 실측)`;
       }
 
@@ -2053,33 +2179,34 @@
         if (rb.value != null && rb.value > 0 && (!rbBest || rb.value > rbBest.rb))
           rbBest = { rb: rb.value, model: r.model_name, carrier: r.carrier, source: r.source };
       });
-      if (rbBest) lines.push(`성지RB 최대: <b>${rbBest.model}</b> ${rbBest.carrier} — 성지가가 공시 경로보다 ${HI(M(rbBest.rb))} 저렴(${rbBest.source}). 온라인 유출 경로로 추적.`);
+      if (rbBest) lines.push(`성지RB 최대: <b>${escHtml(rbBest.model)}</b> ${rbBest.carrier} — 성지가가 공시 경로보다 ${HI(M(rbBest.rb))} 저렴(${escHtml(rbBest.source)}). 온라인 유출 경로로 추적.`);
 
-      // 전일 대비 변동 (daily 시계열 median_price) — MNP 기준으로 고정.
-      // sub 를 섞으면 같은 날짜의 MNP/기변 행이 전일 대비로 오인됨.
+      // 직전 관측일 대비 변동 (daily 시계열 median_price — 관측일이 띄엄띄엄 있어 마지막 두 관측일을 비교)
+      // MNP 기준으로 고정: sub 를 섞으면 같은 날짜의 MNP/기변 행이 전일 대비로 오인됨.
       const series = {};
       (DATA.daily || []).forEach(d => {
         if (!CARRIERS.includes(d.carrier) || d.median_price == null) return;
-        if (d.subscription_type !== "MNP") return;
+        if ((d.subscription_type || "MNP") !== "MNP") return;
         (series[`${d.model_name}__${d.carrier}`] = series[`${d.model_name}__${d.carrier}`] || []).push({ date: d.snapshot_date, v: d.median_price });
       });
       const deltas = [];
       Object.keys(series).forEach(key => {
-        const arr = series[key].sort((a, b) => (a.date > b.date ? 1 : -1));
+        const arr = series[key].sort((a, b) => (a.date > b.date ? 1 : a.date < b.date ? -1 : 0));
         if (arr.length < 2) return;
-        const diff = arr[arr.length - 1].v - arr[arr.length - 2].v;
-        if (Math.abs(diff) >= 10000) { const [model, carrier] = key.split("__"); deltas.push({ model, carrier, diff }); }
+        const last = arr[arr.length - 1], prev = arr[arr.length - 2];
+        const diff = last.v - prev.v;
+        if (Math.abs(diff) >= 10000) { const [model, carrier] = key.split("__"); deltas.push({ model, carrier, diff, prevDate: prev.date, date: last.date }); }
       });
       // 시세 인하 = 해당 통신사 리베이트 추가(경쟁 공세), 상승 = 축소
       const drops = deltas.filter(d => d.diff < 0).sort((a, b) => a.diff - b.diff).slice(0, 2);
-      drops.forEach(d => lines.push(`<b>리베이트 추가 감지</b> — ${d.carrier} ${d.model} 사이트 중앙시세 전일 대비 ${NEG("▼" + M(Math.abs(d.diff)))} 인하. 경쟁사 정책 상향 신호.`));
+      drops.forEach(d => lines.push(`<b>리베이트 추가 감지</b> — ${d.carrier} ${escHtml(d.model)} 사이트 중앙시세 직전 관측일(${d.prevDate}) 대비 ${NEG("▼" + M(Math.abs(d.diff)))} 인하 (${d.date} 기준). 경쟁사 정책 상향 신호.`));
       const rise = deltas.filter(d => d.diff > 0).sort((a, b) => b.diff - a.diff)[0];
-      if (rise) lines.push(`<b>리베이트 축소</b> — ${rise.carrier} ${rise.model} 사이트 중앙시세 ▲${M(rise.diff)} 상승. 정책 회수/재고 소진 가능성.`);
-      if (drops.length) recs.push(`리베이트 추가가 감지된 ${drops.map(d => `<b>${d.carrier} ${d.model}</b>`).join(", ")} — 자사 대응 단가·추가지원 상향 여부 판단.`);
+      if (rise) lines.push(`<b>리베이트 축소</b> — ${rise.carrier} ${escHtml(rise.model)} 사이트 중앙시세 직전 관측일(${rise.prevDate}) 대비 ▲${M(rise.diff)} 상승 (${rise.date} 기준). 정책 회수/재고 소진 가능성.`);
+      if (drops.length) recs.push(`리베이트 추가가 감지된 ${drops.map(d => `<b>${d.carrier} ${escHtml(d.model)}</b>`).join(", ")} — 자사 대응 단가·추가지원 상향 여부 판단.`);
       recs.push(`사이트 시세(익명·전국)와 카카오 매장 호가는 성격이 달라 별도 탭에서 교차 확인 권장.`);
 
       el.innerHTML = window.aiReportHTML({
-        count: `${new Set(rows.map(r => r.model_name)).size}개 모델 · ${rows.length}건 · 판매정책 관점`,
+        count: `${new Set(rows.map(r => r.model_name)).size}개 모델 · 현재 시세 ${rows.length.toLocaleString()}건 (최근 ${CURRENT_WINDOW}일 · 조건부 ${includeCond() ? "포함" : "제외"}) · 판매정책 관점`,
         headline, lines, recs,
         recTitle: "경쟁 대응 제언 (판매정책 관점)",
       });
@@ -2099,8 +2226,21 @@
       });
     }
 
+    function initDateFilter() {
+      // 시세표 기준일 = detail 의 board_date 목록 (최신순). 기본은 전체(현재 시세).
+      const sel = document.getElementById("sjFilterDate");
+      if (!sel) return;
+      const byDate = new Map();
+      (DATA.detail || []).forEach(r => { if (r.board_date) byDate.set(r.board_date, (byDate.get(r.board_date) || 0) + 1); });
+      Array.from(byDate.keys()).sort().reverse().forEach(d => {
+        sel.insertAdjacentHTML("beforeend", `<option value="${escHtml(d)}">${escHtml(d)} (${byDate.get(d).toLocaleString()}건)</option>`);
+      });
+    }
+
     function init() {
-      document.getElementById("sjFilterDate").value = DATA.latestSnapshot !== "-" ? DATA.latestSnapshot : "";
+      initDateFilter();
+      const moreBtn = document.getElementById("sjDetailMoreBtn");
+      if (moreBtn) moreBtn.addEventListener("click", appendDetailChunk);
       const boxLabel = document.getElementById("sjBoxWindowLabel");
       if (boxLabel && DATA.boxWindowDays) boxLabel.textContent = DATA.boxWindowDays;
       initModelDropdown();
@@ -2121,7 +2261,10 @@
   (function () {
     const DATA = window.SEONGJI_DATA || {};
     const STORES = DATA.kakaoStores || [];
-    const SUMMARY = DATA.kakaoSummary || { stores: 0, regions: 0, rows: 0, models: 0, negative: 0 };
+    const SUMMARY = DATA.kakaoSummary || { stores: 0, regions: 0, rows: 0, models: 0, negative: 0, storesFresh7: 0, storeList: [] };
+    // 현재 세트 = 매장별 최신 시세표(최근 N일) — 매장마다 가장 최근 시세표의 가격만 반영
+    const WINDOW = DATA.currentWindowDays || SUMMARY.windowDays || 30;
+    const MODEL_IDX = new Map((DATA.models || []).map((m, i) => [m, i]));
     const CARRIERS = ["SKT", "KT", "LGU+"];
     const CARRIER_CLASS = { "SKT": "carrier-skt", "KT": "carrier-kt", "LGU+": "carrier-lg" };
     // MAMF: SKT=brand / KT=ink2(surface 대체) / LG=accent — :root 토큰과 동기
@@ -2131,15 +2274,23 @@
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     const won = v => (v == null ? "-" : Number(v).toLocaleString());
 
-    // add_condition 에서 (실구매)추정 여부 + 시세표 원본 기준일 파싱
+    // (실구매)추정 여부 = add_condition 의 '월청구추정' · 시세표 기준일/경과일 = 빌드가 준 board_date / age_days
     function priceMeta(r) {
-      const cond = r.add_condition || "";
-      const m = cond.match(/시세표기준일\s*(\d{4}-\d{2}-\d{2})/);
-      return { est: cond.includes("월청구추정"), boardDate: m ? m[1] : null };
+      return {
+        est: (r.add_condition || "").includes("월청구추정"),
+        boardDate: r.board_date || null,
+        age: (r.age_days == null ? null : Number(r.age_days)),
+      };
     }
+    // 시세표 기준일 경과 배지 (≤7일 초록 · ≤30일 호박 · 그 외 회색)
+    const ageClass = a => (a == null ? "" : a <= 7 ? "fresh" : a <= 30 ? "warm" : "old");
+    const ageBadge = a => (a == null ? "" :
+      `<span class="age-badge ${ageClass(a)}">${a <= 0 ? "오늘" : a + "일 전"}</span>`);
     // 결합(인터넷+TV)·제휴카드·온누리 체감가·이벤트/페스티벌 적용가 등 조건부 가격 여부
+    // — 빌드의 is_conditional 우선, 필드가 없으면 정규식 폴백
     const COND_RE = /결합|인터넷|TV|제휴|온누리|체감|페스티벌|이벤트|적용가|추가페이백/;
-    const isConditional = r => COND_RE.test(r.add_condition || "");
+    const isConditional = r => (typeof r.is_conditional === "boolean")
+      ? r.is_conditional : COND_RE.test(r.add_condition || "");
 
     // 가입유형 미표기 → MNP(번호이동) 간주 — 통계 근거: 미표기 행 가격이 88.5% 조합에서
     // MNP 분포에 근접(기변과는 중앙값 +16.5만 분리). 원본은 보존, 분석·필터 차원만 정규화.
@@ -2157,21 +2308,44 @@
       Array.from(new Set(STORES.map(r => r.region).filter(Boolean))).sort()
         .forEach(rg => rs.insertAdjacentHTML("beforeend", `<option value="${esc(rg)}">${esc(rg)}</option>`));
       const ms = document.getElementById("kkFilterModel");
-      Array.from(new Set(STORES.map(r => r.model_name).filter(Boolean))).sort()
-        .forEach(mm => ms.insertAdjacentHTML("beforeend", `<option value="${esc(mm)}">${esc(mm)}</option>`));
+      // DATA.models 순서(빌드가 최신 기종순으로 정렬) 유지 — 목록에 없는 모델만 뒤에 붙임
+      const present = new Set(STORES.map(r => r.model_name).filter(Boolean));
+      const ordered = (DATA.models || []).filter(m => present.has(m));
+      present.forEach(m => { if (!MODEL_IDX.has(m)) ordered.push(m); });
+      ordered.forEach(mm => ms.insertAdjacentHTML("beforeend", `<option value="${esc(mm)}">${esc(mm)}</option>`));
     }
 
     function renderMeta() {
       const ocr = STORES.filter(r => r.source === "kakao_ocr").length;
       const txt = STORES.filter(r => r.source === "kakao").length;
       const condN = STORES.filter(isConditional).length;
+      const fresh7 = SUMMARY.storesFresh7 ?? (SUMMARY.storeList || []).filter(s => s.age_days != null && s.age_days <= 7).length;
       document.getElementById("kkMetaBar").innerHTML = `
         <span>최종 빌드: <b>${DATA.generatedAt || "-"}</b></span>
-        <span>최신 스냅샷: <b>${DATA.latestSnapshot || "-"}</b></span>
-        <span>수집 매장 <b>${SUMMARY.stores}</b>곳 · ${SUMMARY.regions}개 권역</span>
-        <span>시세표 ${ocr} · 텍스트 ${txt}</span>
-        <span>조건부(결합·제휴) ${condN}건 — 기본 제외</span>
+        <span>표시 기준: <b>매장별 최신 시세표(최근 ${WINDOW}일)</b> — 매장마다 가장 최근 시세표의 가격만 반영</span>
+        <span>수집 매장 <b>${SUMMARY.stores}</b>곳 · ${SUMMARY.regions}개 권역 · 7일 내 갱신 <b>${fresh7}</b>/${SUMMARY.stores}곳</span>
+        <span>현재 시세 <b>${Number(SUMMARY.rows || STORES.length).toLocaleString()}</b>건 (시세표 ${ocr.toLocaleString()} · 텍스트 ${txt.toLocaleString()})</span>
+        <span>조건부(결합·제휴) ${condN.toLocaleString()}건 — 기본 제외</span>
         <span title="성지 시세표 관행상 유형 미표기는 번호이동 기준가일 확률이 높아 MNP로 간주(추정 표기)">유형 미표기 ${STORES.filter(subAssumed).length}건 → <b>MNP 간주</b><span style="color:var(--brand)">*</span></span>`;
+    }
+
+    // 매장별 시세표 최신성 (kakaoSummary.storeList — 기준일 최신순)
+    function renderStoreList() {
+      const sec = document.getElementById("kkStoreListSection");
+      const list = document.getElementById("kkStoreList");
+      const cnt = document.getElementById("kkStoreListCount");
+      if (!sec || !list) return;
+      const stores = SUMMARY.storeList || [];
+      if (!stores.length) { sec.style.display = "none"; return; }
+      sec.style.display = "";
+      const fresh7 = SUMMARY.storesFresh7 ?? stores.filter(s => s.age_days != null && s.age_days <= 7).length;
+      if (cnt) cnt.textContent = `${stores.length}곳 · 7일 내 갱신 ${fresh7}곳 · 최근 ${WINDOW}일 · 기준일 최신순`;
+      list.innerHTML = stores.map(s => `<div class="store-item">
+          <span class="st-name" title="${esc(s.author)}">${esc(s.author || "-")}</span>
+          <span class="st-region">${esc(s.region || "-")}</span>
+          <span class="st-date">${esc(s.asof || "-")}</span>${ageBadge(s.age_days)}
+          <span class="st-rows">${Number(s.rows || 0).toLocaleString()}행</span>
+        </div>`).join("");
     }
 
     function renderKpi(rows) {
@@ -2182,11 +2356,17 @@
       const byRegion = {};
       rows.forEach(r => { if (r.region) byRegion[r.region] = (byRegion[r.region] || 0) + 1; });
       const topRegion = Object.entries(byRegion).sort((a, b) => b[1] - a[1])[0];
+      const totalRows = Number(SUMMARY.rows || STORES.length), totalStores = SUMMARY.stores || 0;
+      const filtered = rows.length !== totalRows || stores !== totalStores;
+      const fresh7 = SUMMARY.storesFresh7 ?? (SUMMARY.storeList || []).filter(s => s.age_days != null && s.age_days <= 7).length;
       const cards = [
-        { label: "수집 매장", value: `${stores}곳`, sub: `${rows.length}건 수집` },
-        { label: "최저 현금완납가", value: lowest ? `${won(lowest.cash_price)}원` : "-", sub: lowest ? `${lowest.model_name} · ${lowest.author || ""}` : "데이터 없음" },
-        { label: "차비(페이백) 매물", value: `${neg}건`, sub: "현금완납가 음수 — 받고 개통" },
-        { label: "최다 권역", value: topRegion ? topRegion[0] : "-", sub: topRegion ? `${topRegion[1]}건` : "" },
+        { label: `수집 매장 (최근 ${WINDOW}일)`, value: `${stores}곳`,
+          sub: `현재 시세 ${rows.length.toLocaleString()}건 · 매장 ${stores}곳` + (filtered ? ` (전체 ${totalRows.toLocaleString()}건 · ${totalStores}곳)` : "") },
+        { label: "7일 내 갱신 매장", value: `${fresh7}/${totalStores}곳`, sub: "매장별 최신 시세표 기준일 기준" },
+        { label: "최저 현금완납가", value: lowest ? `${won(lowest.cash_price)}원` : "-",
+          sub: lowest ? `${lowest.model_name} · ${lowest.author || ""}${lowest.board_date ? ` · 기준일 ${lowest.board_date}` : ""}` : "데이터 없음" },
+        { label: "차비(페이백) 매물", value: `${neg.toLocaleString()}건`, sub: "현금완납가 음수 — 매장이 지급, 받고 개통" },
+        { label: "최다 권역", value: topRegion ? topRegion[0] : "-", sub: topRegion ? `${topRegion[1].toLocaleString()}건` : "" },
       ];
       document.getElementById("kkKpiSection").innerHTML = cards.map(c => `<div class="kpi-card">
         <div class="kpi-label">${esc(c.label)}</div>
@@ -2201,12 +2381,13 @@
     }
 
     function rowHtml(r, grouped) {
-      const { est, boardDate } = priceMeta(r);
+      const { est, boardDate, age } = priceMeta(r);
       const cls = CARRIER_CLASS[r.carrier] || "";
       const carrierChip = cls ? `<span class="${cls}">${esc(r.carrier)}</span>` : `<span style="color:var(--ink3)">미상</span>`;
-      const ptype = est ? `<span class="price-type est">실구매추정</span>` : `<span class="price-type cash">현금완납</span>`;
+      let ptype = est ? `<span class="price-type est">실구매추정</span>` : `<span class="price-type cash">현금완납</span>`;
+      if (isConditional(r)) ptype += `<span class="age-badge warm" title="${esc(r.add_condition)}">조건부</span>`;
       const dateCell = boardDate
-        ? `${boardDate}<span class="kk-restamp">🕘재표기</span>`
+        ? `${esc(boardDate)}${ageBadge(age)}`
         : ((r.posted_at || "").slice(0, 10) || "-");
       return `<tr>
         <td style="font-size:12px">${grouped ? "" : esc(r.region || "-")}</td>
@@ -2219,41 +2400,77 @@
           : esc(r.subscription_type)}</td>
         <td style="text-align:center">${ptype}</td>
         <td class="price-cell">${priceCell(r)}</td>
-        <td style="font-size:11px;color:var(--ink3)">${dateCell}</td>
+        <td style="font-size:11px;color:var(--ink3);white-space:nowrap">${dateCell}</td>
         <td><span class="source-badge kakao">${r.source === "kakao_ocr" ? "시세표" : "텍스트"}</span>
             <a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">열기</a></td>
       </tr>`;
     }
 
+    // 매장별 보기: 모든 매장을 그룹으로 보여주되 매장당 STORE_CAP 행까지만 먼저 그리고 "더 보기"로 나머지 삽입.
+    // 낮은 가격순/모델명순: FLAT_CHUNK 건씩 "더 보기".
+    const STORE_CAP = 60, FLAT_CHUNK = 500;
+    let pendingMore = {};   // more-id → { rows, grouped, chunk }
+    let moreSeq = 0;
+    const priceAsc = (a, b) => (a.cash_price ?? 9e12) - (b.cash_price ?? 9e12);
+    const modelOrder = (a, b) => (MODEL_IDX.get(a.model_name) ?? 9e6) - (MODEL_IDX.get(b.model_name) ?? 9e6)
+      || (a.model_name || "").localeCompare(b.model_name || "");
+    function moreRow(id, n, note) {
+      return `<tr class="more-row" data-more="${id}"><td colspan="10">
+        <button type="button" class="more-btn">더 보기 (+${n.toLocaleString()}건)</button>${note ? `<span class="kk-meta" style="margin-left:8px">${note}</span>` : ""}</td></tr>`;
+    }
+    function onMoreClick(e) {
+      const btn = e.target.closest(".more-btn"); if (!btn) return;
+      const tr = btn.closest("tr[data-more]"); if (!tr) return;
+      const p = pendingMore[tr.dataset.more]; if (!p) return;
+      const take = p.grouped ? p.rows : p.rows.slice(0, p.chunk);
+      tr.insertAdjacentHTML("beforebegin", take.map(r => rowHtml(r, p.grouped)).join(""));
+      p.rows = p.rows.slice(take.length);
+      if (!p.rows.length) { delete pendingMore[tr.dataset.more]; tr.remove(); }
+      else btn.textContent = `더 보기 (+${p.rows.length.toLocaleString()}건)`;
+    }
+
     function renderTable(rows, sort) {
       const tbody = document.getElementById("kkTbody");
       const empty = document.getElementById("kkEmptyState");
+      pendingMore = {}; moreSeq = 0;
       if (!rows.length) { tbody.innerHTML = ""; empty.style.display = "block"; return; }
       empty.style.display = "none";
 
-      const CAP = 2000;
-      const capped = rows.length > CAP ? rows.slice(0, CAP) : rows;
       let html = "";
-      if (rows.length > CAP) html += `<tr class="kk-group"><td colspan="10">
-        <span class="kk-meta">표시 ${CAP.toLocaleString()} / 전체 ${rows.length.toLocaleString()}건 — 지역·모델 필터로 좁혀보세요</span></td></tr>`;
       if (sort === "store") {
         const groups = {};
-        capped.forEach(r => { const key = `${r.author || "?"}__${r.region || ""}`; (groups[key] = groups[key] || []).push(r); });
-        Object.keys(groups).sort().forEach(key => {
-          const g = groups[key];
+        rows.forEach(r => { const key = `${r.author || "?"}__${r.region || ""}`; (groups[key] = groups[key] || []).push(r); });
+        // 매장 순서: 시세표 기준일 최신순 → 매장명
+        const asofOf = g => g.reduce((m, r) => ((r.store_asof || r.board_date || "") > m ? (r.store_asof || r.board_date || "") : m), "");
+        const keys = Object.keys(groups).sort((a, b) => asofOf(groups[b]).localeCompare(asofOf(groups[a])) || a.localeCompare(b));
+        html += `<tr class="kk-group"><td colspan="10"><span class="kk-meta" style="margin-left:0">매장 ${keys.length}곳 · ${rows.length.toLocaleString()}건 — 매장별 최신 시세표(최근 ${WINDOW}일) · 매장당 ${STORE_CAP}행까지 먼저 표시</span></td></tr>`;
+        keys.forEach(key => {
+          const g = groups[key].slice().sort((a, b) => modelOrder(a, b) || priceAsc(a, b));
           const head = g[0];
           const ocr = g.filter(r => r.source === "kakao_ocr").length;
+          const asof = asofOf(g);
+          const minAge = g.reduce((m, r) => (r.age_days != null && (m == null || r.age_days < m) ? r.age_days : m), null);
           html += `<tr class="kk-group"><td colspan="10">
             <span class="kk-region">${esc(head.region || "-")}</span>
             <span class="kk-store">${esc(head.author || "-")}</span>
-            <span class="kk-meta">${g.length}건 · ${ocr ? "시세표 이미지" : "게시글 텍스트"}</span></td></tr>`;
-          g.forEach(r => { html += rowHtml(r, true); });
+            <span class="kk-meta">${g.length.toLocaleString()}건 · ${ocr ? "시세표 이미지" : "게시글 텍스트"}${asof ? ` · 기준일 ${esc(asof)}` : ""}</span>${ageBadge(minAge)}</td></tr>`;
+          g.slice(0, STORE_CAP).forEach(r => { html += rowHtml(r, true); });
+          if (g.length > STORE_CAP) {
+            const id = ++moreSeq;
+            pendingMore[id] = { rows: g.slice(STORE_CAP), grouped: true };
+            html += moreRow(id, g.length - STORE_CAP, `${esc(head.author || "")} 나머지 행`);
+          }
         });
       } else {
         const sorted = (sort === "price_asc")
-          ? [...rows].sort((a, b) => (a.cash_price ?? 9e9) - (b.cash_price ?? 9e9))
-          : [...rows].sort((a, b) => (a.model_name || "").localeCompare(b.model_name || "") || (a.cash_price ?? 0) - (b.cash_price ?? 0));
-        sorted.slice(0, CAP).forEach(r => { html += rowHtml(r, false); });
+          ? [...rows].sort(priceAsc)
+          : [...rows].sort((a, b) => modelOrder(a, b) || priceAsc(a, b));
+        sorted.slice(0, FLAT_CHUNK).forEach(r => { html += rowHtml(r, false); });
+        if (sorted.length > FLAT_CHUNK) {
+          const id = ++moreSeq;
+          pendingMore[id] = { rows: sorted.slice(FLAT_CHUNK), grouped: false, chunk: FLAT_CHUNK };
+          html += moreRow(id, sorted.length - FLAT_CHUNK, `${FLAT_CHUNK}건씩 · 지역·모델 필터로 좁혀보세요`);
+        }
       }
       tbody.innerHTML = html;
     }
@@ -2261,12 +2478,14 @@
     /* === 3사 현금완납가 비교 차트 === */
     // (model, carrier) → 현금완납가 분포. 통신사 필터는 차트에 적용하지 않음(3사 비교 목적).
     function buildKkBuckets(chartRows) {
-      const byMC = {};
+      const byMC = {}, storesMC = {};
       chartRows.forEach(r => {
         if (!CARRIERS.includes(r.carrier) || r.cash_price == null) return;
         const m = r.model_name;
         (byMC[m] = byMC[m] || {});
         (byMC[m][r.carrier] = byMC[m][r.carrier] || []).push(r.cash_price);
+        (storesMC[m] = storesMC[m] || {});
+        (storesMC[m][r.carrier] = storesMC[m][r.carrier] || new Set()).add(r.author || "?");
       });
       const stat = {};
       Object.keys(byMC).forEach(m => {
@@ -2274,6 +2493,7 @@
         CARRIERS.forEach(c => {
           const vals = (byMC[m][c] || []).slice().sort((a, b) => a - b);
           if (!vals.length) return;
+          const storeSet = Array.from(storesMC[m][c] || []);
           const q = (p) => {
             const idx = p * (vals.length - 1), lo = Math.floor(idx), hi = Math.min(lo + 1, vals.length - 1);
             return Math.round(vals[lo] * (1 - (idx - lo)) + vals[hi] * (idx - lo));
@@ -2285,7 +2505,8 @@
           const whiskerHi = inFence.length ? inFence[inFence.length - 1] : vals[vals.length - 1];
           const outliers = vals.filter(v => v < fLo || v > fHi);
           stat[m][c] = {
-            count: vals.length, min: vals[0], max: vals[vals.length - 1],
+            count: vals.length, stores: storeSet.length, storeSet,
+            min: vals[0], max: vals[vals.length - 1],
             q1, median, q3, whiskerLo, whiskerHi, outliers,
           };
         });
@@ -2296,11 +2517,16 @@
     function drawKkChart(chartRows) {
       const cvs = document.getElementById("kkBoxCanvas");
       const stat = buildKkBuckets(chartRows);
-      // 관측치 많은 순으로 정렬, 매장 2곳 이상 관측된 모델만, 최대 24종 (가독성)
+      // 매장 2곳 이상에서 관측된 모델만(매장 다양성 기준), 매장 많은 순 → 관측 많은 순, 최대 24종 (가독성)
       const nObs = m => CARRIERS.reduce((s, c) => s + (stat[m][c]?.count || 0), 0);
+      const nStores = m => {
+        const set = new Set();
+        CARRIERS.forEach(c => (stat[m][c]?.storeSet || []).forEach(a => set.add(a)));
+        return set.size;
+      };
       const models = Object.keys(stat)
-        .filter(m => CARRIERS.some(c => stat[m][c]) && nObs(m) >= 2)
-        .sort((a, b) => nObs(b) - nObs(a))
+        .filter(m => CARRIERS.some(c => stat[m][c]) && nStores(m) >= 2)
+        .sort((a, b) => nStores(b) - nStores(a) || nObs(b) - nObs(a))
         .slice(0, 24);
       const dpr = window.devicePixelRatio || 1;
       const containerW = cvs.parentElement.offsetWidth;
@@ -2394,7 +2620,7 @@
         if (hit) {
           const s = hit.stat, man = v => (v / 10000).toFixed(1).replace(/\.0$/, "") + "만";
           tip.innerHTML = `<div style="color:${hit.color};font-weight:bold;margin-bottom:4px">${hit.model} / ${hit.carrier}</div>
-            <div style="border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:4px">매장 ${s.count}곳 현금완납가 분포</div>
+            <div style="border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:4px;margin-bottom:4px">매장 ${s.stores}곳 · 관측 ${s.count}건 현금완납가 분포</div>
             <div>최고: ${man(s.max)}</div><div>3분위(Q3): ${man(s.q3)}</div>
             <div>중앙값: ${man(s.median)}</div><div>1분위(Q1): ${man(s.q1)}</div>
             <div>최저: ${man(s.min)}</div>${s.outliers.length ? `<div style="color:#bbb">이상치 ${s.outliers.length}건</div>` : ""}`;
@@ -2443,6 +2669,7 @@
       const stat = buildKkBuckets(chartRows);
       const stores = new Set(chartRows.map(r => r.author).filter(Boolean)).size;
       const M = window.aiMan, HI = window.aiHi, NEG = window.aiNeg;
+      const P = v => (v == null ? "-" : v < 0 ? "차비 " + M(-v) : M(v));   // 음수 = 차비(매장이 지급)
 
       // 1) 플래그십 3사 움직임 (모델별 중앙 현금완납가 최저 통신사)
       const flags = FLAGSHIPS.filter(m => stat[m]).map(m => {
@@ -2477,30 +2704,46 @@
       const payTxt = r => `${r.cash_price < 0 ? NEG("차비 " + M(Math.abs(r.cash_price))) : HI(M(r.cash_price))}`;
       if (flags.length && lead) {
         const others = CARRIERS.filter(c => c !== lead[0]).join("/");
-        headline = `오늘 카카오 성지 — 플래그십 ${flags.length}종 중 <b>${lead[0]}</b>가 ${HI(lead[1] + "종")} 현금완납 최저. 격차 최대 <b>${wideFlag.m}</b> ${HI(M(wideFlag.gap))}.`;
-        lines.push(`<b>플래그십 움직임</b> — ${lead[0]}가 ${lead[1]}종 최저가 주도 (예: ${wideFlag.m} ${wideFlag.best.c} ${HI(M(wideFlag.best.med))} ↔ ${wideFlag.worst.c} ${M(wideFlag.worst.med)}). ${others}는 추종 또는 가격 열위.`);
-      } else headline = `오늘 카카오 성지 — 3사 라벨 시세표가 부족합니다 (수집 누적 시 비교 강화).`;
+        headline = `현재 카카오 성지(매장별 최신 시세표) — 플래그십 ${flags.length}종 중 <b>${lead[0]}</b>가 ${HI(lead[1] + "종")} 현금완납 최저. 격차 최대 <b>${wideFlag.m}</b> ${HI(M(wideFlag.gap))}.`;
+        lines.push(`<b>플래그십 움직임</b> — ${lead[0]}가 ${lead[1]}종 최저가 주도 (예: ${wideFlag.m} ${wideFlag.best.c} ${HI(P(wideFlag.best.med))} ↔ ${wideFlag.worst.c} ${P(wideFlag.worst.med)}). ${others}는 추종 또는 가격 열위.`);
+      } else headline = `현재 카카오 성지(매장별 최신 시세표) — 3사 라벨 시세표가 부족합니다 (수집 누적 시 비교 강화).`;
 
       const subTxt = r => `${effSub(r)}${subAssumed(r) ? "*" : ""}`;
-      if (payback) lines.push(`<b>최대 현금 페이백</b> — ${payback.model_name} ${payback.carrier} ${subTxt(payback)} ${payTxt(payback)} (${payback.author || "?"}·${payback.region || "?"}). 특정 스팟 공세 신호.`);
-      if (lowSpot) lines.push(`<b>저가 단말 공략</b> — ${lowModel.m} ${lowSpot.carrier} ${subTxt(lowSpot)} ${payTxt(lowSpot)} (${lowSpot.author || "?"}·${lowSpot.region || "?"}). 보급형으로 가입 유치.`);
+      const whereTxt = r => `${esc(r.author || "?")}·${esc(r.region || "?")}${r.board_date ? ` · 기준일 ${esc(r.board_date)}` : ""}`;
+      if (payback) lines.push(`<b>최대 현금 페이백</b> — ${esc(payback.model_name)} ${payback.carrier} ${subTxt(payback)} ${payTxt(payback)} (${whereTxt(payback)}). 특정 스팟 공세 신호.`);
+      if (lowSpot) lines.push(`<b>저가 단말 공략</b> — ${esc(lowModel.m)} ${lowSpot.carrier} ${subTxt(lowSpot)} ${payTxt(lowSpot)} (${whereTxt(lowSpot)}). 보급형으로 가입 유치.`);
       if (topNeg) lines.push(`<b>권역 강화</b> — ${NEG(topNeg[0])}에 차비 매물 ${HI(topNeg[1] + "건")} 집중. 해당 지역 경쟁 심화 스팟, 일별 추적 필요.`);
 
       // 전일 대비 리베이트 변화 — kakao_history 롤링 비교 (가격 인하 = 리베이트 추가)
       const KC = DATA.kakaoChanges || {};
-      if (KC.base_date && ((KC.agg || []).length || (KC.stores || []).length)) {
-        (KC.agg || []).filter(a => Math.min(a.diff, a.min_diff) < 0).slice(0, 2).forEach(a => {
-          const d = Math.abs(Math.min(a.diff, a.min_diff));
-          lines.push(`<b>리베이트 추가 감지</b> — ${a.carrier} ${a.model} ${a.sub} 중앙 ${M(a.prev_median)}→${HI(M(a.median))}, 전일(${KC.base_date}) 대비 ${NEG("▼" + M(d))} 인하 (매장 ${a.count}곳 관측). 경쟁 공세 신호 — 대응 단가 검토.`);
+      const agg = (KC.agg || []).filter(a => a && a.diff != null);
+      let adds = [];
+      if (KC.base_date && (agg.length || (KC.stores || []).length)) {
+        // 추가(인하) = 중앙값이 내린 항목만 (diff < 0). 최저가 인하는 같은 줄에 별도 표기. 중앙값이 오른 항목은 아래 '축소'로만.
+        adds = agg.filter(a => a.diff < 0).sort((x, y) => x.diff - y.diff).slice(0, 2);
+        adds.forEach(a => {
+          const minTxt = (a.min_diff != null && a.min_diff < 0)
+            ? ` · 최저가 ${NEG("▼" + M(Math.abs(a.min_diff)))} (${P(a.prev_min)}→${P(a.min)})` : "";
+          lines.push(`<b>리베이트 추가 감지</b> — ${a.carrier} ${esc(a.model)} ${esc(a.sub)} 중앙 ${M(a.prev_median)}→${HI(M(a.median))}, 직전 비교일(${KC.base_date}) 대비 ${NEG("▼" + M(Math.abs(a.diff)))} 인하${minTxt} (매장 ${a.count}곳 관측). 경쟁 공세 신호 — 대응 단가 검토.`);
         });
-        const cut = (KC.agg || []).filter(a => a.diff > 0).sort((x, y) => y.diff - x.diff)[0];
-        if (cut) lines.push(`<b>리베이트 축소</b> — ${cut.carrier} ${cut.model} ${cut.sub} 중앙 ${M(cut.prev_median)}→${M(cut.median)} (▲${M(cut.diff)}). 재고 소진/정책 회수 가능성.`);
-        const st = (KC.stores || []).filter(s => s.diff < 0)[0];
-        if (st) lines.push(`<b>매장 단위 최대 인하</b> — ${st.author} ${st.carrier} ${st.model} 최저가 ${M(st.prev_min)}→${HI(M(st.min))} (${NEG("▼" + M(Math.abs(st.diff)))}). 스팟 드라이브 시작점 후보.`);
+        // 중앙값은 그대로인데 최저가만 내린 항목 (특정 매장 스팟) — 중앙값 인하/상승 항목과 겹치지 않음
+        if (!adds.length) {
+          const minOnly = agg.filter(a => a.diff === 0 && a.min_diff != null && a.min_diff < 0).sort((x, y) => x.min_diff - y.min_diff)[0];
+          if (minOnly) lines.push(`<b>최저가 인하 감지</b> — ${minOnly.carrier} ${esc(minOnly.model)} ${esc(minOnly.sub)} 최저가 ${P(minOnly.prev_min)}→${HI(P(minOnly.min))} (${NEG("▼" + M(Math.abs(minOnly.min_diff)))}, 중앙값 ${M(minOnly.median)} 유지). 특정 매장 스팟 공세.`);
+        }
+        const cut = agg.filter(a => a.diff > 0).sort((x, y) => y.diff - x.diff)[0];
+        if (cut) {
+          const minNote = (cut.min_diff != null && cut.min_diff < 0)
+            ? ` 단, 최저가는 ${NEG("▼" + M(Math.abs(cut.min_diff)))} (${P(cut.prev_min)}→${P(cut.min)}) — 중앙 상승·최저 하락 혼재.` : "";
+          lines.push(`<b>리베이트 축소</b> — ${cut.carrier} ${esc(cut.model)} ${esc(cut.sub)} 중앙 ${M(cut.prev_median)}→${M(cut.median)} (▲${M(cut.diff)}). 재고 소진/정책 회수 가능성.${minNote}`);
+        }
+        const st = (KC.stores || []).filter(s => s && s.diff < 0).sort((x, y) => x.diff - y.diff)[0];
+        if (st) lines.push(`<b>매장 단위 최대 인하</b> — ${esc(st.author)} ${st.carrier} ${esc(st.model)}${st.sub ? " " + esc(st.sub) : ""}${st.storage_gb ? " " + st.storage_gb + "GB" : ""} 최저가 ${P(st.prev_min)}→${HI(P(st.min))} (${NEG("▼" + M(Math.abs(st.diff)))}). 스팟 드라이브 시작점 후보.`);
       } else if (!KC.base_date) {
         lines.push(`<b>전일 대비</b> — 오늘부터 일별 히스토리 누적 시작. 내일부터 통신사·매장 단위 리베이트 추가/축소가 자동 감지됩니다.`);
       }
 
+      if (adds.length) recs.push(`리베이트 추가가 감지된 ${adds.map(a => `<b>${a.carrier} ${esc(a.model)}</b>`).join(", ")} — 자사 대응 단가·추가지원 상향 여부 판단.`);
       if (lead && lead[1] >= 2) recs.push(`<b>${lead[0]}</b> 플래그십 ${lead[1]}종 현금완납 최저 — 번이 유출 위험. ${CARRIERS.filter(c => c !== lead[0]).join("/")} 추가지원금 상향·매장 인센티브 대응 검토.`);
       if (wideFlag && wideFlag.gap >= 200000) recs.push(`<b>${wideFlag.m}</b> 3사 격차 ${M(wideFlag.gap)}로 큼 — 고가 통신사 즉시 가격 정합성 점검.`);
       if (topNeg) recs.push(`<b>${topNeg[0]}</b> 등 차비 집중 권역은 경쟁사 권역 드라이브 조기 포착 대상 — 일별 모니터링.`);
@@ -2508,7 +2751,7 @@
 
       const assumedN = chartRows.filter(subAssumed).length;
       el.innerHTML = window.aiReportHTML({
-        count: `${stores}개 매장 · ${chartRows.length}건 · 스팟 경쟁동향${assumedN ? ` · 미표기 ${assumedN}건 MNP 간주*` : ""}`,
+        count: `${stores}개 매장 · 현재 시세 ${chartRows.length.toLocaleString()}건 (매장별 최신 시세표 · 최근 ${WINDOW}일) · 스팟 경쟁동향${assumedN ? ` · 미표기 ${assumedN}건 MNP 간주*` : ""}`,
         headline, lines, recs,
         recTitle: "경쟁 대응 제언 (판매정책 관점)",
       });
@@ -2522,6 +2765,8 @@
       }
       initFilters();
       renderMeta();
+      renderStoreList();
+      document.getElementById("kkTbody").addEventListener("click", onMoreClick);
       render();
       window.addEventListener("resize", () => {
         if (document.getElementById("view-kakao").classList.contains("active")) render();

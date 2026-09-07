@@ -30,6 +30,8 @@ import sys
 from datetime import date
 from pathlib import Path
 
+from kst import today_kst
+
 try:
     import anthropic
 except ImportError:      # 루틴 경로(PROMPT·SCHEMA·to_items·merge 재사용)에는 SDK 가 필요 없다
@@ -43,8 +45,14 @@ MODEL = os.getenv("VISION_MODEL", "claude-sonnet-5")
 ESCALATE_MODEL = os.getenv("VISION_ESCALATE_MODEL", "claude-sonnet-5")
 MAX_IMAGES = int(os.getenv("VISION_MAX_IMAGES", "40"))
 ESCALATE_CONF = 0.7          # 평균 confidence 미만이면 상위 모델 재판독
-PRICE_SANITY = (-500_000, 3_000_000)
+# 가격 sanity 범위(원). 하한은 '차비(페이백)' 상한이다 — 단통법 폐지 후 결합 조건 페이백이
+# 50만~75만원까지 실재하므로(2026-09 정직폰 화성점 실측) 종전 -50만은 진짜 최저가를 통째로
+# 버렸다(한 표에서 90행 중 20행 삭제). 적재(seongji_vision_load)도 이 상수를 그대로 쓴다.
+PRICE_SANITY = (-1_500_000, 3_000_000)
+MIN_CONFIDENCE = 0.5         # 판독 보존·적재 공통 컷 (0.5 미만은 판독기가 '확신 없음'으로 표시한 셀)
 VALID_STORAGE = {64, 128, 256, 512, 1024, 2048}
+# to_items 가 버린 행의 사유별 카운트 키 — 병합 로그에 남겨 '조용한 손실'을 막는다
+DROP_REASONS = ("bad_price_type", "price_range", "low_confidence")
 
 # 구조화 출력 스키마 — 시세표 1장 → 행 목록
 # 주의: 구조화 출력 검증기는 유니온 타입 배열("type": ["string","null"])을 지원하지
@@ -114,7 +122,8 @@ PROMPT = """한국 휴대폰 성지 매장의 카카오채널 게시 이미지�
   예시 — 모델 S26 아래 두 줄 "현금가 23 / 바페적용가 13"이면 두 행을 출력:
     {cash_price: 230000, add_condition: null}  ← 현금가 줄
     {cash_price: 130000, add_condition: "바페적용가"}  ← 조건부 줄
-  **주의**: 매장 배너·상호의 행사명(페스티벌 등)을 근거로 일반 행에 조건을 붙이지 마라. add_condition은 그 값의 '행 라벨'이나 셀 주석에 조건이 명시된 경우에만. 현금가 줄까지 전부 조건부로 표기하는 것은 오류다.
+  **주의**: 매장 배너·상호의 행사명(페스티벌 등)이나 '최저가/특가' 같은 홍보 문구를 근거로 일반 행에 조건을 붙이지 마라. 행 단위 조건은 그 값의 '행 라벨'이나 셀 주석에 명시된 경우에만. 현금가 줄까지 전부 행사명으로 표기하는 것은 오류다.
+- **표 전체 구매 조건**(행사명과 다름): 표 제목·상단 배너·하단 주석에 "인터넷+TV 동시 가입시", "결합 기준가", "제휴카드 할인 포함", "부가서비스 가입 적용된 조건"처럼 **구매 조건**이 표 전체에 걸려 있으면, 모든 행의 add_condition 에 그 조건을 기록하라(행별 조건이 따로 있으면 "표조건; 행조건" 순으로 이어 쓴다). 이 조건이 빠지면 결합 조건가가 일반 단가로 집계되는 오류가 난다.
 - 섹션 헤더(요금제): 상단 요금제 헤더는 아래 모든 행에 상속된다. 중간에 "선택약정/선약/저가요금제/중가기종" 섹션이 새 요금제 헤더와 함께 나오면 그 섹션부터 새 요금제·contract_type='선약'으로 교체하라.
 
 ## 2단계: 셀 추출 규칙
@@ -228,49 +237,68 @@ def read_image(client: anthropic.Anthropic, entry: dict, model: str) -> dict | N
         return None
 
 
-def _sane(row: dict) -> bool:
-    if not (PRICE_SANITY[0] <= row.get("cash_price", 0) <= PRICE_SANITY[1]):
-        return False
-    sg = row.get("storage_gb")
-    if sg is not None and sg not in VALID_STORAGE:
-        row["storage_gb"] = None    # 용량 오인식은 버리되 행은 유지
-    return True
+def _bump(stats: dict | None, key: str) -> None:
+    if stats is not None:
+        stats[key] = stats.get(key, 0) + 1
 
 
-def to_items(entry: dict, result: dict) -> list[dict]:
-    """판독 결과 → seongji_vision_data.json 아이템 (기존 세션 판독과 동일 스키마)."""
-    today = date.today().isoformat()
+def to_items(entry: dict, result: dict, stats: dict | None = None) -> list[dict]:
+    """판독 결과 → seongji_vision_data.json 아이템 (기존 세션 판독과 동일 스키마).
+
+    snapshot_date = 시세표에 적힌 기준일(board_date). 없거나 40일 이상 어긋나면(연도 오독)
+    판독일(KST)로 대체 — 배치는 채널의 '현재 노출' 이미지를 받으므로 판독일이 곧 '이 표가
+    유효했던 날'이다. read_date 는 항상 판독일. stats 에 사유별 버린 행 수를 누적한다.
+    """
+    today_d = today_kst()
+    today = today_d.isoformat()
     snap = result.get("board_date") or today
-    # 기준일 sanity: 40일 이상 과거/미래면 연도 오독(예: 2026→2025)으로 보고 오늘로 대체
     try:
-        if abs((date.fromisoformat(snap) - date.today()).days) > 40:
+        if abs((date.fromisoformat(str(snap)) - today_d).days) > 40:
             snap = today
-    except ValueError:
+    except (ValueError, TypeError):
         snap = today
     items = []
     for row in result.get("rows", []):
-        if not _sane(row) or row.get("confidence", 0) < 0.5:
+        cash = row.get("cash_price")
+        if isinstance(cash, bool) or not isinstance(cash, (int, float)):
+            _bump(stats, "bad_price_type")
             continue
+        cash = int(round(cash))
+        if not (PRICE_SANITY[0] <= cash <= PRICE_SANITY[1]):
+            _bump(stats, "price_range")
+            continue
+        try:
+            conf = float(row.get("confidence") or 0)
+        except (TypeError, ValueError):
+            conf = 0.0
+        if conf < MIN_CONFIDENCE:
+            _bump(stats, "low_confidence")
+            continue
+        sg = row.get("storage_gb")
+        if sg is not None and sg not in VALID_STORAGE:
+            sg = None    # 용량 오인식은 버리되 행은 유지
         items.append({
             "handle": entry["handle"],
             "post_id": entry["post_id"],
             "image_url": entry["image_url"],
             "snapshot_date": snap,
+            "read_date": today,
             "model_name": row["model_name"],
-            "storage_gb": row.get("storage_gb"),
+            "storage_gb": sg,
             "carrier": row.get("carrier"),
             "subscription_type": row.get("subscription_type"),
             "contract_type": row.get("contract_type"),
-            "cash_price": row["cash_price"],
+            "cash_price": cash,
             "plan_name": row.get("plan_name"),
             "plan_fee": row.get("plan_fee"),
             "estimated": bool(row.get("estimated")),
             "add_condition": row.get("add_condition"),
-            "confidence": round(float(row.get("confidence", 0.6)), 2),
+            "confidence": round(conf, 2),
             "name": entry.get("name"),
             "region": entry.get("region"),
             "posted_at": entry.get("posted_at"),
             "title": entry.get("title"),
+            "linked_from": entry.get("linked_from"),
             "reader": MODEL if not row.get("_escalated") else ESCALATE_MODEL,
         })
     return items
@@ -284,7 +312,7 @@ def merge(new_items: list[dict]) -> int:
     new_urls = {it["image_url"] for it in new_items}
     kept = [it for it in data.get("items", []) if it.get("image_url") not in new_urls]
     data["items"] = kept + new_items
-    data["extracted_at"] = date.today().isoformat()
+    data["extracted_at"] = today_kst().isoformat()
     VISION_DATA_PATH.write_text(
         json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     return len(data["items"])

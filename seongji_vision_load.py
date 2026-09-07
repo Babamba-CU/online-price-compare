@@ -24,25 +24,22 @@ import sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
+from kst import today_kst
 from model_normalize import normalize as normalize_model
 from seongji_db import aggregate_daily, connect, init_db, insert_prices, log_run, upsert_post
+from vision_api_reader import MIN_CONFIDENCE, PRICE_SANITY   # 판독·적재 단일 기준
 
 DATA_PATH = Path(__file__).parent / "seongji_vision_data.json"
-PRICE_SANITY = (-500_000, 3_000_000)
-MIN_CONFIDENCE = 0.6
-# 신선도(사용자 확정 2026-07-13, 구현 수정): posted_at 은 신뢰 불가 —
-# 매장들이 옛 게시글의 이미지를 제자리 교체해 게시일이 2023~2025로 남는다(실측).
-# 대신 '자동화 판독분(reader 태그)만 적재'한다: 배치는 항상 채널의 현재 노출
-# 이미지를 받으므로 판독 시점이 곧 신선도. 6월 레거시 판독분(무태그)은 제외.
+# 신선도(사용자 확정 2026-07-13): posted_at 은 신뢰 불가 — 매장들이 옛 게시글의 이미지를
+# 제자리 교체해 게시일이 2023~2025로 남는다(실측). '자동화 판독분(reader 태그)만 적재'한다.
+# 2026-09-08 변경: 행의 snapshot_date 는 판독기가 표에서 읽은 기준일(없으면 판독일)을 그대로
+# 쓴다. 종전엔 전량을 적재일로 재스탬프해 2023년 표까지 '오늘 단가'로 둔갑했다. '현재 시세'는
+# seongji_build 가 매장별 최신 관측만 골라 만든다(과거 관측은 일별 통계의 시계열로 남는다).
 INCLUDE_LEGACY = os.getenv("VISION_INCLUDE_LEGACY", "") == "1"
 # 비휴대폰 제외(사용자 확정): 워치/태블릿/버즈 등 — 저가·키즈폰은 유지
 NON_PHONE_RE = re.compile(r"(?i)watch|워치|buds|버즈|\btab\b|태블릿|ipad|아이패드|플립\s*워치")
-
-# 사용자 확정 제외 규칙 (2026-06-13):
-#  - 결합(인터넷+TV)·제휴카드 조건 포함가 → 순수 단말 시세가 아니므로 제외
-#  - 온누리상품권 반영 '체감가' → 실결제액 왜곡이므로 제외
-EXCLUDE_CONDITION_RE = re.compile(
-    r"결합|인터넷\s*\+?\s*TV|제휴\s*카드|온누리|체감가")
+# 조건부(결합·제휴카드·온누리·적용가) 행은 버리지 않고 적재한다 — 집계 제외·화면 토글은
+# price_conditions.is_conditional 로 판정(적재·빌드·히스토리·화면 공통 기준).
 
 
 def _log(msg: str) -> None:
@@ -65,6 +62,7 @@ def load() -> dict:
 
     init_db()
     started = datetime.utcnow()
+    today = today_kst().isoformat()
     n_posts = n_prices = 0
     snapshots: set[str] = set()
 
@@ -104,26 +102,25 @@ def load() -> dict:
             price_rows = []
             for it in rows:
                 cash = it.get("cash_price")
-                conf = it.get("confidence", 0.7)
+                try:
+                    conf = float(it.get("confidence")) if it.get("confidence") is not None else 0.7
+                except (TypeError, ValueError):
+                    conf = 0.0
                 if cash is None or conf < MIN_CONFIDENCE:
                     continue
                 if not (PRICE_SANITY[0] <= cash <= PRICE_SANITY[1]):
                     continue
-                # 결합/제휴카드/온누리 조건부 가격도 적재한다(전체 커버리지).
-                # 단순 단말 시세와 구분되도록 add_condition 에 사유를 남겨
-                # 대시보드에서 기본 필터(조건부 제외)로 토글 가능하게 한다.
-                # 배치 다운로드는 각 채널의 '최신' 시세표 이미지를 받은 시점 캡처이므로
-                # 모두 오늘 스냅샷으로 재스탬프한다(Vision 이 추정한 표기일은 게시글
-                # 생성연도 혼동 등으로 부정확). 원 표기일은 add_condition 에 보존.
-                orig = it.get("snapshot_date") or ""
-                snap = date.today().isoformat()
-                if orig and orig != snap:
-                    it = {**it, "add_condition":
-                          f"{it.get('add_condition') or ''} 시세표기준일 {orig}".strip()}
+                # 기준일 = 판독기가 표에서 읽은 board_date(없으면 판독일). 재스탬프하지 않는다.
+                snap = it.get("snapshot_date") or it.get("read_date") or today
+                try:
+                    date.fromisoformat(snap)
+                except (TypeError, ValueError):
+                    snap = today
                 snapshots.add(snap)
+                # 월청구 추정값 표시는 add_condition 이 비었을 때만 채운다(종전엔 기준일 접미어가
+                # 먼저 붙어 이 폴백이 영원히 죽어 있었다).
+                cond = it.get("add_condition") or ("월청구추정" if it.get("estimated") else None)
                 # 기종명 정규화(패턴 기반, 신규 기종 자동 반영) — 원 표기는 model_raw 에 보존.
-                # Vision 이 "Galaxy S25FE"/"S25 FE"/"iPhone 17E"/"17e" 처럼 제각각 뱉어
-                # 같은 기종이 여러 항목으로 쪼개지던 문제 해결(2026-09-07).
                 price_rows.append({
                     "snapshot_date": snap,
                     "model_name": normalize_model(it["model_name"]),
@@ -133,9 +130,10 @@ def load() -> dict:
                     "contract_type": it.get("contract_type"),
                     "storage_gb": it.get("storage_gb"),
                     "cash_price": cash,
+                    "monthly_fee": it.get("plan_fee"),          # 요금제 월정액(원) — 종전엔 버려짐
                     "plan_name": it.get("plan_name"),
-                    "plan_duration_mo": it.get("duration_mo"),
-                    "add_condition": it.get("add_condition") or ("월청구추정" if it.get("estimated") else None),
+                    "plan_duration_mo": it.get("duration_mo"),  # 판독 스키마에 없음(호환용, 보통 None)
+                    "add_condition": cond,
                     "region": it.get("region"),
                     "confidence": conf,
                     "raw_text": f"vision: {it.get('image_url', '')[:150]}",

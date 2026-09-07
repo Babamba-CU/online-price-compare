@@ -13,6 +13,8 @@ from __future__ import annotations
 
 import json
 from datetime import date
+
+from kst import today_kst
 from pathlib import Path
 
 PATH = Path(__file__).parent / "vision_skiplist.json"
@@ -52,7 +54,7 @@ def is_skipped(handle: str, data: dict | None = None, today: str | None = None) 
 def record(results: dict[str, bool], reason: str = "시세표 미검출/판독실패") -> dict:
     """results: {handle: had_items}. 성공(True)→리셋, 실패(False)→fails+1."""
     data = load()
-    today = date.today().isoformat()
+    today = today_kst().isoformat()
     for handle, ok in results.items():
         if ok:
             data.pop(handle, None)                 # 성공 → 스킵리스트에서 제거
@@ -68,7 +70,7 @@ def record(results: dict[str, bool], reason: str = "시세표 미검출/판독�
 
 def active_skips(today: str | None = None) -> set[str]:
     """현재 스킵 대상 핸들 집합."""
-    today = today or date.today().isoformat()
+    today = today or today_kst().isoformat()
     data = load()
     return {h for h in data if is_skipped(h, data, today)}
 

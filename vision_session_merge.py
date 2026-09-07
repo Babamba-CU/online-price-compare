@@ -39,10 +39,14 @@ def _load_result(path: Path) -> dict | None:
     if not isinstance(r, dict) or not isinstance(r.get("rows"), list):
         _log(f"{path.name}: 스키마 불일치(rows 배열 없음)")
         return None
-    # 필수 키 빠진 행은 버린다(to_items 가 KeyError 로 죽지 않게)
+    # 필수 키 빠진 행만 여기서 버린다(to_items 가 KeyError 로 죽지 않게). 가격 형식·범위·
+    # 신뢰도는 to_items 가 사유별로 세어 로그에 남긴다 — 종전엔 int 가 아닌 가격을 여기서
+    # 소리 없이 버려 손실이 보이지 않았다.
+    n0 = len(r["rows"])
     r["rows"] = [row for row in r["rows"]
-                 if isinstance(row, dict) and all(k in row for k in REQUIRED_ROW_KEYS)
-                 and isinstance(row["cash_price"], int)]
+                 if isinstance(row, dict) and all(k in row for k in REQUIRED_ROW_KEYS)]
+    if len(r["rows"]) != n0:
+        _log(f"{path.name}: 필수 키(model_name/cash_price) 없는 행 {n0 - len(r['rows'])}개 제외")
     return r
 
 
@@ -59,6 +63,7 @@ def main() -> int:
 
     all_items: list[dict] = []
     channel_ok: dict[str, bool] = {}
+    drops: dict[str, int] = {}
     n_read = n_missing = n_bad = n_nontable = 0
     for idx, entry in enumerate(manifest):
         rf = BATCH / "results" / f"{idx}.json"
@@ -74,12 +79,16 @@ def main() -> int:
             n_nontable += 1
             items = []
         else:
-            items = reader.to_items(entry, result)
+            items = reader.to_items(entry, result, drops)
         handle = entry["handle"]
         channel_ok[handle] = channel_ok.get(handle, False) or bool(items)
         all_items.extend(items)
 
     _log(f"판독 {n_read}장(시세표 아님 {n_nontable}) · 미판독 {n_missing}장 · 손상 {n_bad}장 → {len(all_items)}행")
+    if drops:
+        _log("제외된 행: " + " · ".join(
+            f"{ {'bad_price_type': '가격 형식 오류', 'price_range': f'가격 범위 밖{reader.PRICE_SANITY}', 'low_confidence': f'신뢰도<{reader.MIN_CONFIDENCE}'}.get(k, k)} {v}"
+            for k, v in drops.items()))
     if all_items:
         total = reader.merge(all_items)
         _log(f"seongji_vision_data.json 병합: 총 {total}행")
@@ -88,7 +97,7 @@ def main() -> int:
     if channel_ok:
         vision_skiplist.record(channel_ok)
         _log(f"skiplist 갱신: 실패 {sum(1 for v in channel_ok.values() if not v)}건 / 성공 {sum(1 for v in channel_ok.values() if v)}건")
-    print(f"MERGED rows={len(all_items)} read={n_read} missing={n_missing} bad={n_bad}")
+    print(f"MERGED rows={len(all_items)} read={n_read} missing={n_missing} bad={n_bad} dropped={sum(drops.values())}")
     return 0
 
 

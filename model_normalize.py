@@ -26,6 +26,10 @@ import re
 
 _PAREN_RE = re.compile(r"\s*[\(（\[][^)）\]]*[\)）\]]")   # (사전예약) [특가] 등 꼬리표 제거
 _WS_RE = re.compile(r"\s+")
+# 기종명 끝의 용량 표기("Galaxy Z Fold 7 512GB", "iPhone Air 256", "A16 128") 제거 —
+# 용량은 storage_gb 열이 따로 있고, 붙어 있으면 같은 기종이 쪼개진다(2026-09-08 점검).
+_STORAGE_SUFFIX_RE = re.compile(
+    r"\s*\b(?:64|128|256|512|1024|2048)\s*(?:gb|g|기가)?\s*$|\s*\b[12]\s*tb\s*$", re.IGNORECASE)
 
 # ---- Galaxy ---------------------------------------------------------------
 # 계열 표기(영/한, 붙여쓰기 포함) → 정규 계열명. 긴 표기가 먼저 매치되도록 정렬해 사용.
@@ -67,9 +71,21 @@ _IPHONE_VARIANT = {
 }
 _IPHONE_RE = re.compile(r"^iphone\s*(air|se)?\s*(\d+)?\s*([a-z+가-힣]*)\s*(.*)$", re.IGNORECASE)
 
-# 규칙으로 못 푸는 확정 별칭 (소문자 키). Apple 공식명은 세대 없는 "iPhone Air".
+# 규칙으로 못 푸는 확정 별칭. 키는 소문자·공백 제거 형태("sk 포켓몬에디션3" → "sk포켓몬에디션3").
+# Apple 공식명은 세대 없는 "iPhone Air". A175 는 성지 시세표의 Galaxy A17 표기(모델코드 SM-A175).
+# 키즈·효도폰류는 매장마다 표기가 제각각이라(한/영/에디션) 여기서만 합친다 — 2026-09-08 점검.
 _ALIASES = {
-    "iphone 17 air": "iPhone Air",
+    "iphone17air": "iPhone Air", "iphoneair": "iPhone Air",
+    "a175": "Galaxy A17", "ska175": "Galaxy A17", "galaxya175": "Galaxy A17", "sk갤럭시a175": "Galaxy A17",
+    "포켓몬폰3": "포켓몬폰 3", "포켓몬3": "포켓몬폰 3", "포켓몬에디션3": "포켓몬폰 3", "sk포켓몬에디션3": "포켓몬폰 3",
+    "포켓몬폰에디션3": "포켓몬폰 3", "pokemonphone3": "포켓몬폰 3", "pokemon3": "포켓몬폰 3",
+    "포켓몬폰": "포켓몬폰", "포켓몬에디션": "포켓몬폰", "pokemonphone": "포켓몬폰",
+    "무너폰2": "무너폰 2", "무너2": "무너폰 2", "muneophone2": "무너폰 2",
+    "무너폰": "무너폰", "muneophone": "무너폰",
+    "폼폼푸린폰": "폼폼푸린폰", "폼폼푸린": "폼폼푸린폰", "폼폼푸린키즈폰": "폼폼푸린폰", "폼폼푸린키즈": "폼폼푸린폰",
+    "pompompurin": "폼폼푸린폰", "pompompurinphone": "폼폼푸린폰", "pompompurinkidsphone": "폼폼푸린폰",
+    "포켓피스폰": "포켓피스폰", "포켓피스": "포켓피스폰", "pocketpeacephone": "포켓피스폰",
+    "pocketpeace": "포켓피스폰", "pocketfeace": "포켓피스폰",
 }
 
 
@@ -78,7 +94,12 @@ def _tidy(s: str) -> str:
     s = s.replace("＋", "+")
     s = re.sub(r"(?i)갤럭시\s*", "Galaxy ", s)
     s = re.sub(r"(?i)아이폰\s*", "iPhone ", s)
-    return _WS_RE.sub(" ", s).strip()
+    s = _WS_RE.sub(" ", s).strip()
+    # 용량 꼬리표는 앞에 다른 숫자(세대)나 기종 토큰이 남을 때만 뗀다("256" 단독은 그대로)
+    m = _STORAGE_SUFFIX_RE.search(s)
+    if m and m.start() > 0:
+        s = s[:m.start()].strip()
+    return s
 
 
 def _split_tokens(attached: str, rest: str) -> list[str]:
@@ -98,7 +119,7 @@ def normalize(name: str | None) -> str:
     s = _tidy(name)
     if not s:
         return s
-    key = s.lower()
+    key = _WS_RE.sub("", s.lower())
     if key in _ALIASES:
         return _ALIASES[key]
 
@@ -133,8 +154,8 @@ def normalize(name: str | None) -> str:
                 return s
             if v not in variants:
                 variants.append(v)
-        if kind and kind.lower() == "air" and not num:
-            return "iPhone Air"
+        if kind and kind.lower() == "air":
+            return "iPhone Air"      # 세대 없는 공식명. 뒤의 숫자는 용량 잔재("iPhone Air 256")
         if kind and kind.lower() == "se":
             return "iPhone SE" + (f" {num}" if num else "")
         if not num:

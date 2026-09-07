@@ -10,6 +10,8 @@ from datetime import datetime, date
 from pathlib import Path
 from typing import Iterable, Optional
 
+from price_conditions import cond_sql
+
 DB_PATH = Path(__file__).parent / "seongji_prices.db"
 SCHEMA_PATH = Path(__file__).parent / "schema.sql"
 
@@ -146,8 +148,10 @@ def aggregate_daily(conn: sqlite3.Connection, snapshot: date) -> int:
         "DELETE FROM seongji_daily_stats WHERE snapshot_date=?",
         (snapshot.isoformat(),),
     )
+    # 2026-09-08: 차비(음수)·0원 행도 실제 거래가이므로 집계에 포함(종전 cash_price>0 은 최저가를
+    # 왜곡). 대신 조건부(결합·제휴카드·적용가) 행은 제외해 순수 단말 시세만 통계에 쓴다.
     cur = conn.execute(
-        """
+        f"""
         WITH ranked AS (
             SELECT
                 p.snapshot_date,
@@ -167,7 +171,7 @@ def aggregate_daily(conn: sqlite3.Connection, snapshot: date) -> int:
             JOIN seongji_posts  po ON po.id = p.post_id
             WHERE p.snapshot_date = ?
               AND p.cash_price IS NOT NULL
-              AND p.cash_price > 0
+              AND {cond_sql('p.add_condition')}
         ),
         agg AS (
             SELECT

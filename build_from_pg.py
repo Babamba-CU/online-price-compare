@@ -26,7 +26,8 @@ DAYS = 30
 BOX_WINDOW_DAYS = 14
 HISTORY_DAYS = 30
 KAKAO_SOURCES = ("kakao", "kakao_ocr")
-NON_SITE = KAKAO_SOURCES + ("naver_cafe", "naver_web", "naver_blog")
+# 2026-09-08: seongji_build 와 동일하게 네이버만 제외(카카오 판독분은 성지폰 탭에 포함)
+NON_SITE = ("naver_cafe", "naver_web", "naver_blog")
 
 
 def _conn():
@@ -68,7 +69,11 @@ def _pct(sorted_vals: list[int], q: float) -> int:
 
 # ─────────────────────────── 성지폰 ───────────────────────────
 def build_seongji(cur) -> dict:
-    today = date.today()
+    """seongji_build 와 같은 '현재 시세' 정의를 쓴다(current_set/box_stats_from/kakao_summary_from 공유)."""
+    import seongji_build as sb
+    from kst import today_kst
+    today = today_kst()
+    latest = today.isoformat()
     cutoff = (today - timedelta(days=DAYS)).isoformat()
 
     daily = _rows(cur, """
@@ -78,49 +83,38 @@ def build_seongji(cur) -> dict:
         FROM seongji_daily_stats WHERE snapshot_date >= %s
         ORDER BY snapshot_date, model_name, carrier
     """, (cutoff,))
-
-    cur.execute("SELECT MAX(snapshot_date) AS m FROM seongji_daily_stats")
-    row = cur.fetchone()
-    latest = _s(row["m"]) if row and row["m"] else today.isoformat()
+    for r in daily:
+        r["snapshot_date"] = _s(r["snapshot_date"])
 
     ph = ",".join(["%s"] * len(NON_SITE))
-    detail = _rows(cur, f"""
+    row_sql = f"""
         SELECT p.snapshot_date, p.model_name, p.carrier, p.subscription_type,
                p.contract_type, p.storage_gb, p.cash_price, p.monthly_fee,
                p.plan_name, p.plan_duration_mo, p.confidence, p.region, p.add_condition,
                po.source, po.url, po.title, po.posted_at, po.author
         FROM seongji_prices p JOIN seongji_posts po ON po.id = p.post_id
-        WHERE p.snapshot_date = %s AND p.cash_price IS NOT NULL
+        WHERE p.snapshot_date >= %s AND p.snapshot_date <= %s AND p.cash_price IS NOT NULL
           AND po.source NOT IN ({ph})
         ORDER BY p.model_name, p.carrier, p.cash_price
-    """, (latest, *NON_SITE))
-
-    box_cutoff = (today - timedelta(days=BOX_WINDOW_DAYS)).isoformat()
-    box_rows = _rows(cur, f"""
-        SELECT p.model_name, COALESCE(p.carrier,'?') AS carrier,
-               COALESCE(p.subscription_type,'?') AS sub, p.cash_price
-        FROM seongji_prices p JOIN seongji_posts po ON po.id = p.post_id
-        WHERE p.snapshot_date >= %s AND p.cash_price IS NOT NULL AND p.cash_price > 0
-          AND po.source NOT IN ({ph})
-    """, (box_cutoff, *NON_SITE))
-    buckets = defaultdict(list)
-    for r in box_rows:
-        buckets[(r["model_name"], r["carrier"], r["sub"])].append(r["cash_price"])
-    box_stats = []
-    for (model, carrier, sub), vals in buckets.items():
-        vals.sort()
-        box_stats.append({
-            "model_name": model, "carrier": carrier, "subscription_type": sub,
-            "count": len(vals), "min": vals[0], "p25": _pct(vals, .25),
-            "median": _pct(vals, .5), "p70": _pct(vals, .7), "p75": _pct(vals, .75),
-            "max": vals[-1], "avg": int(sum(vals) / len(vals)),
-        })
-
-    models = [r["model_name"] for r in _rows(cur, f"""
-        SELECT DISTINCT p.model_name FROM seongji_prices p
-        JOIN seongji_posts po ON po.id = p.post_id
-        WHERE po.source NOT IN ({ph}) ORDER BY p.model_name
-    """, NON_SITE)]
+    """
+    win_from = (today - timedelta(days=sb.CURRENT_WINDOW_DAYS)).isoformat()
+    obs = _rows(cur, row_sql, (win_from, latest, *NON_SITE))
+    stale = False
+    if not obs:
+        cur.execute("SELECT MAX(snapshot_date) AS m FROM seongji_prices")
+        row = cur.fetchone()
+        if row and row["m"]:
+            win_from = (date.fromisoformat(_s(row["m"])) - timedelta(days=sb.CURRENT_WINDOW_DAYS)).isoformat()
+            obs = _rows(cur, row_sql, (win_from, latest, *NON_SITE))
+            stale = True
+    for r in obs:
+        r["snapshot_date"] = _s(r["snapshot_date"])
+        r["posted_at"] = _s(r["posted_at"]) if r.get("posted_at") is not None else None
+    current = sb.current_set(obs, today)
+    detail = current
+    kakao = [r for r in current if r["source"] in KAKAO_SOURCES]
+    box_stats = sb.box_stats_from(current, BOX_WINDOW_DAYS)
+    models = sb.models_from(current)
 
     runs = _rows(cur, """
         SELECT source, MAX(finished_at) AS finished_at,
@@ -147,35 +141,17 @@ def build_seongji(cur) -> dict:
         feed += _rows(cur, feed_sql.format(ph=",".join(["%s"] * len(srcs))), srcs)
     feed.sort(key=lambda r: (r["posted_at"] or ""), reverse=True)
 
-    kakao = _rows(cur, f"""
-        SELECT p.snapshot_date, p.model_name, p.carrier, p.subscription_type,
-               p.storage_gb, p.cash_price, p.plan_name, p.plan_duration_mo,
-               p.add_condition, p.confidence, p.region,
-               po.source, po.url, po.title, po.posted_at, po.author
-        FROM seongji_prices p JOIN seongji_posts po ON po.id = p.post_id
-        WHERE p.snapshot_date = %s AND p.cash_price IS NOT NULL
-          AND po.source IN ({",".join(["%s"] * len(KAKAO_SOURCES))})
-        ORDER BY po.author, p.model_name, p.storage_gb, p.cash_price
-    """, (latest, *KAKAO_SOURCES))
-    ksum = {
-        "stores": len({r["author"] for r in kakao if r["author"]}),
-        "regions": len({r["region"] for r in kakao if r["region"]}),
-        "rows": len(kakao),
-        "models": len({r["model_name"] for r in kakao}),
-        "negative": sum(1 for r in kakao if (r["cash_price"] or 0) < 0),
-        "subMissing": sum(1 for r in kakao if r["subscription_type"] not in ("MNP", "기변", "신규")),
-    }
-
-    # 전일 대비 리베이트 변화 — snapshot_date를 문자열로 맞춘 뒤 히스토리 반영
+    ksum = sb.kakao_summary_from(kakao, sb.CURRENT_WINDOW_DAYS)
+    ksum["stale"] = stale
+    ksum["windowFrom"] = win_from
     import kakao_history
-    for r in kakao:
-        r["snapshot_date"] = _s(r["snapshot_date"])
     kakao_changes = kakao_history.compute_changes(
         kakao_history.record(kakao, latest), latest)
 
     return {
-        "generatedAt": today.isoformat(), "latestSnapshot": latest,
-        "days": DAYS, "boxWindowDays": BOX_WINDOW_DAYS, "models": models,
+        "generatedAt": latest, "latestSnapshot": latest,
+        "days": DAYS, "boxWindowDays": BOX_WINDOW_DAYS,
+        "currentWindowDays": sb.CURRENT_WINDOW_DAYS, "models": models,
         "carriers": ["SKT", "KT", "LGU+", "알뜰"],
         "subscriptionTypes": ["신규", "MNP", "기변"],
         "daily": daily, "boxStats": box_stats, "detail": detail,
@@ -184,7 +160,6 @@ def build_seongji(cur) -> dict:
     }
 
 
-# ─────────────────────────── 공시지원금 ───────────────────────────
 def build_subsidy(cur) -> dict:
     today = date.today()
     cutoff = (today - timedelta(days=HISTORY_DAYS)).isoformat()

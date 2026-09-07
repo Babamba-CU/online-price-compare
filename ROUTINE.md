@@ -70,3 +70,26 @@ Anthropic 클라우드 세션(claude.ai/code → Routines, `성지폰 시세표 
 - 커밋 신원이 없으면 `seongji-routine`으로 설정하고 `git push origin HEAD:main`.
 - 로컬 예약작업(`daily-seongji-routine`)은 **중복 수집·push 경합 방지를 위해 비활성화**, 클라우드 실패 시 수동 "Run now" 폴백.
 - 클라우드 실행 로그: 세션에서 `/schedule` → 해당 루틴 `list_runs` → `get_run_log`. fetch 워크플로: `gh run list --workflow=sise-fetch.yml`.
+
+## 데이터 규칙 (2026-09-08 점검 후 확정)
+
+점검에서 "누적 판독 전량을 매일 오늘 날짜로 재스탬프"하던 구조가 2023년 표까지 '오늘 단가'로 보여주던 것이 확인돼 아래처럼 바꿨다.
+
+| 항목 | 규칙 | 코드 |
+|---|---|---|
+| 행의 날짜 | 시세표에 적힌 기준일(`board_date`), 없으면 판독일(KST). 재스탬프 없음 | `vision_api_reader.to_items`, `seongji_vision_load` |
+| 현재 시세 | 최근 30일(`SEONGJI_CURRENT_DAYS`) 관측 중 매장×(기종·통신사·가입유형·용량)별 **최신 기준일 행만**. 옛 표는 새 표에 밀려남 | `seongji_build.current_set` |
+| 화면 필드 | `board_date` / `age_days` / `store_asof` / `is_conditional` 가 각 행에 붙음. `snapshot_date` 는 빌드일 | `seongji_build`, `build_from_pg` |
+| 시계열 | `daily` 는 실제 기준일별 통계(하루치가 아니라 날짜별로 쌓임) | `seongji_db.aggregate_daily` |
+| 가격 범위 | `PRICE_SANITY = (-1,500,000, 3,000,000)` — 50만 초과 페이백을 버리던 하한 완화 | `vision_api_reader` (적재도 같은 상수) |
+| 차비·0원 | 실제 거래가이므로 일별 통계·박스플롯에 포함 | `seongji_db`, `seongji_build.box_stats_from` |
+| 조건부 가격 | 결합·제휴카드·온누리·적용가·이벤트가 → `is_conditional` 표시, 통계·전일비교 제외, 화면 토글 | `price_conditions.py` |
+| 표 전체 조건 | "인터넷+TV 동시가입시" 같은 표 전체 구매조건은 모든 행 add_condition 에 기록(판독 규칙) | `vision_api_reader.PROMPT` |
+| 신뢰도 | 판독 보존·적재 공통 0.5. 병합 로그에 사유별 제외 행 수 출력 | `vision_session_merge` |
+| 날짜 | 모든 '오늘'은 `kst.today_kst()` (클라우드 UTC 라벨 오류 방지) | `kst.py` |
+| 기종명 | A175→Galaxy A17, 키즈폰류 별칭 통합, 용량 꼬리표 제거, iPhone Air 오병합 수정 | `model_normalize.py` |
+| 링크 게시글 | 교차링크로 받은 시세표는 게시한 채널의 매장으로 귀속 | `seongji_vision_batch`, `seongji_kakao` |
+| 전일 대비 | 히스토리 `version=2`(현재 시세 집합 기준). 구버전 기록은 비교 대상 아님 | `kakao_history.py` |
+
+- 매장이 30일 넘게 새 표를 안 올리면 화면에서 빠진다(과거 관측은 `daily` 시계열에만 남음). 창을 넓히려면 `SEONGJI_CURRENT_DAYS` 환경변수.
+- 최근 창에 관측이 하나도 없으면 마지막 관측일 기준 창으로 대체하고 `kakaoSummary.stale=true` 로 표시한다.

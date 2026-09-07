@@ -96,6 +96,10 @@ def main() -> None:
     manifest: list[dict] = []
     n_img = 0
 
+    # 채널 메타 — 교차링크로 가져온 게시글은 '링크한 채널'이 아니라 '게시한 채널'의 매장으로
+    # 귀속해야 한다(종전엔 링크한 매장 이름으로 저장돼 매장 오귀속 + 원 소유 채널의 재수집 차단).
+    src_meta = {x["handle"]: (x.get("name") or "", x.get("region") or "") for x in sources}
+
     for s in sources[: args.channels]:
         if n_img >= args.max_images:
             break
@@ -118,7 +122,9 @@ def main() -> None:
                 m = INTERNAL_LINK_RE.match(c.get("v") or "")
                 if m and len(linked) < 2:
                     try:
-                        linked.append(_get(POST_URL.format(handle=m.group(1), post_id=m.group(2))))
+                        lp = _get(POST_URL.format(handle=m.group(1), post_id=m.group(2)))
+                        lp["_handle"] = m.group(1)      # 실제 게시 채널
+                        linked.append(lp)
                         time.sleep(SLEEP)
                     except Exception:  # noqa: BLE001
                         pass
@@ -130,13 +136,15 @@ def main() -> None:
             blob = (it.get("title") or "") + " " + _text(it)[:200]
             if not it.get("media") or not any(k in blob for k in PRICE_KEYWORDS):
                 continue
+            post_handle = it.get("_handle") or handle
+            post_name, post_region = src_meta.get(post_handle, (name, region))
             for m in it["media"][:2]:
                 if per_channel >= args.per_channel or n_img >= args.max_images:
                     break
                 url = (m.get("xlarge_url") or m.get("url") or "").replace("http://", "https://")
                 if not url or url in done_urls:
                     continue
-                fn = OUT_DIR / f"{handle}_{it.get('id')}_{m.get('id')}.jpg"
+                fn = OUT_DIR / f"{post_handle}_{it.get('id')}_{m.get('id')}.jpg"
                 try:
                     urllib.request.urlretrieve(url, fn)
                 except Exception as e:  # noqa: BLE001
@@ -144,11 +152,12 @@ def main() -> None:
                     continue
                 manifest.append({
                     "file": str(fn),
-                    "handle": handle,
+                    "handle": post_handle,
                     "post_id": it.get("id"),
                     "image_url": url,
-                    "name": name,
-                    "region": region,
+                    "name": post_name,
+                    "region": post_region,
+                    "linked_from": handle if post_handle != handle else None,
                     "posted_at": datetime.fromtimestamp(
                         it["published_at"] / 1000).isoformat() if it.get("published_at") else None,
                     "title": (it.get("title") or "")[:80],
