@@ -33,7 +33,7 @@ if git diff --cached --quiet; then
   echo "[routine] 변경 없음 — 커밋 생략" >&2
   exit 0
 fi
-git commit -q -m "일일 카카오 시세표 루틴 수집 $(date +%F) [data-only]"
+git commit -q -m "일일 카카오 시세표 루틴 수집 $(TZ=Asia/Seoul date +%F) [data-only]"
 
 # 원격이 앞서 있으면(그사이 다른 push) 리베이스한다. 생성 데이터 파일 4개는 '이번 빌드 산출물'이
 # 항상 정답이므로, 3-way 병합으로 JSON hunk 가 섞이지 않게 리베이스 뒤 그대로 복원해 amend 한다.
