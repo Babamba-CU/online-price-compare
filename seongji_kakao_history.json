@@ -119,16 +119,16 @@
      "model": "Galaxy S25",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 7,
-     "median": -60000,
+     "count": 10,
+     "median": -110000,
      "min": -340000
     },
     {
      "model": "Galaxy S25",
      "carrier": "KT",
      "sub": "기변",
-     "count": 7,
-     "median": 110000,
+     "count": 10,
+     "median": 75000,
      "min": -120000
     },
     {
@@ -151,63 +151,63 @@
      "model": "Galaxy S25",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 8,
-     "median": -100000,
+     "count": 11,
+     "median": -130000,
      "min": -200000
     },
     {
      "model": "Galaxy S25",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 7,
+     "count": 10,
      "median": 260000,
      "min": 110000
     },
     {
      "model": "Galaxy S25 Edge",
      "carrier": "KT",
-     "sub": "기변",
-     "count": 8,
-     "median": -55000,
-     "min": -370000
-    },
-    {
-     "model": "Galaxy S25 Edge",
-     "carrier": "KT",
      "sub": "MNP",
-     "count": 8,
-     "median": -130000,
+     "count": 11,
+     "median": -110000,
      "min": -290000
     },
     {
      "model": "Galaxy S25 Edge",
+     "carrier": "KT",
+     "sub": "기변",
+     "count": 10,
+     "median": -30000,
+     "min": -90000
+    },
+    {
+     "model": "Galaxy S25 Edge",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 8,
-     "median": -110000,
+     "count": 11,
+     "median": -140000,
      "min": -370000
     },
     {
      "model": "Galaxy S25 Edge",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 8,
-     "median": 5000,
+     "count": 11,
+     "median": -20000,
      "min": -250000
     },
     {
      "model": "Galaxy S25 Edge",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 8,
-     "median": 40000,
+     "count": 11,
+     "median": 20000,
      "min": -30000
     },
     {
      "model": "Galaxy S25 Edge",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 7,
+     "count": 11,
      "median": 370000,
      "min": 220000
     },
@@ -215,65 +215,65 @@
      "model": "Galaxy S25 FE",
      "carrier": "KT",
      "sub": "기변",
-     "count": 3,
-     "median": -30000,
+     "count": 6,
+     "median": 25000,
      "min": -200000
     },
     {
      "model": "Galaxy S25 FE",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 2,
-     "median": -115000,
+     "count": 5,
+     "median": -140000,
      "min": -190000
     },
     {
      "model": "Galaxy S25 FE",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 3,
+     "count": 6,
      "median": -300000,
-     "min": -320000
+     "min": -330000
     },
     {
      "model": "Galaxy S25 FE",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 3,
-     "median": 30000,
-     "min": 10000
+     "count": 6,
+     "median": 20000,
+     "min": -10000
     },
     {
      "model": "Galaxy S25 FE",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 3,
-     "median": 40000,
+     "count": 6,
+     "median": -50000,
      "min": -170000
     },
     {
      "model": "Galaxy S25 FE",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 3,
-     "median": 290000,
+     "count": 6,
+     "median": 150000,
      "min": 40000
     },
     {
      "model": "Galaxy S25 Ultra",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 5,
-     "median": 530000,
+     "count": 8,
+     "median": 470000,
      "min": 130000
     },
     {
      "model": "Galaxy S25 Ultra",
      "carrier": "KT",
      "sub": "기변",
-     "count": 5,
-     "median": 710000,
-     "min": 350000
+     "count": 10,
+     "median": 495000,
+     "min": 290000
     },
     {
      "model": "Galaxy S25 Ultra",
@@ -295,15 +295,15 @@
      "model": "Galaxy S25 Ultra",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 8,
-     "median": 420000,
+     "count": 11,
+     "median": 410000,
      "min": 350000
     },
     {
      "model": "Galaxy S25 Ultra",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 7,
+     "count": 10,
      "median": 800000,
      "min": 640000
     },
@@ -311,16 +311,16 @@
      "model": "Galaxy S25+",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 4,
-     "median": -130000,
+     "count": 7,
+     "median": -40000,
      "min": -250000
     },
     {
      "model": "Galaxy S25+",
      "carrier": "KT",
      "sub": "기변",
-     "count": 4,
-     "median": 35000,
+     "count": 7,
+     "median": 90000,
      "min": -20000
     },
     {
@@ -343,71 +343,71 @@
      "model": "Galaxy S25+",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 2,
-     "median": 40000,
+     "count": 8,
+     "median": 60000,
      "min": 0
     },
     {
      "model": "Galaxy S25+",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 4,
-     "median": 890000,
+     "count": 7,
+     "median": 450000,
      "min": 300000
     },
     {
      "model": "Galaxy S26",
      "carrier": "KT",
-     "sub": "MNP",
-     "count": 10,
-     "median": 115000,
+     "sub": "기변",
+     "count": 13,
+     "median": 80000,
      "min": -120000
     },
     {
      "model": "Galaxy S26",
      "carrier": "KT",
-     "sub": "기변",
-     "count": 10,
-     "median": 85000,
+     "sub": "MNP",
+     "count": 13,
+     "median": 90000,
      "min": -120000
     },
     {
      "model": "Galaxy S26",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 12,
-     "median": -120000,
-     "min": -220000
+     "count": 15,
+     "median": -130000,
+     "min": -240000
     },
     {
      "model": "Galaxy S26",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 12,
-     "median": 125000,
+     "count": 15,
+     "median": 50000,
      "min": -150000
     },
     {
      "model": "Galaxy S26",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 12,
-     "median": 30000,
+     "count": 15,
+     "median": 10000,
      "min": -110000
     },
     {
      "model": "Galaxy S26",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 12,
-     "median": 300000,
+     "count": 15,
+     "median": 250000,
      "min": 100000
     },
     {
      "model": "Galaxy S26 FE",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 5,
+     "count": 8,
      "median": 140000,
      "min": -50000
     },
@@ -415,7 +415,7 @@
      "model": "Galaxy S26 FE",
      "carrier": "KT",
      "sub": "기변",
-     "count": 5,
+     "count": 8,
      "median": 190000,
      "min": 110000
     },
@@ -423,7 +423,7 @@
      "model": "Galaxy S26 FE",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 5,
+     "count": 8,
      "median": 100000,
      "min": -350000
     },
@@ -431,23 +431,23 @@
      "model": "Galaxy S26 FE",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 5,
-     "median": 180000,
+     "count": 8,
+     "median": 140000,
      "min": -90000
     },
     {
      "model": "Galaxy S26 FE",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 5,
-     "median": -40000,
+     "count": 8,
+     "median": 35000,
      "min": -70000
     },
     {
      "model": "Galaxy S26 FE",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 5,
+     "count": 8,
      "median": 250000,
      "min": 140000
     },
@@ -455,7 +455,7 @@
      "model": "Galaxy S26 Ultra",
      "carrier": "KT",
      "sub": "기변",
-     "count": 9,
+     "count": 12,
      "median": 620000,
      "min": 430000
     },
@@ -463,88 +463,88 @@
      "model": "Galaxy S26 Ultra",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 9,
-     "median": 640000,
+     "count": 12,
+     "median": 585000,
      "min": 440000
     },
     {
      "model": "Galaxy S26 Ultra",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 11,
-     "median": 420000,
-     "min": 330000
+     "count": 14,
+     "median": 410000,
+     "min": 310000
     },
     {
      "model": "Galaxy S26 Ultra",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 11,
-     "median": 640000,
+     "count": 14,
+     "median": 600000,
      "min": 400000
     },
     {
      "model": "Galaxy S26 Ultra",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 11,
-     "median": 570000,
+     "count": 14,
+     "median": 550000,
      "min": 440000
     },
     {
      "model": "Galaxy S26 Ultra",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 11,
-     "median": 830000,
+     "count": 14,
+     "median": 790000,
      "min": 650000
     },
     {
      "model": "Galaxy S26+",
      "carrier": "KT",
      "sub": "기변",
-     "count": 9,
-     "median": 280000,
+     "count": 12,
+     "median": 275000,
      "min": 80000
     },
     {
      "model": "Galaxy S26+",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 9,
-     "median": 330000,
-     "min": 170000
+     "count": 12,
+     "median": 295000,
+     "min": 160000
     },
     {
      "model": "Galaxy S26+",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 12,
-     "median": 80000,
+     "count": 15,
+     "median": 70000,
      "min": -10000
     },
     {
      "model": "Galaxy S26+",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 12,
-     "median": 325000,
+     "count": 15,
+     "median": 260000,
      "min": 190000
     },
     {
      "model": "Galaxy S26+",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 12,
-     "median": 230000,
+     "count": 15,
+     "median": 210000,
      "min": 90000
     },
     {
      "model": "Galaxy S26+",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 12,
-     "median": 510000,
+     "count": 15,
+     "median": 450000,
      "min": 300000
     },
     {
@@ -559,7 +559,7 @@
      "model": "Galaxy Z Flip 8",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 15,
+     "count": 21,
      "median": 570000,
      "min": 310000
     },
@@ -567,7 +567,7 @@
      "model": "Galaxy Z Flip 8",
      "carrier": "KT",
      "sub": "기변",
-     "count": 15,
+     "count": 21,
      "median": 660000,
      "min": 430000
     },
@@ -575,7 +575,7 @@
      "model": "Galaxy Z Flip 8",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 15,
+     "count": 21,
      "median": 480000,
      "min": 220000
     },
@@ -583,7 +583,7 @@
      "model": "Galaxy Z Flip 8",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 15,
+     "count": 21,
      "median": 490000,
      "min": 230000
     },
@@ -591,7 +591,7 @@
      "model": "Galaxy Z Flip 8",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 15,
+     "count": 21,
      "median": 680000,
      "min": 480000
     },
@@ -599,7 +599,7 @@
      "model": "Galaxy Z Flip 8",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 15,
+     "count": 21,
      "median": 770000,
      "min": 590000
     },
@@ -607,7 +607,7 @@
      "model": "Galaxy Z Fold 8",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 15,
+     "count": 21,
      "median": 1270000,
      "min": 1100000
     },
@@ -615,15 +615,15 @@
      "model": "Galaxy Z Fold 8",
      "carrier": "KT",
      "sub": "기변",
-     "count": 15,
-     "median": 1410000,
+     "count": 21,
+     "median": 1400000,
      "min": 1170000
     },
     {
      "model": "Galaxy Z Fold 8",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 15,
+     "count": 21,
      "median": 1170000,
      "min": 930000
     },
@@ -631,7 +631,7 @@
      "model": "Galaxy Z Fold 8",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 15,
+     "count": 21,
      "median": 1270000,
      "min": 1040000
     },
@@ -639,7 +639,7 @@
      "model": "Galaxy Z Fold 8",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 15,
+     "count": 21,
      "median": 1410000,
      "min": 1120000
     },
@@ -647,7 +647,7 @@
      "model": "Galaxy Z Fold 8",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 15,
+     "count": 21,
      "median": 1460000,
      "min": 1220000
     },
@@ -655,7 +655,7 @@
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 15,
+     "count": 21,
      "median": 1460000,
      "min": 1210000
     },
@@ -663,7 +663,7 @@
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "KT",
      "sub": "기변",
-     "count": 15,
+     "count": 21,
      "median": 1550000,
      "min": 1330000
     },
@@ -671,7 +671,7 @@
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 15,
+     "count": 21,
      "median": 1370000,
      "min": 1120000
     },
@@ -679,7 +679,7 @@
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 15,
+     "count": 21,
      "median": 1470000,
      "min": 1220000
     },
@@ -687,7 +687,7 @@
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 15,
+     "count": 21,
      "median": 1590000,
      "min": 1470000
     },
@@ -695,7 +695,7 @@
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 15,
+     "count": 21,
      "median": 1720000,
      "min": 1520000
     },
@@ -703,8 +703,8 @@
      "model": "iPhone 16",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 10,
-     "median": -155000,
+     "count": 14,
+     "median": -130000,
      "min": -330000
     },
     {
@@ -716,162 +716,170 @@
      "min": 310000
     },
     {
+     "model": "iPhone 16 Pro",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "count": 2,
+     "median": 305000,
+     "min": 290000
+    },
+    {
      "model": "iPhone 17",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 8,
-     "median": 190000,
+     "count": 11,
+     "median": 220000,
      "min": 120000
     },
     {
      "model": "iPhone 17",
      "carrier": "KT",
      "sub": "기변",
-     "count": 6,
-     "median": 365000,
+     "count": 9,
+     "median": 390000,
      "min": 310000
     },
     {
      "model": "iPhone 17",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 6,
-     "median": -120000,
-     "min": -200000
+     "count": 9,
+     "median": -180000,
+     "min": -210000
     },
     {
      "model": "iPhone 17",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 8,
-     "median": 435000,
+     "count": 11,
+     "median": 420000,
      "min": 250000
     },
     {
      "model": "iPhone 17",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 8,
-     "median": 200000,
+     "count": 11,
+     "median": 160000,
      "min": 60000
     },
     {
      "model": "iPhone 17",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 7,
-     "median": 440000,
+     "count": 10,
+     "median": 400000,
      "min": 280000
     },
     {
      "model": "iPhone 17 Pro",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 8,
-     "median": 685000,
+     "count": 11,
+     "median": 660000,
      "min": 540000
     },
     {
      "model": "iPhone 17 Pro",
      "carrier": "KT",
      "sub": "기변",
-     "count": 8,
-     "median": 850000,
+     "count": 11,
+     "median": 830000,
      "min": 610000
     },
     {
      "model": "iPhone 17 Pro",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 8,
-     "median": 350000,
+     "count": 11,
+     "median": 340000,
      "min": 290000
     },
     {
      "model": "iPhone 17 Pro",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 8,
-     "median": 805000,
+     "count": 11,
+     "median": 840000,
      "min": 720000
     },
     {
      "model": "iPhone 17 Pro",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 8,
-     "median": 700000,
+     "count": 11,
+     "median": 660000,
      "min": 550000
     },
     {
      "model": "iPhone 17 Pro",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 8,
-     "median": 965000,
+     "count": 11,
+     "median": 890000,
      "min": 770000
     },
     {
      "model": "iPhone 17 Pro Max",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 7,
-     "median": 1180000,
+     "count": 10,
+     "median": 1110000,
      "min": 990000
     },
     {
      "model": "iPhone 17 Pro Max",
      "carrier": "KT",
      "sub": "기변",
-     "count": 7,
-     "median": 1250000,
+     "count": 10,
+     "median": 1280000,
      "min": 1060000
     },
     {
      "model": "iPhone 17 Pro Max",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 7,
-     "median": 890000,
+     "count": 10,
+     "median": 880000,
      "min": 840000
     },
     {
      "model": "iPhone 17 Pro Max",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 7,
-     "median": 1280000,
+     "count": 10,
+     "median": 1305000,
      "min": 1200000
     },
     {
      "model": "iPhone 17 Pro Max",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 7,
-     "median": 1180000,
+     "count": 10,
+     "median": 1135000,
      "min": 1030000
     },
     {
      "model": "iPhone 17 Pro Max",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 7,
-     "median": 1590000,
-     "min": 1430000
+     "count": 10,
+     "median": 1530000,
+     "min": 1290000
     },
     {
      "model": "iPhone Air",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 8,
-     "median": 510000,
+     "count": 11,
+     "median": 520000,
      "min": 340000
     },
     {
      "model": "iPhone Air",
      "carrier": "KT",
      "sub": "기변",
-     "count": 8,
+     "count": 11,
      "median": 610000,
      "min": 410000
     },
@@ -879,31 +887,31 @@
      "model": "iPhone Air",
      "carrier": "LGU+",
      "sub": "MNP",
-     "count": 10,
-     "median": -260000,
+     "count": 13,
+     "median": -310000,
      "min": -410000
     },
     {
      "model": "iPhone Air",
      "carrier": "LGU+",
      "sub": "기변",
-     "count": 10,
-     "median": 650000,
-     "min": 550000
+     "count": 13,
+     "median": 570000,
+     "min": 540000
     },
     {
      "model": "iPhone Air",
      "carrier": "SKT",
      "sub": "MNP",
-     "count": 8,
-     "median": 560000,
+     "count": 11,
+     "median": 530000,
      "min": 450000
     },
     {
      "model": "iPhone Air",
      "carrier": "SKT",
      "sub": "기변",
-     "count": 8,
+     "count": 11,
      "median": 650000,
      "min": 450000
     },
@@ -911,17 +919,17 @@
      "model": "폼폼푸린폰",
      "carrier": "KT",
      "sub": "신규",
-     "count": 4,
-     "median": -75000,
+     "count": 3,
+     "median": -120000,
      "min": -320000
     },
     {
      "model": "폼폼푸린폰",
      "carrier": "KT",
      "sub": "MNP",
-     "count": 3,
-     "median": 20000,
-     "min": -60000
+     "count": 2,
+     "median": 45000,
+     "min": 20000
     }
    ],
    "stores": [
@@ -1374,6 +1382,30 @@
      "min": -200000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -170000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -140000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -140000
+    },
+    {
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S25",
      "carrier": "KT",
@@ -1420,6 +1452,30 @@
      "sub": "MNP",
      "storage_gb": null,
      "min": -30000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 20000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 50000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 50000
     },
     {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
@@ -1510,19 +1566,19 @@
      "min": -80000
     },
     {
-     "author": "휴대폰성지 싸당 남양주 다산점",
-     "model": "Galaxy S25",
-     "carrier": "LGU+",
-     "sub": "기변",
-     "storage_gb": null,
-     "min": -80000
-    },
-    {
      "author": "휴대폰성지 정직폰 강서점",
      "model": "Galaxy S25",
      "carrier": "LGU+",
      "sub": "MNP",
      "storage_gb": 256,
+     "min": -80000
+    },
+    {
+     "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "Galaxy S25",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
      "min": -80000
     },
     {
@@ -1598,12 +1654,36 @@
      "min": -200000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -190000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy S25",
      "carrier": "SKT",
      "sub": "MNP",
      "storage_gb": null,
      "min": -170000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -160000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -160000
     },
     {
      "author": "휴대폰성지 싸당 전남광주점",
@@ -1662,6 +1742,14 @@
      "min": 110000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 230000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy S25",
      "carrier": "SKT",
@@ -1683,6 +1771,22 @@
      "carrier": "SKT",
      "sub": "기변",
      "storage_gb": null,
+     "min": 260000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 260000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
      "min": 260000
     },
     {
@@ -1708,14 +1812,6 @@
      "sub": "기변",
      "storage_gb": null,
      "min": 490000
-    },
-    {
-     "author": "휴대폰성지 정직폰 강서점",
-     "model": "Galaxy S25 Edge",
-     "carrier": "KT",
-     "sub": "기변",
-     "storage_gb": 256,
-     "min": -370000
     },
     {
      "author": "휴대폰성지 정직폰 강서점",
@@ -1798,6 +1894,14 @@
      "min": -70000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -70000
+    },
+    {
      "author": "휴대폰성지 싸당 전남광주점",
      "model": "Galaxy S25 Edge",
      "carrier": "KT",
@@ -1810,6 +1914,22 @@
      "model": "Galaxy S25 Edge",
      "carrier": "KT",
      "sub": "기변",
+     "storage_gb": 256,
+     "min": -40000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -40000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "KT",
+     "sub": "MNP",
      "storage_gb": 256,
      "min": -40000
     },
@@ -1838,6 +1958,30 @@
      "min": 20000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 130000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 160000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 160000
+    },
+    {
      "author": "휴대폰성지 정직폰 강서점",
      "model": "Galaxy S25 Edge",
      "carrier": "LGU+",
@@ -1860,6 +2004,30 @@
      "sub": "기변",
      "storage_gb": null,
      "min": -190000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": -180000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": -150000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": -150000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -1910,11 +2078,35 @@
      "min": -100000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -50000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "Galaxy S25 Edge",
      "carrier": "LGU+",
      "sub": "MNP",
      "storage_gb": null,
+     "min": -20000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -20000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
      "min": -20000
     },
     {
@@ -1974,11 +2166,35 @@
      "min": -30000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -20000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy S25 Edge",
      "carrier": "SKT",
      "sub": "MNP",
      "storage_gb": null,
+     "min": 10000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 10000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
      "min": 10000
     },
     {
@@ -2038,6 +2254,14 @@
      "min": 220000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 340000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S25 Edge",
      "carrier": "SKT",
@@ -2059,6 +2283,22 @@
      "carrier": "SKT",
      "sub": "기변",
      "storage_gb": null,
+     "min": 370000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 370000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
      "min": 370000
     },
     {
@@ -2086,6 +2326,14 @@
      "min": 490000
     },
     {
+     "author": "휴대폰성지 싸당 전남광주점",
+     "model": "Galaxy S25 Edge",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 700000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy S25 FE",
      "carrier": "KT",
@@ -2100,6 +2348,30 @@
      "sub": "MNP",
      "storage_gb": null,
      "min": -190000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 FE",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -170000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 FE",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -140000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 FE",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -140000
     },
     {
      "author": "휴대폰성지 싸당 전남광주점",
@@ -2118,12 +2390,44 @@
      "min": -30000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 FE",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 10000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 FE",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 40000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 FE",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 40000
+    },
+    {
      "author": "휴대폰성지 싸당 전남광주점",
      "model": "Galaxy S25 FE",
      "carrier": "KT",
      "sub": "기변",
      "storage_gb": null,
      "min": 140000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 FE",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -330000
     },
     {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
@@ -2142,6 +2446,22 @@
      "min": -300000
     },
     {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 FE",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -300000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 FE",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -300000
+    },
+    {
      "author": "휴대폰성지 싸당 전남광주점",
      "model": "Galaxy S25 FE",
      "carrier": "LGU+",
@@ -2150,12 +2470,36 @@
      "min": -210000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 FE",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": -10000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy S25 FE",
      "carrier": "LGU+",
      "sub": "기변",
      "storage_gb": null,
      "min": 10000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 FE",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 20000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 FE",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 20000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -2182,6 +2526,30 @@
      "min": -170000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 FE",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -80000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 FE",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -50000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 FE",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -50000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy S25 FE",
      "carrier": "SKT",
@@ -2204,6 +2572,30 @@
      "sub": "기변",
      "storage_gb": null,
      "min": 40000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 FE",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 120000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 FE",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 150000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 FE",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 150000
     },
     {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
@@ -2230,6 +2622,22 @@
      "min": 130000
     },
     {
+     "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 290000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 300000
+    },
+    {
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S25 Ultra",
      "carrier": "KT",
@@ -2238,12 +2646,60 @@
      "min": 350000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 380000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy S25 Ultra",
      "carrier": "KT",
      "sub": "기변",
      "storage_gb": null,
      "min": 400000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 410000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 410000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 480000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 510000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 510000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -2414,12 +2870,36 @@
      "min": 350000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 360000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy S25 Ultra",
      "carrier": "SKT",
      "sub": "MNP",
      "storage_gb": null,
      "min": 370000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 390000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 390000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -2478,6 +2958,14 @@
      "min": 640000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 770000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy S25 Ultra",
      "carrier": "SKT",
@@ -2499,6 +2987,22 @@
      "carrier": "SKT",
      "sub": "기변",
      "storage_gb": null,
+     "min": 800000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 800000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
      "min": 800000
     },
     {
@@ -2550,6 +3054,14 @@
      "min": -120000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25+",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -40000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "Galaxy S25+",
      "carrier": "KT",
@@ -2563,6 +3075,22 @@
      "carrier": "KT",
      "sub": "기변",
      "storage_gb": null,
+     "min": -10000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25+",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -10000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25+",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
      "min": -10000
     },
     {
@@ -2588,6 +3116,30 @@
      "sub": "기변",
      "storage_gb": null,
      "min": 90000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25+",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 160000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25+",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 190000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25+",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 190000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -2654,12 +3206,44 @@
      "min": 0
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 10000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 40000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 40000
+    },
+    {
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S25+",
      "carrier": "SKT",
      "sub": "MNP",
      "storage_gb": 256,
      "min": 80000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 230000
     },
     {
      "author": "휴대폰성지 정직폰 강서점",
@@ -2670,10 +3254,50 @@
      "min": 300000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 420000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 450000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 450000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 890000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S25+",
      "carrier": "SKT",
      "sub": "기변",
+     "storage_gb": null,
+     "min": 890000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy S25+",
+     "carrier": "SKT",
+     "sub": "MNP",
      "storage_gb": null,
      "min": 890000
     },
@@ -2694,6 +3318,14 @@
      "min": 910000
     },
     {
+     "author": "휴대폰성지 정직폰 강서점",
+     "model": "Galaxy S26",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": -120000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy S26",
      "carrier": "KT",
@@ -2702,12 +3334,12 @@
      "min": -120000
     },
     {
-     "author": "휴대폰성지 정직폰 강서점",
+     "author": "휴대폰 성지 싸당 동작점",
      "model": "Galaxy S26",
      "carrier": "KT",
-     "sub": "기변",
-     "storage_gb": 256,
-     "min": -120000
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -40000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -2718,12 +3350,52 @@
      "min": -30000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": -30000
+    },
+    {
      "author": "휴대폰성지 정직폰 강서점",
      "model": "Galaxy S26",
      "carrier": "KT",
      "sub": "MNP",
      "storage_gb": 256,
      "min": -20000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -10000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -10000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 0
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 0
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -2854,12 +3526,36 @@
      "min": 510000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -240000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy S26",
      "carrier": "LGU+",
      "sub": "MNP",
      "storage_gb": 256,
      "min": -220000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -210000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -210000
     },
     {
      "author": "휴대폰성지 정직폰 강서점",
@@ -2926,11 +3622,35 @@
      "min": -10000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": -10000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy S26",
      "carrier": "LGU+",
      "sub": "MNP",
      "storage_gb": 256,
+     "min": 20000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 20000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
      "min": 20000
     },
     {
@@ -3054,11 +3774,35 @@
      "min": -110000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -60000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "Galaxy S26",
      "carrier": "SKT",
      "sub": "MNP",
      "storage_gb": 256,
+     "min": -30000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": -30000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
      "min": -30000
     },
     {
@@ -3118,11 +3862,35 @@
      "min": 100000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 130000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "Galaxy S26",
      "carrier": "SKT",
      "sub": "기변",
      "storage_gb": 256,
+     "min": 160000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 160000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
      "min": 160000
     },
     {
@@ -3262,20 +4030,12 @@
      "min": 110000
     },
     {
-     "author": "따르릉통신 둔촌동역점",
+     "author": "휴대폰 성지 싸당 동작점",
      "model": "Galaxy S26 FE",
      "carrier": "KT",
      "sub": "MNP",
      "storage_gb": null,
-     "min": 140000
-    },
-    {
-     "author": "휴대폰성지 따르릉 둔촌점",
-     "model": "Galaxy S26 FE",
-     "carrier": "KT",
-     "sub": "MNP",
-     "storage_gb": null,
-     "min": 140000
+     "min": 120000
     },
     {
      "author": "휴대폰성지 정직폰 강서점",
@@ -3289,6 +4049,46 @@
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S26 FE",
      "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 140000
+    },
+    {
+     "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 140000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 150000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 150000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 180000
+    },
+    {
+     "author": "따르릉통신 둔촌동역점",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
      "sub": "기변",
      "storage_gb": null,
      "min": 190000
@@ -3300,6 +4100,22 @@
      "sub": "기변",
      "storage_gb": null,
      "min": 190000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 210000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26 FE",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 210000
     },
     {
      "author": "굳폰 아산성지",
@@ -3342,6 +4158,14 @@
      "min": 80000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 90000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S26 FE",
      "carrier": "LGU+",
@@ -3372,6 +4196,46 @@
      "sub": "기변",
      "storage_gb": null,
      "min": 110000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 110000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 120000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 120000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 140000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26 FE",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 140000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -3422,6 +4286,14 @@
      "min": -40000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 20000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy S26 FE",
      "carrier": "SKT",
@@ -3438,12 +4310,20 @@
      "min": 50000
     },
     {
-     "author": "휴대폰성지 싸당 남양주 다산점",
+     "author": "휴대폰 성지 싸당 화성점",
      "model": "Galaxy S26 FE",
      "carrier": "SKT",
-     "sub": "기변",
-     "storage_gb": 256,
-     "min": 140000
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 50000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 50000
     },
     {
      "author": "휴대폰성지 정직폰 강서점",
@@ -3452,6 +4332,22 @@
      "sub": "기변",
      "storage_gb": 256,
      "min": 140000
+    },
+    {
+     "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 140000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 220000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -3471,6 +4367,22 @@
     },
     {
      "author": "굳폰 아산성지",
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 250000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26 FE",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 250000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "Galaxy S26 FE",
      "carrier": "SKT",
      "sub": "기변",
@@ -3494,11 +4406,27 @@
      "min": 440000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 510000
+    },
+    {
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S26 Ultra",
      "carrier": "KT",
      "sub": "MNP",
      "storage_gb": 256,
+     "min": 520000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
      "min": 520000
     },
     {
@@ -3508,6 +4436,38 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": 530000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 540000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 540000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 550000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 550000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -3622,6 +4582,14 @@
      "min": 1000000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 310000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy S26 Ultra",
      "carrier": "LGU+",
@@ -3630,12 +4598,36 @@
      "min": 330000
     },
     {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 340000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 340000
+    },
+    {
      "author": "휴대폰성지 정직폰 강서점",
      "model": "Galaxy S26 Ultra",
      "carrier": "LGU+",
      "sub": "MNP",
      "storage_gb": 256,
      "min": 350000
+    },
+    {
+     "author": "휴대폰성지 정직폰 강서점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 400000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -3650,14 +4642,6 @@
      "model": "Galaxy S26 Ultra",
      "carrier": "LGU+",
      "sub": "MNP",
-     "storage_gb": 256,
-     "min": 400000
-    },
-    {
-     "author": "휴대폰성지 정직폰 강서점",
-     "model": "Galaxy S26 Ultra",
-     "carrier": "LGU+",
-     "sub": "기변",
      "storage_gb": 256,
      "min": 400000
     },
@@ -3694,12 +4678,36 @@
      "min": 540000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 540000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy S26 Ultra",
      "carrier": "LGU+",
      "sub": "MNP",
      "storage_gb": 256,
      "min": 560000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 570000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 570000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -3806,12 +4814,36 @@
      "min": 440000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 490000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "Galaxy S26 Ultra",
      "carrier": "SKT",
      "sub": "MNP",
      "storage_gb": 256,
      "min": 510000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 520000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 520000
     },
     {
      "author": "굳폰 아산성지",
@@ -3870,12 +4902,36 @@
      "min": 650000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 680000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "Galaxy S26 Ultra",
      "carrier": "SKT",
      "sub": "기변",
      "storage_gb": 256,
      "min": 700000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 710000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 710000
     },
     {
      "author": "굳폰 아산성지",
@@ -3982,11 +5038,27 @@
      "min": 80000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26+",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 160000
+    },
+    {
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy S26+",
      "carrier": "KT",
      "sub": "MNP",
      "storage_gb": 256,
+     "min": 170000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26+",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
      "min": 170000
     },
     {
@@ -3996,6 +5068,38 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": 180000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26+",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 190000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26+",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 190000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26+",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 200000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26+",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 200000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -4126,11 +5230,35 @@
      "min": -10000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26+",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 0
+    },
+    {
      "author": "휴대폰성지 정직폰 강서점",
      "model": "Galaxy S26+",
      "carrier": "LGU+",
      "sub": "MNP",
      "storage_gb": 256,
+     "min": 30000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26+",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 30000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26+",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": null,
      "min": 30000
     },
     {
@@ -4182,6 +5310,14 @@
      "min": 190000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26+",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 200000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy S26+",
      "carrier": "LGU+",
@@ -4196,6 +5332,22 @@
      "sub": "기변",
      "storage_gb": 256,
      "min": 220000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26+",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 230000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26+",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 230000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -4318,11 +5470,35 @@
      "min": 90000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26+",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 140000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "Galaxy S26+",
      "carrier": "SKT",
      "sub": "MNP",
      "storage_gb": 256,
+     "min": 170000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26+",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
+     "min": 170000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26+",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": null,
      "min": 170000
     },
     {
@@ -4380,6 +5556,30 @@
      "sub": "기변",
      "storage_gb": 256,
      "min": 300000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy S26+",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 330000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy S26+",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 360000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy S26+",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": null,
+     "min": 360000
     },
     {
      "author": "굳폰 아산성지",
@@ -4550,6 +5750,14 @@
      "min": 310000
     },
     {
+     "author": "휴대폰성지 정직폰 강서점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 430000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "Galaxy Z Flip 8",
      "carrier": "KT",
@@ -4558,12 +5766,12 @@
      "min": 430000
     },
     {
-     "author": "휴대폰성지 정직폰 강서점",
+     "author": "휴대폰 성지 싸당 동작점",
      "model": "Galaxy Z Flip 8",
      "carrier": "KT",
-     "sub": "기변",
+     "sub": "MNP",
      "storage_gb": 256,
-     "min": 430000
+     "min": 440000
     },
     {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
@@ -4591,6 +5799,22 @@
     },
     {
      "author": "굳폰 아산성지",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 470000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 470000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "Galaxy Z Flip 8",
      "carrier": "KT",
      "sub": "MNP",
@@ -4630,6 +5854,14 @@
      "min": 580000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 590000
+    },
+    {
      "author": "휴대폰성지 싸당 전남광주점",
      "model": "Galaxy Z Flip 8",
      "carrier": "KT",
@@ -4639,6 +5871,22 @@
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 620000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 620000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "Galaxy Z Flip 8",
      "carrier": "KT",
      "sub": "기변",
@@ -4678,14 +5926,6 @@
      "min": 660000
     },
     {
-     "author": "휴대폰성지 싸당 남양주 다산점",
-     "model": "Galaxy Z Flip 8",
-     "carrier": "KT",
-     "sub": "MNP",
-     "storage_gb": 512,
-     "min": 680000
-    },
-    {
      "author": "휴대폰성지 정직폰 강서점",
      "model": "Galaxy Z Flip 8",
      "carrier": "KT",
@@ -4694,7 +5934,23 @@
      "min": 680000
     },
     {
+     "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 680000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 700000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
      "model": "Galaxy Z Flip 8",
      "carrier": "KT",
      "sub": "MNP",
@@ -4726,6 +5982,22 @@
      "min": 730000
     },
     {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 730000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 730000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy Z Flip 8",
      "carrier": "KT",
@@ -4750,6 +6022,14 @@
      "min": 840000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 850000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy Z Flip 8",
      "carrier": "KT",
@@ -4767,6 +6047,22 @@
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 880000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 880000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "Galaxy Z Flip 8",
      "carrier": "KT",
      "sub": "기변",
@@ -4806,6 +6102,14 @@
      "min": 380000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 380000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy Z Flip 8",
      "carrier": "LGU+",
@@ -4820,6 +6124,30 @@
      "sub": "기변",
      "storage_gb": 256,
      "min": 400000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 400000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 410000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 410000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -4844,6 +6172,22 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": 420000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 430000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 430000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -4886,19 +6230,19 @@
      "min": 470000
     },
     {
-     "author": "휴대폰성지 일타폰 목동점",
-     "model": "Galaxy Z Flip 8",
-     "carrier": "LGU+",
-     "sub": "기변",
-     "storage_gb": 256,
-     "min": 480000
-    },
-    {
      "author": "휴대폰성지 정직폰 강서점",
      "model": "Galaxy Z Flip 8",
      "carrier": "LGU+",
      "sub": "MNP",
      "storage_gb": 512,
+     "min": 480000
+    },
+    {
+     "author": "휴대폰성지 일타폰 목동점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
      "min": 480000
     },
     {
@@ -4934,7 +6278,23 @@
      "min": 640000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 640000
+    },
+    {
      "author": "굳폰 아산성지",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 660000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
      "model": "Galaxy Z Flip 8",
      "carrier": "LGU+",
      "sub": "기변",
@@ -4966,6 +6326,22 @@
      "min": 670000
     },
     {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 670000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 670000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy Z Flip 8",
      "carrier": "LGU+",
@@ -4983,6 +6359,22 @@
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 690000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 690000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "Galaxy Z Flip 8",
      "carrier": "LGU+",
      "sub": "기변",
@@ -5028,6 +6420,30 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": 480000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 520000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 550000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 550000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -5110,12 +6526,36 @@
      "min": 680000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 690000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy Z Flip 8",
      "carrier": "SKT",
      "sub": "기변",
      "storage_gb": 256,
      "min": 710000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 720000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 720000
     },
     {
      "author": "휴대폰성지 싸당 전남광주점",
@@ -5150,6 +6590,14 @@
      "min": 770000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 780000
+    },
+    {
      "author": "휴대폰성지 정직폰 강서점",
      "model": "Galaxy Z Flip 8",
      "carrier": "SKT",
@@ -5166,18 +6614,34 @@
      "min": 810000
     },
     {
-     "author": "굳폰 아산성지",
+     "author": "휴대폰 성지 싸당 화성점",
      "model": "Galaxy Z Flip 8",
      "carrier": "SKT",
      "sub": "MNP",
      "storage_gb": 512,
-     "min": 850000
+     "min": 810000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 810000
     },
     {
      "author": "휴대폰성지 정직폰 강서점",
      "model": "Galaxy Z Flip 8",
      "carrier": "SKT",
      "sub": "기변",
+     "storage_gb": 512,
+     "min": 850000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "MNP",
      "storage_gb": 512,
      "min": 850000
     },
@@ -5230,7 +6694,31 @@
      "min": 930000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 950000
+    },
+    {
      "author": "굳폰 아산성지",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 980000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Flip 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 980000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "Galaxy Z Flip 8",
      "carrier": "SKT",
      "sub": "기변",
@@ -5318,12 +6806,12 @@
      "min": 1220000
     },
     {
-     "author": "휴대폰성지 싸당 남양주 다산점",
+     "author": "휴대폰 성지 싸당 동작점",
      "model": "Galaxy Z Fold 8",
      "carrier": "KT",
      "sub": "MNP",
-     "storage_gb": 512,
-     "min": 1240000
+     "storage_gb": 256,
+     "min": 1220000
     },
     {
      "author": "휴대폰성지 정직폰 강서점",
@@ -5332,6 +6820,30 @@
      "sub": "기변",
      "storage_gb": 512,
      "min": 1240000
+    },
+    {
+     "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1240000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1250000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1250000
     },
     {
      "author": "굳폰 아산성지",
@@ -5366,6 +6878,22 @@
      "min": 1270000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1280000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1290000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy Z Fold 8",
      "carrier": "KT",
@@ -5374,7 +6902,39 @@
      "min": 1310000
     },
     {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1310000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1310000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1320000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1320000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "Galaxy Z Fold 8",
      "carrier": "KT",
      "sub": "기변",
@@ -5446,6 +7006,14 @@
      "min": 1390000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1400000
+    },
+    {
      "author": "휴대폰성지 싸당 전남광주점",
      "model": "Galaxy Z Fold 8",
      "carrier": "KT",
@@ -5479,6 +7047,22 @@
     },
     {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1430000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1430000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "Galaxy Z Fold 8",
      "carrier": "KT",
      "sub": "기변",
@@ -5550,6 +7134,22 @@
      "min": 1070000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1080000
+    },
+    {
+     "author": "휴대폰성지 정직폰 강서점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1110000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "Galaxy Z Fold 8",
      "carrier": "LGU+",
@@ -5558,11 +7158,19 @@
      "min": 1110000
     },
     {
-     "author": "휴대폰성지 정직폰 강서점",
+     "author": "휴대폰 성지 싸당 화성점",
      "model": "Galaxy Z Fold 8",
      "carrier": "LGU+",
-     "sub": "기변",
-     "storage_gb": 512,
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1110000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
      "min": 1110000
     },
     {
@@ -5614,12 +7222,44 @@
      "min": 1170000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1170000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy Z Fold 8",
      "carrier": "LGU+",
      "sub": "MNP",
      "storage_gb": 512,
      "min": 1180000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1190000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1200000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1200000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -5631,6 +7271,22 @@
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1220000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1220000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "Galaxy Z Fold 8",
      "carrier": "LGU+",
      "sub": "기변",
@@ -5718,12 +7374,36 @@
      "min": 1290000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1290000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "Galaxy Z Fold 8",
      "carrier": "LGU+",
      "sub": "기변",
      "storage_gb": 512,
      "min": 1310000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1320000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1320000
     },
     {
      "author": "휴대폰성지 싸당 전남광주점",
@@ -5774,12 +7454,44 @@
      "min": 1220000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1270000
+    },
+    {
      "author": "휴대폰성지 싸당 전남광주점",
      "model": "Galaxy Z Fold 8",
      "carrier": "SKT",
      "sub": "MNP",
      "storage_gb": 256,
      "min": 1290000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1300000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1300000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1320000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -5828,6 +7540,22 @@
      "sub": "기변",
      "storage_gb": 256,
      "min": 1340000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1350000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1350000
     },
     {
      "author": "휴대폰성지 정직폰 강서점",
@@ -5894,6 +7622,14 @@
      "min": 1460000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1460000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy Z Fold 8",
      "carrier": "SKT",
@@ -5908,6 +7644,22 @@
      "sub": "기변",
      "storage_gb": 256,
      "min": 1470000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1490000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1490000
     },
     {
      "author": "휴대폰성지 싸당 전남광주점",
@@ -5927,6 +7679,14 @@
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1520000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
      "model": "Galaxy Z Fold 8",
      "carrier": "SKT",
      "sub": "MNP",
@@ -5956,6 +7716,22 @@
      "sub": "기변",
      "storage_gb": 512,
      "min": 1540000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1550000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1550000
     },
     {
      "author": "휴대폰성지 싸당 전남광주점",
@@ -6030,6 +7806,14 @@
      "min": 1340000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1340000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "KT",
@@ -6052,6 +7836,22 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": 1360000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1370000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1370000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -6094,6 +7894,14 @@
      "min": 1480000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1490000
+    },
+    {
      "author": "휴대폰성지 일타폰 목동점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "KT",
@@ -6111,6 +7919,22 @@
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1520000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1520000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "KT",
      "sub": "기변",
@@ -6150,6 +7974,14 @@
      "min": 1580000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1590000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "KT",
@@ -6172,6 +8004,22 @@
      "sub": "MNP",
      "storage_gb": 512,
      "min": 1610000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1620000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1620000
     },
     {
      "author": "굳폰 아산성지",
@@ -6198,12 +8046,36 @@
      "min": 1730000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1740000
+    },
+    {
      "author": "휴대폰성지 싸당 전남광주점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "KT",
      "sub": "MNP",
      "storage_gb": 512,
      "min": 1740000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1770000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1770000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -6262,6 +8134,14 @@
      "min": 1270000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1280000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "LGU+",
@@ -6279,6 +8159,22 @@
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1310000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1310000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "LGU+",
      "sub": "MNP",
@@ -6318,6 +8214,14 @@
      "min": 1380000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1380000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "LGU+",
@@ -6327,6 +8231,22 @@
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1410000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1410000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "LGU+",
      "sub": "기변",
@@ -6382,6 +8302,30 @@
      "min": 1530000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1530000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1560000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1560000
+    },
+    {
      "author": "휴대폰성지 싸당 전남광주점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "LGU+",
@@ -6422,12 +8366,36 @@
      "min": 1620000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1630000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "LGU+",
      "sub": "기변",
      "storage_gb": 512,
      "min": 1640000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1660000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1660000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -6486,6 +8454,14 @@
      "min": 1470000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1470000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "SKT",
@@ -6494,18 +8470,34 @@
      "min": 1500000
     },
     {
-     "author": "굳폰 아산성지",
+     "author": "휴대폰 성지 싸당 화성점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "SKT",
      "sub": "MNP",
      "storage_gb": 256,
-     "min": 1520000
+     "min": 1500000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1500000
     },
     {
      "author": "휴대폰성지 정직폰 강서점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "SKT",
      "sub": "기변",
+     "storage_gb": 256,
+     "min": 1520000
+    },
+    {
+     "author": "굳폰 아산성지",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
      "storage_gb": 256,
      "min": 1520000
     },
@@ -6558,6 +8550,30 @@
      "min": 1590000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1620000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1650000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1650000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "SKT",
@@ -6598,6 +8614,22 @@
      "min": 1690000
     },
     {
+     "author": "휴대폰성지 정직폰 강서점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1720000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1720000
+    },
+    {
      "author": "휴대폰성지 싸당 전남광주점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "SKT",
@@ -6606,12 +8638,20 @@
      "min": 1720000
     },
     {
-     "author": "휴대폰성지 정직폰 강서점",
+     "author": "휴대폰 성지 싸당 화성점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "SKT",
      "sub": "MNP",
      "storage_gb": 512,
-     "min": 1720000
+     "min": 1750000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 512,
+     "min": 1750000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -6662,6 +8702,14 @@
      "min": 1840000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1870000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "Galaxy Z Fold 8 Ultra",
      "carrier": "SKT",
@@ -6676,6 +8724,22 @@
      "sub": "MNP",
      "storage_gb": 512,
      "min": 1890000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1900000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "Galaxy Z Fold 8 Ultra",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 512,
+     "min": 1900000
     },
     {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
@@ -6758,6 +8822,14 @@
      "min": -180000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 16",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 128,
+     "min": -160000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "iPhone 16",
      "carrier": "LGU+",
@@ -6767,6 +8839,14 @@
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "iPhone 16",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 128,
+     "min": -130000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
      "model": "iPhone 16",
      "carrier": "LGU+",
      "sub": "MNP",
@@ -6782,6 +8862,14 @@
      "min": -110000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 16",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 0
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "iPhone 16",
      "carrier": "LGU+",
@@ -6796,6 +8884,14 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": 10000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 16",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 30000
     },
     {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
@@ -6844,6 +8940,22 @@
      "sub": "기변",
      "storage_gb": 256,
      "min": 530000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 16 Pro",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 290000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 16 Pro",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 320000
     },
     {
      "author": "굳폰 아산성지",
@@ -6918,6 +9030,30 @@
      "min": 210000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 220000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 250000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 250000
+    },
+    {
      "author": "휴대폰성지 싸당 전남광주점",
      "model": "iPhone 17",
      "carrier": "KT",
@@ -6966,6 +9102,30 @@
      "min": 340000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 360000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 390000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 390000
+    },
+    {
      "author": "휴대폰성지 싸당 전남광주점",
      "model": "iPhone 17",
      "carrier": "KT",
@@ -6990,6 +9150,14 @@
      "min": 480000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -210000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "iPhone 17",
      "carrier": "LGU+",
@@ -7004,6 +9172,22 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": -200000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -180000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -180000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -7062,12 +9246,36 @@
      "min": 360000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 390000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "iPhone 17",
      "carrier": "LGU+",
      "sub": "기변",
      "storage_gb": 256,
      "min": 410000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 420000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 420000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -7108,6 +9316,30 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": 60000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 110000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 140000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 140000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -7174,6 +9406,14 @@
      "min": 320000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 370000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "iPhone 17",
      "carrier": "SKT",
@@ -7188,6 +9428,22 @@
      "sub": "기변",
      "storage_gb": 256,
      "min": 390000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 400000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 400000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -7246,12 +9502,36 @@
      "min": 630000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17 Pro",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 630000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "iPhone 17 Pro",
      "carrier": "KT",
      "sub": "MNP",
      "storage_gb": 256,
      "min": 640000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17 Pro",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 660000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17 Pro",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 660000
     },
     {
      "author": "휴대폰성지 일타폰 목동점",
@@ -7294,6 +9574,14 @@
      "min": 800000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17 Pro",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 800000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "iPhone 17 Pro",
      "carrier": "KT",
@@ -7306,6 +9594,22 @@
      "model": "iPhone 17 Pro",
      "carrier": "KT",
      "sub": "MNP",
+     "storage_gb": 256,
+     "min": 830000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17 Pro",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 830000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17 Pro",
+     "carrier": "KT",
+     "sub": "기변",
      "storage_gb": 256,
      "min": 830000
     },
@@ -7364,6 +9668,30 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": 300000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17 Pro",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 300000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17 Pro",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 330000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17 Pro",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 330000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -7446,6 +9774,14 @@
      "min": 770000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17 Pro",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 840000
+    },
+    {
      "author": "휴대폰성지 싸당 전남광주점",
      "model": "iPhone 17 Pro",
      "carrier": "LGU+",
@@ -7460,6 +9796,22 @@
      "sub": "기변",
      "storage_gb": 256,
      "min": 860000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17 Pro",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 870000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17 Pro",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 870000
     },
     {
      "author": "따르릉통신 둔촌동역점",
@@ -7484,6 +9836,30 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": 550000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17 Pro",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 600000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17 Pro",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 630000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17 Pro",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 630000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -7550,6 +9926,14 @@
      "min": 820000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17 Pro",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 860000
+    },
+    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
      "model": "iPhone 17 Pro",
      "carrier": "SKT",
@@ -7559,6 +9943,22 @@
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "iPhone 17 Pro",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 890000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17 Pro",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 890000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "iPhone 17 Pro",
      "carrier": "SKT",
      "sub": "기변",
@@ -7622,6 +10022,14 @@
      "min": 1060000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1080000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "iPhone 17 Pro Max",
      "carrier": "KT",
@@ -7631,6 +10039,22 @@
     },
     {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1110000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1110000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "iPhone 17 Pro Max",
      "carrier": "KT",
      "sub": "MNP",
@@ -7710,6 +10134,30 @@
      "min": 1280000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1290000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1320000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1320000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "iPhone 17 Pro Max",
      "carrier": "KT",
@@ -7726,6 +10174,14 @@
      "min": 840000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 850000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "iPhone 17 Pro Max",
      "carrier": "LGU+",
@@ -7735,6 +10191,22 @@
     },
     {
      "author": "휴대폰성지 따르릉 둔촌점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 880000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 880000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "iPhone 17 Pro Max",
      "carrier": "LGU+",
      "sub": "MNP",
@@ -7806,6 +10278,30 @@
      "min": 1280000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1290000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1320000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1320000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "iPhone 17 Pro Max",
      "carrier": "LGU+",
@@ -7836,6 +10332,30 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": 1030000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1080000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1110000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 1110000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -7884,6 +10404,30 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": 1240000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1290000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1320000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone 17 Pro Max",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 1320000
     },
     {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
@@ -8038,6 +10582,14 @@
      "min": 520000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone Air",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 520000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "iPhone Air",
      "carrier": "KT",
@@ -8052,6 +10604,22 @@
      "sub": "MNP",
      "storage_gb": 256,
      "min": 540000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone Air",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 550000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone Air",
+     "carrier": "KT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 550000
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
@@ -8078,6 +10646,14 @@
      "min": 600000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone Air",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 600000
+    },
+    {
      "author": "따르릉통신 둔촌동역점",
      "model": "iPhone Air",
      "carrier": "KT",
@@ -8092,6 +10668,22 @@
      "sub": "기변",
      "storage_gb": 256,
      "min": 610000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone Air",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 630000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone Air",
+     "carrier": "KT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 630000
     },
     {
      "author": "휴대폰성지 싸당 전남광주점",
@@ -8126,6 +10718,14 @@
      "min": -410000
     },
     {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone Air",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -340000
+    },
+    {
      "author": "굳폰 아산성지",
      "model": "iPhone Air",
      "carrier": "LGU+",
@@ -8143,6 +10743,22 @@
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "iPhone Air",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -310000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone Air",
+     "carrier": "LGU+",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": -310000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "iPhone Air",
      "carrier": "LGU+",
      "sub": "MNP",
@@ -8198,7 +10814,15 @@
      "min": 450000
     },
     {
-     "author": "굳폰 아산성지",
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone Air",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 540000
+    },
+    {
+     "author": "휴대폰성지 정직폰 강서점",
      "model": "iPhone Air",
      "carrier": "LGU+",
      "sub": "기변",
@@ -8206,7 +10830,7 @@
      "min": 550000
     },
     {
-     "author": "휴대폰성지 정직폰 강서점",
+     "author": "굳폰 아산성지",
      "model": "iPhone Air",
      "carrier": "LGU+",
      "sub": "기변",
@@ -8223,6 +10847,22 @@
     },
     {
      "author": "휴대폰성지 싸당 남양주 다산점",
+     "model": "iPhone Air",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 570000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone Air",
+     "carrier": "LGU+",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 570000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "iPhone Air",
      "carrier": "LGU+",
      "sub": "기변",
@@ -8278,14 +10918,6 @@
      "min": 1240000
     },
     {
-     "author": "굳폰 아산성지",
-     "model": "iPhone Air",
-     "carrier": "SKT",
-     "sub": "MNP",
-     "storage_gb": 256,
-     "min": 450000
-    },
-    {
      "author": "휴대폰성지 정직폰 강서점",
      "model": "iPhone Air",
      "carrier": "SKT",
@@ -8302,6 +10934,22 @@
      "min": 450000
     },
     {
+     "author": "굳폰 아산성지",
+     "model": "iPhone Air",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 450000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone Air",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 500000
+    },
+    {
      "author": "휴대폰성지 일타폰 목동점",
      "model": "iPhone Air",
      "carrier": "SKT",
@@ -8310,12 +10958,36 @@
      "min": 520000
     },
     {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone Air",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 530000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
+     "model": "iPhone Air",
+     "carrier": "SKT",
+     "sub": "MNP",
+     "storage_gb": 256,
+     "min": 530000
+    },
+    {
      "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "iPhone Air",
      "carrier": "SKT",
      "sub": "MNP",
      "storage_gb": 256,
      "min": 550000
+    },
+    {
+     "author": "휴대폰 성지 싸당 동작점",
+     "model": "iPhone Air",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 560000
     },
     {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
@@ -8327,6 +10999,22 @@
     },
     {
      "author": "굳폰 아산성지",
+     "model": "iPhone Air",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 590000
+    },
+    {
+     "author": "휴대폰 성지 싸당 화성점",
+     "model": "iPhone Air",
+     "carrier": "SKT",
+     "sub": "기변",
+     "storage_gb": 256,
+     "min": 590000
+    },
+    {
+     "author": "휴대폰 성지 싸당 평택점",
      "model": "iPhone Air",
      "carrier": "SKT",
      "sub": "기변",
@@ -8454,23 +11142,7 @@
      "min": -120000
     },
     {
-     "author": "휴대폰성지 싸당 남양주 다산점",
-     "model": "폼폼푸린폰",
-     "carrier": "KT",
-     "sub": "MNP",
-     "storage_gb": null,
-     "min": -60000
-    },
-    {
      "author": "휴대폰성지 싸당 전남 광주 서구점",
-     "model": "폼폼푸린폰",
-     "carrier": "KT",
-     "sub": "신규",
-     "storage_gb": null,
-     "min": -30000
-    },
-    {
-     "author": "휴대폰성지 싸당 남양주 다산점",
      "model": "폼폼푸린폰",
      "carrier": "KT",
      "sub": "신규",
