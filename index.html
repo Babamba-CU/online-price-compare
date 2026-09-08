@@ -577,6 +577,83 @@
     }
     .filter-check input { width: 15px; height: 15px; accent-color: var(--brand); }
 
+    /* ===== 필터 정리 v2 (성지폰·카카오 공통) — 범위(무엇을 볼지) / 조건(어떻게 걸러낼지) ===== */
+    .filters-v2 .filter-scope { margin-bottom: var(--spacing-md); }
+    .filters-v2 .filter-scope-how { border-top: 1px dashed var(--border-strong); padding-top: var(--spacing-md); }
+    .filters-v2 .filter-scope .filter-label { margin-bottom: var(--spacing-xs); }
+    /* 컨트롤 높이 통일 (44px) — select · date · 드롭다운 토글 · 초기화 버튼 · 칩 묶음 */
+    .filters-v2 select, .filters-v2 input[type="date"], .filters-v2 .dropdown-toggle, .filters-v2 .filter-reset-btn {
+      height: 44px; padding-top: 0; padding-bottom: 0; box-sizing: border-box;
+    }
+    .filters-v2 .filter-input-label { display: flex; align-items: center; gap: 6px; min-height: 16px; }
+    .filters-v2 .filter-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; min-height: 44px; }
+    .filters-v2 .chip-wrap { display: inline-flex; align-items: center; gap: 4px; }
+    /* 체크박스 → 알약형 토글 칩 (꺼짐 = 중립 테두리 · 켜짐 = 브랜드 틴트) */
+    .filters-v2 .filter-check {
+      position: relative; display: inline-flex; align-items: center; gap: 7px;
+      height: 32px; padding: 0 12px 0 10px; margin: 0;
+      border: 1px solid var(--border-strong); border-radius: 9999px; background: var(--bg);
+      font-size: 12.5px; font-weight: 500; color: var(--ink2); cursor: pointer; user-select: none;
+      white-space: nowrap; transition: background .12s, border-color .12s, color .12s;
+    }
+    .filters-v2 .filter-check:hover { border-color: var(--ink3); color: var(--ink); }
+    .filters-v2 .filter-check input {
+      position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none;
+    }
+    .filters-v2 .filter-check .chip-mark {
+      width: 14px; height: 14px; border-radius: 4px; flex: none;
+      border: 1.5px solid var(--border-strong); background: var(--bg); color: transparent;
+      display: inline-flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1;
+    }
+    .filters-v2 .filter-check.on { background: var(--brand-surface); border-color: var(--brand-border); color: var(--brand); font-weight: 600; }
+    .filters-v2 .filter-check.on .chip-mark { background: var(--brand); border-color: var(--brand); color: #fff; }
+    .filters-v2 .filter-check:has(input:focus-visible) { box-shadow: 0 0 0 2px rgba(54, 23, 206, 0.2); }
+    .filter-reset-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      padding: 0 14px; font-size: 13px; font-weight: 600; font-family: inherit;
+      border: 1px solid var(--border-strong); border-radius: 4px; background: var(--bg); color: var(--ink2);
+      cursor: pointer; white-space: nowrap; letter-spacing: -0.2px;
+    }
+    .filter-reset-btn:hover { border-color: var(--ink); color: var(--ink); background: var(--bg-subtle); }
+    /* 적용 중 요약 줄 */
+    .filter-summary {
+      margin-top: var(--spacing-md); padding-top: var(--spacing-sm); border-top: 1px solid var(--border);
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px;
+      font-size: 12.5px; color: var(--ink2); line-height: 1.5;
+    }
+    .filter-summary .fs-k {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.5px; color: var(--ink3);
+    }
+    .filter-summary .fs-v { color: var(--ink); }
+    .filter-summary .fs-res { font-family: var(--font-mono); font-weight: 700; color: var(--brand); white-space: nowrap; }
+    /* ? 도움말 버튼 + 팝오버 */
+    .help-btn {
+      width: 18px; height: 18px; padding: 0; flex: none; border-radius: 50%;
+      border: 1px solid var(--border-strong); background: var(--bg); color: var(--ink3);
+      font-family: var(--font-mono); font-size: 11px; font-weight: 700; line-height: 1;
+      display: inline-flex; align-items: center; justify-content: center; cursor: pointer; vertical-align: middle;
+    }
+    .help-btn:hover, .help-btn[aria-expanded="true"] { border-color: var(--brand); color: var(--brand); background: var(--brand-surface); }
+    .help-pop {
+      position: absolute; z-index: 1200; max-width: 360px; min-width: 260px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(14, 14, 18, 0.12); padding: 12px 14px;
+      font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+      font-size: 12.5px; font-weight: 400; line-height: 1.6; color: var(--ink2);
+      text-align: left; text-transform: none; letter-spacing: 0; white-space: normal;
+    }
+    .help-pop[hidden] { display: none; }
+    .help-pop b { color: var(--ink); font-weight: 600; }
+    .help-pop .help-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .help-pop .help-kw { font-size: 11.5px; color: var(--ink3); }
+    .help-pop .help-p { margin-top: 6px; }
+    .help-pop .help-live {
+      margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);
+      font-family: var(--font-mono); font-size: 12px; color: var(--brand); font-weight: 600;
+    }
+    @media (max-width: 768px) { .help-pop { max-width: calc(100vw - 32px); min-width: 0; } }
+
     .empty-state {
       padding: 60px var(--spacing-xl); text-align: center;
       color: var(--color-text-light); font-size: 14px;
@@ -740,59 +817,85 @@
 
     <div class="ai-report" id="seongjiReport"></div>
 
-    <div class="filters-section">
-      <div class="filter-row">
-        <div class="filter-input-group">
-          <label class="filter-input-label">시세표 기준일</label>
-          <select id="sjFilterDate" onchange="seongjiRender()">
-            <option value="" selected>전체 (현재 시세)</option>
-          </select>
-        </div>
-        <div class="filter-input-group">
-          <label class="filter-input-label">통신사</label>
-          <select id="sjFilterCarrier" onchange="seongjiRender()">
-            <option value="">전체</option>
-            <option value="SKT">SKT</option>
-            <option value="KT">KT</option>
-            <option value="LGU+">LGU+</option>
-          </select>
-        </div>
-        <div class="filter-input-group">
-          <label class="filter-input-label">가입유형</label>
-          <select id="sjFilterSub" onchange="seongjiRender()">
-            <option value="" selected>전체</option>
-            <option value="MNP">MNP</option>
-            <option value="신규">신규</option>
-            <option value="기변">기변</option>
-          </select>
-        </div>
-        <div class="filter-input-group">
-          <label class="filter-input-label">최소 신뢰도</label>
-          <select id="sjFilterConf" onchange="seongjiRender()">
-            <option value="0">0.0 (전체)</option>
-            <option value="0.5" selected>0.5 (보통 이상)</option>
-            <option value="0.7">0.7 (높음)</option>
-          </select>
-        </div>
-        <div class="filter-input-group">
-          <label class="filter-input-label">가격 조건</label>
-          <label class="filter-check" title="결합(인터넷+TV)·제휴카드·온누리·이벤트 적용가 등 조건이 붙은 가격. 기본은 제외">
-            <input type="checkbox" id="sjIncludeCond" onchange="seongjiRender()">
-            <span>조건부(결합·카드) 포함</span>
-          </label>
-          <label class="filter-check" title="같은 기종·통신사·가입유형·용량의 매장 중앙값 대비 30만 넘게 벗어난 가격(조건 미표기·판독 오류 가능). 표에는 항상 배지로 표시, 체크하면 KPI·차트·리포트에도 포함">
-            <input type="checkbox" id="sjIncludeOutlier" onchange="seongjiRender()">
-            <span>이상치 포함</span>
-          </label>
-        </div>
-        <div class="filter-input-group">
-          <label class="filter-input-label">단말기 (다중선택)</label>
-          <div class="checkbox-dropdown" onclick="event.stopPropagation()">
-            <button class="dropdown-toggle" id="sjDropdownToggle" type="button">단말기 선택</button>
-            <div class="dropdown-menu hidden" id="sjDropdownMenu"></div>
+    <div class="filters-section filters-v2">
+      <div class="filter-group filter-scope">
+        <span class="filter-label">무엇을 볼지</span>
+        <div class="filter-row">
+          <div class="filter-input-group">
+            <label class="filter-input-label">단말기 (다중선택)</label>
+            <div class="checkbox-dropdown" onclick="event.stopPropagation()">
+              <button class="dropdown-toggle" id="sjDropdownToggle" type="button">단말기 선택</button>
+              <div class="dropdown-menu hidden" id="sjDropdownMenu"></div>
+            </div>
+          </div>
+          <div class="filter-input-group">
+            <label class="filter-input-label">통신사</label>
+            <select id="sjFilterCarrier" onchange="seongjiRender()">
+              <option value="">전체</option>
+              <option value="SKT">SKT</option>
+              <option value="KT">KT</option>
+              <option value="LGU+">LGU+</option>
+            </select>
+          </div>
+          <div class="filter-input-group">
+            <label class="filter-input-label">가입유형</label>
+            <select id="sjFilterSub" onchange="seongjiRender()">
+              <option value="" selected>전체</option>
+              <option value="MNP">MNP</option>
+              <option value="신규">신규</option>
+              <option value="기변">기변</option>
+            </select>
           </div>
         </div>
       </div>
+      <div class="filter-group filter-scope filter-scope-how">
+        <span class="filter-label">어떻게 걸러낼지</span>
+        <div class="filter-row">
+          <div class="filter-input-group">
+            <div class="filter-input-label">가격 조건
+              <button type="button" class="help-btn" data-help="sjHelpPrice" aria-label="가격 조건 도움말" aria-expanded="false">?</button>
+            </div>
+            <div class="filter-chips">
+              <span class="chip-wrap">
+                <label class="filter-check" title="결합·제휴카드·온누리·이벤트 적용가 등 조건이 붙은 가격. 기본은 제외">
+                  <input type="checkbox" id="sjIncludeCond" onchange="seongjiRender()">
+                  <span class="chip-mark" aria-hidden="true">✓</span><span>조건부(결합·카드) 포함</span>
+                </label>
+                <button type="button" class="help-btn" data-help="sjHelpCond" aria-label="조건부 가격 도움말" aria-expanded="false">?</button>
+              </span>
+              <span class="chip-wrap">
+                <label class="filter-check" title="매장 중앙값 대비 30만 넘게 벗어난 가격. 표에는 항상 배지, 체크하면 KPI·차트·리포트에도 포함">
+                  <input type="checkbox" id="sjIncludeOutlier" onchange="seongjiRender()">
+                  <span class="chip-mark" aria-hidden="true">✓</span><span>이상치 포함</span>
+                </label>
+                <button type="button" class="help-btn" data-help="sjHelpOutlier" aria-label="이상치 도움말" aria-expanded="false">?</button>
+              </span>
+            </div>
+            <div class="help-pop" id="sjHelpPrice" data-help-kind="price" role="dialog" aria-label="가격 조건 설명" hidden></div>
+            <div class="help-pop" id="sjHelpCond" data-help-kind="cond" role="dialog" aria-label="조건부 가격 설명" hidden></div>
+            <div class="help-pop" id="sjHelpOutlier" data-help-kind="outlier" role="dialog" aria-label="이상치 설명" hidden></div>
+          </div>
+          <div class="filter-input-group">
+            <label class="filter-input-label">시세표 기준일</label>
+            <select id="sjFilterDate" onchange="seongjiRender()">
+              <option value="" selected>전체 (현재 시세)</option>
+            </select>
+          </div>
+          <div class="filter-input-group">
+            <label class="filter-input-label">최소 신뢰도</label>
+            <select id="sjFilterConf" onchange="seongjiRender()">
+              <option value="0">0.0 (전체)</option>
+              <option value="0.5" selected>0.5 (보통 이상)</option>
+              <option value="0.7">0.7 (높음)</option>
+            </select>
+          </div>
+          <div class="filter-input-group">
+            <label class="filter-input-label" aria-hidden="true">&nbsp;</label>
+            <button type="button" class="filter-reset-btn" id="sjResetBtn" title="모든 필터를 기본값으로 되돌립니다">↺ 필터 초기화</button>
+          </div>
+        </div>
+      </div>
+      <div class="filter-summary" id="sjFilterSummary"></div>
     </div>
 
     <div class="kpi-section" id="sjKpiSection"></div>
@@ -824,6 +927,10 @@
         현재 시세 사이트별 단가 상세 (정렬: 현금완납가 오름차순)
         <span class="sub-note">출고가·공통/추가지원금은 공시지원금 DB 와 join · 성지RB = 출고가−공통−추가−현금완납가</span>
         <span class="sub-note" id="sjDetailNote"></span>
+        <button type="button" id="sjDownloadExcel" class="download-btn"
+                style="margin-left:auto" title="현재 필터로 표시 중인 행(이상치 포함)을 .xlsx 로 다운로드">
+          ⬇ 엑셀 다운로드
+        </button>
       </div>
       <div class="table-wrapper">
         <table id="sjDetailTable">
@@ -877,59 +984,91 @@
 
     <div class="ai-report" id="kakaoReport"></div>
 
-    <div class="filters-section">
-      <div class="filter-row">
-        <div class="filter-input-group">
-          <label class="filter-input-label">지역</label>
-          <select id="kkFilterRegion" onchange="kakaoRender()"><option value="">전체</option></select>
-        </div>
-        <div class="filter-input-group">
-          <label class="filter-input-label">통신사</label>
-          <select id="kkFilterCarrier" onchange="kakaoRender()">
-            <option value="">전체</option>
-            <option value="SKT">SKT</option>
-            <option value="KT">KT</option>
-            <option value="LGU+">LGU+</option>
-          </select>
-        </div>
-        <div class="filter-input-group">
-          <label class="filter-input-label">가입유형</label>
-          <select id="kkFilterSub" onchange="kakaoRender()">
-            <option value="">전체</option>
-            <option value="MNP">MNP</option>
-            <option value="신규">신규</option>
-            <option value="기변">기변</option>
-          </select>
-        </div>
-        <div class="filter-input-group">
-          <label class="filter-input-label">단말기</label>
-          <select id="kkFilterModel" onchange="kakaoRender()"><option value="">전체</option></select>
-        </div>
-        <div class="filter-input-group">
-          <label class="filter-input-label">데이터 종류</label>
-          <select id="kkFilterSource" onchange="kakaoRender()">
-            <option value="">전체</option>
-            <option value="kakao_ocr">시세표 이미지</option>
-            <option value="kakao">게시글 텍스트</option>
-          </select>
-        </div>
-        <div class="filter-input-group">
-          <label class="filter-input-label">가격 조건</label>
-          <select id="kkFilterCond" onchange="kakaoRender()">
-            <option value="pure" selected>순수 현금완납가 (조건부 제외)</option>
-            <option value="all">전체 (결합·제휴 포함)</option>
-            <option value="cond">조건부만 (결합·제휴·온누리)</option>
-          </select>
-        </div>
-        <div class="filter-input-group">
-          <label class="filter-input-label">정렬</label>
-          <select id="kkFilterSort" onchange="kakaoRender()">
-            <option value="store">매장별</option>
-            <option value="price_asc">현금완납가 낮은 순</option>
-            <option value="model">모델명 순</option>
-          </select>
+    <div class="filters-section filters-v2">
+      <div class="filter-group filter-scope">
+        <span class="filter-label">무엇을 볼지</span>
+        <div class="filter-row">
+          <div class="filter-input-group">
+            <label class="filter-input-label">단말기 (다중선택)</label>
+            <div class="checkbox-dropdown" onclick="event.stopPropagation()">
+              <button class="dropdown-toggle" id="kkDropdownToggle" type="button">단말기 선택</button>
+              <div class="dropdown-menu hidden" id="kkDropdownMenu"></div>
+            </div>
+          </div>
+          <div class="filter-input-group">
+            <label class="filter-input-label">통신사</label>
+            <select id="kkFilterCarrier" onchange="kakaoRender()">
+              <option value="">전체</option>
+              <option value="SKT">SKT</option>
+              <option value="KT">KT</option>
+              <option value="LGU+">LGU+</option>
+            </select>
+          </div>
+          <div class="filter-input-group">
+            <label class="filter-input-label">가입유형</label>
+            <select id="kkFilterSub" onchange="kakaoRender()">
+              <option value="">전체</option>
+              <option value="MNP">MNP</option>
+              <option value="신규">신규</option>
+              <option value="기변">기변</option>
+            </select>
+          </div>
+          <div class="filter-input-group">
+            <label class="filter-input-label">지역</label>
+            <select id="kkFilterRegion" onchange="kakaoRender()"><option value="">전체</option></select>
+          </div>
         </div>
       </div>
+      <div class="filter-group filter-scope filter-scope-how">
+        <span class="filter-label">어떻게 걸러낼지</span>
+        <div class="filter-row">
+          <div class="filter-input-group">
+            <div class="filter-input-label">가격 조건
+              <button type="button" class="help-btn" data-help="kkHelpPrice" aria-label="가격 조건 도움말" aria-expanded="false">?</button>
+            </div>
+            <div class="filter-chips">
+              <span class="chip-wrap">
+                <label class="filter-check" title="결합·제휴카드·온누리·이벤트 적용가 등 조건이 붙은 가격. 기본은 제외">
+                  <input type="checkbox" id="kkIncludeCond" onchange="kakaoRender()">
+                  <span class="chip-mark" aria-hidden="true">✓</span><span>조건부(결합·카드) 포함</span>
+                </label>
+                <button type="button" class="help-btn" data-help="kkHelpCond" aria-label="조건부 가격 도움말" aria-expanded="false">?</button>
+              </span>
+              <span class="chip-wrap">
+                <label class="filter-check" title="매장 중앙값 대비 30만 넘게 벗어난 가격. 표에는 항상 배지, 체크하면 KPI·차트·리포트에도 포함">
+                  <input type="checkbox" id="kkIncludeOutlier" onchange="kakaoRender()">
+                  <span class="chip-mark" aria-hidden="true">✓</span><span>이상치 포함</span>
+                </label>
+                <button type="button" class="help-btn" data-help="kkHelpOutlier" aria-label="이상치 도움말" aria-expanded="false">?</button>
+              </span>
+            </div>
+            <div class="help-pop" id="kkHelpPrice" data-help-kind="price" role="dialog" aria-label="가격 조건 설명" hidden></div>
+            <div class="help-pop" id="kkHelpCond" data-help-kind="cond" role="dialog" aria-label="조건부 가격 설명" hidden></div>
+            <div class="help-pop" id="kkHelpOutlier" data-help-kind="outlier" role="dialog" aria-label="이상치 설명" hidden></div>
+          </div>
+          <div class="filter-input-group">
+            <label class="filter-input-label">데이터 종류</label>
+            <select id="kkFilterSource" onchange="kakaoRender()">
+              <option value="">전체</option>
+              <option value="kakao_ocr">시세표 이미지</option>
+              <option value="kakao">게시글 텍스트</option>
+            </select>
+          </div>
+          <div class="filter-input-group">
+            <label class="filter-input-label">정렬</label>
+            <select id="kkFilterSort" onchange="kakaoRender()">
+              <option value="store">매장별</option>
+              <option value="price_asc">현금완납가 낮은 순</option>
+              <option value="model">모델명 순</option>
+            </select>
+          </div>
+          <div class="filter-input-group">
+            <label class="filter-input-label" aria-hidden="true">&nbsp;</label>
+            <button type="button" class="filter-reset-btn" id="kkResetBtn" title="모든 필터를 기본값으로 되돌립니다">↺ 필터 초기화</button>
+          </div>
+        </div>
+      </div>
+      <div class="filter-summary" id="kkFilterSummary"></div>
     </div>
 
     <div class="kpi-section" id="kkKpiSection"></div>
@@ -962,6 +1101,10 @@
       <div class="table-title">
         카카오 성지 매장별 수집 단가
         <span class="sub-note">성지점 카카오 채널 시세표(Vision 판독)·게시글 텍스트 · 출고가·공시지원금 생략, 매장이 게시한 현금완납가/실구매가 표시 · 음수=차비(페이백)</span>
+        <button type="button" id="kkDownloadExcel" class="download-btn"
+                style="margin-left:auto" title="현재 필터로 표시 중인 행을 .xlsx 로 다운로드 (매장별 시트 포함)">
+          ⬇ 엑셀 다운로드
+        </button>
       </div>
       <div class="table-wrapper">
         <table id="kkTable">
@@ -1029,6 +1172,159 @@
     window.aiMan = (v) => (v == null ? "-" : (Math.round(v / 1000) / 10).toLocaleString() + "만");
     window.aiHi = (s) => `<span class="hi">${s}</span>`;
     window.aiNeg = (s) => `<span class="neg">${s}</span>`;
+  })();
+  </script>
+
+  <!-- ===== 필터 공통 헬퍼 (성지폰·카카오) — 단말 멀티셀렉트 · 칩 토글 · ? 도움말 팝오버 · 적용 중 요약 ===== -->
+  <script>
+  (function () {
+    const escH = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    /* --- 단말기 멀티셀렉트 ---------------------------------------------------
+       o = { toggleId, menuId, items:[string], selected?:Set, allLabel?, onChange?(selected), label? }
+       - 맨 위 "전체 선택" 체크박스 + 항목별 체크박스 (기본 전부 선택)
+       - 토글 문구: "단말기 전체 (N)" / "단말기 n개 선택" (0개면 전체 표시임을 병기)
+       - 바깥 클릭 시 닫힘. items 순서는 그대로 (재정렬하지 않음)
+       - 반환 { selected, reset(), isAll(), total(), refresh() } — selected 는 같은 Set 을 제자리 갱신 */
+    window.makeMultiSelect = function (o) {
+      const menu = document.getElementById(o.menuId);
+      const toggle = document.getElementById(o.toggleId);
+      const selected = o.selected || new Set();
+      const label = o.label || "단말기";
+      const items = o.items || [];
+      menu.innerHTML = "";
+      const all = document.createElement("label");
+      all.className = "checkbox-item";
+      all.style.borderBottom = "1px solid var(--border)";
+      all.innerHTML = `<input type="checkbox" data-ms-all checked><span><b>${escH(o.allLabel || "전체 선택")}</b></span>`;
+      menu.appendChild(all);
+      items.forEach(m => {
+        const lbl = document.createElement("label");
+        lbl.className = "checkbox-item";
+        lbl.innerHTML = `<input type="checkbox" data-ms-item value="${escH(m)}" checked><span>${escH(m)}</span>`;
+        menu.appendChild(lbl);
+      });
+      const allCb = all.querySelector("input");
+      const itemCbs = () => Array.from(menu.querySelectorAll("input[data-ms-item]"));
+      function sync() {
+        selected.clear();
+        const cbs = itemCbs();
+        cbs.forEach(cb => { if (cb.checked) selected.add(cb.value); });
+        const n = selected.size, t = cbs.length;
+        allCb.checked = t > 0 && n === t;
+        allCb.indeterminate = n > 0 && n < t;
+        toggle.textContent = (n === t) ? `${label} 전체 (${t})`
+                           : (n === 0) ? `${label} 0개 선택 (전체 표시)`
+                           : `${label} ${n}개 선택`;
+      }
+      toggle.addEventListener("click", () => menu.classList.toggle("hidden"));
+      document.addEventListener("click", e => {
+        if (!menu.contains(e.target) && !toggle.contains(e.target)) menu.classList.add("hidden");
+      });
+      menu.addEventListener("change", e => {
+        if (e.target === allCb) itemCbs().forEach(cb => { cb.checked = allCb.checked; });
+        sync();
+        if (o.onChange) o.onChange(selected);
+      });
+      sync();
+      return {
+        selected,
+        reset() { itemCbs().forEach(cb => { cb.checked = true; }); sync(); },   // onChange 는 호출하지 않음 (호출측이 렌더)
+        isAll() { return selected.size === itemCbs().length; },
+        total() { return itemCbs().length; },
+        refresh: sync,
+      };
+    };
+
+    /* --- 체크박스 칩 (.filter-check) 켜짐/꺼짐 클래스 동기화 --- */
+    window.syncChip = function (input) {
+      const lbl = input && input.closest ? input.closest(".filter-check") : null;
+      if (lbl) lbl.classList.toggle("on", !!input.checked);
+    };
+    document.addEventListener("change", e => {
+      if (e.target && e.target.matches && e.target.matches(".filter-check input")) window.syncChip(e.target);
+    });
+    document.querySelectorAll(".filter-check input").forEach(window.syncChip);
+
+    /* --- ? 도움말 팝오버 -----------------------------------------------------
+       button.help-btn[data-help=팝오버id] ↔ div.help-pop[data-help-kind=cond|outlier|price]
+       한 번에 하나만 열림 · 바깥 클릭·Escape 로 닫힘 · 버튼 아래 배치(뷰포트 밖이면 안쪽으로 이동) */
+    const SUSPECT = (window.SEONGJI_DATA && window.SEONGJI_DATA.kakaoSummary
+                     && window.SEONGJI_DATA.kakaoSummary.suspectStores) || [];
+    const COND_KW = "결합, 인터넷, TV, 제휴, 카드, 온누리, 체감, 페스티벌, 이벤트, 적용가, 추가페이백";
+    const HELP = {
+      cond: `<div class="help-title">조건부(결합·카드) 포함</div>
+        결합(인터넷+TV)·제휴카드·온누리·이벤트/적용가 등 <b>구매 조건이 붙은 가격</b>입니다.
+        시세표 전체가 '결합·카드 지원금 포함가'라고 적힌 매장의 행도 여기에 들어갑니다.
+        <div class="help-p"><span class="help-kw">판정 키워드: ${COND_KW}</span></div>
+        <div class="help-p">기본은 <b>제외</b>합니다. 순수 단말 시세와 섞이면 최저가·중앙값이 실제보다 낮아지기 때문입니다.
+        켜면 KPI·차트·리포트·표에 함께 들어갑니다.</div>
+        <div class="help-live">현재 <span data-live>-</span>건</div>`,
+      outlier: `<div class="help-title">이상치 포함</div>
+        같은 기종·통신사·가입유형·용량을 파는 매장이 <b>4곳 이상</b>일 때, 매장 중앙값에서 <b>30만 원</b> 넘게 벗어난 가격입니다.
+        비교 가능한 가격의 절반 이상이 벗어난 매장은 표 전체를 이상치로 봅니다
+        <span class="help-kw">(현재: ${SUSPECT.length ? SUSPECT.map(escH).join(", ") : "없음"})</span>.
+        <div class="help-p">판독 오류이거나 표에 적히지 않은 조건이 있을 가능성이 커서 기본은 KPI·차트·리포트에서 빼고
+        표에는 '이상치' 배지로 남깁니다. 켜면 모두 포함합니다.</div>
+        <div class="help-live">현재 <span data-live>-</span>건</div>`,
+      price: `<div class="help-title">가격 조건</div>
+        <b>조건부(결합·카드) 포함</b> — 결합·제휴카드·온누리·이벤트 등 구매 조건이 붙은 가격. 기본은 제외.<br>
+        <b>이상치 포함</b> — 매장 중앙값에서 30만 원 넘게 벗어난 가격(표 전체가 의심되는 매장 포함). 기본은 KPI·차트·리포트에서 제외, 표에는 배지.
+        <div class="help-p">체크박스를 켜면 포함, 끄면 제외합니다.</div>`,
+    };
+    document.querySelectorAll(".help-pop[data-help-kind]").forEach(pop => {
+      pop.innerHTML = HELP[pop.dataset.helpKind] || "";
+    });
+    window.setHelpLive = function (popId, n) {
+      const el = document.querySelector(`#${popId} [data-live]`);
+      if (el) el.textContent = (n == null ? "-" : Number(n).toLocaleString());
+    };
+
+    let openBtn = null;
+    function closeAll() {
+      document.querySelectorAll(".help-pop").forEach(p => { p.hidden = true; });
+      document.querySelectorAll(".help-btn[aria-expanded='true']").forEach(b => b.setAttribute("aria-expanded", "false"));
+      openBtn = null;
+    }
+    function openPop(btn) {
+      closeAll();
+      const pop = document.getElementById(btn.dataset.help);
+      if (!pop) return;
+      pop.hidden = false;
+      btn.setAttribute("aria-expanded", "true");
+      openBtn = btn;
+      const host = pop.offsetParent || pop.parentElement;
+      const br = btn.getBoundingClientRect(), hr = host.getBoundingClientRect();
+      let left = br.left - hr.left;
+      pop.style.top = (br.bottom - hr.top + 6) + "px";
+      pop.style.left = left + "px";
+      const pr = pop.getBoundingClientRect();
+      const vw = document.documentElement.clientWidth || window.innerWidth || 0;
+      if (vw && pr.right > vw - 12) left -= (pr.right - (vw - 12));
+      if (left + hr.left < 12) left = 12 - hr.left;
+      pop.style.left = left + "px";
+    }
+    document.addEventListener("click", e => {
+      const t = e.target;
+      const btn = t.closest ? t.closest(".help-btn[data-help]") : null;
+      if (btn) {
+        e.preventDefault();
+        if (openBtn === btn) closeAll(); else openPop(btn);
+        return;
+      }
+      if (openBtn && !(t.closest && t.closest(".help-pop"))) closeAll();
+    });
+    document.addEventListener("keydown", e => { if (e.key === "Escape" && openBtn) closeAll(); });
+    window.closeHelpPops = closeAll;
+
+    /* --- 적용 중 요약 줄: 현재: a · b · c → N건 / M곳 --- */
+    window.renderFilterSummary = function (elId, parts, result) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      el.innerHTML = `<span class="fs-k">현재</span>`
+        + `<span class="fs-v">${parts.filter(Boolean).map(escH).join(" · ")}</span>`
+        + `<span class="fs-res">→ ${escH(result)}</span>`;
+    };
   })();
   </script>
 
@@ -1680,44 +1976,16 @@
       return { value: Math.max(raw, 0), rawValue: raw, clipped: raw < 0, negative: raw < 0 };
     }
 
-    /* === 단말 멀티셀렉트 === */
+    /* === 단말 멀티셀렉트 (공통 makeMultiSelect — 카카오 탭과 동일 컴포넌트) === */
+    let modelSel = null;   // { selected:Set, reset(), isAll(), total() }
+    const selectedModels = () => (modelSel ? modelSel.selected : new Set());
     function initModelDropdown() {
-      const menu = document.getElementById("sjDropdownMenu");
-      const toggle = document.getElementById("sjDropdownToggle");
-      menu.innerHTML = "";
-      const all = document.createElement("label");
-      all.className = "checkbox-item";
-      all.style.borderBottom = "1px solid var(--border)";
-      all.innerHTML = `<input type="checkbox" id="sjModelAll" checked><span><b>전체 선택</b></span>`;
-      menu.appendChild(all);
-      // DATA.models 는 빌드가 최신 기종순(브랜드 → 세대 내림차순)으로 정렬해 둔 순서 — 재정렬하지 않음
-      (DATA.models || []).forEach(m => {
-        const lbl = document.createElement("label");
-        lbl.className = "checkbox-item";
-        lbl.innerHTML = `<input type="checkbox" class="sj-model-cb" value="${escHtml(m)}" checked><span>${escHtml(m)}</span>`;
-        menu.appendChild(lbl);
+      modelSel = window.makeMultiSelect({
+        toggleId: "sjDropdownToggle", menuId: "sjDropdownMenu",
+        // DATA.models 는 빌드가 최신 기종순(브랜드 → 세대 내림차순)으로 정렬해 둔 순서 — 재정렬하지 않음
+        items: DATA.models || [],
+        label: "단말기", allLabel: "전체 선택", onChange: render,
       });
-      toggle.addEventListener("click", () => menu.classList.toggle("hidden"));
-      document.addEventListener("click", e => {
-        if (!menu.contains(e.target) && e.target !== toggle) menu.classList.add("hidden");
-      });
-      menu.addEventListener("change", e => {
-        if (e.target.id === "sjModelAll") {
-          document.querySelectorAll(".sj-model-cb").forEach(cb => cb.checked = e.target.checked);
-        }
-        updateToggleLabel();
-        render();
-      });
-      updateToggleLabel();
-    }
-    function updateToggleLabel() {
-      const cbs = document.querySelectorAll(".sj-model-cb");
-      const sel = Array.from(cbs).filter(c => c.checked);
-      document.getElementById("sjDropdownToggle").textContent =
-        sel.length === cbs.length ? `전체 ${cbs.length}개 선택` : `${sel.length} / ${cbs.length}개 선택`;
-    }
-    function selectedModels() {
-      return new Set(Array.from(document.querySelectorAll(".sj-model-cb:checked")).map(c => c.value));
     }
 
     function renderMeta() {
@@ -2119,9 +2387,9 @@
       const subTypeFilter = sub || null;
       // detail 행 = 매장별 최신 시세표(현재 세트). 조건부 가격은 기본 제외, 차비(음수)는 정상 매물로 유지.
       // tableRows: 표용(이상치는 배지로 남김) / filteredDetail: KPI·차트·리포트용(이상치 기본 제외, 체크 시 포함)
-      const tableRows = (DATA.detail || []).filter(r => {
+      // baseRows: 범위 필터(기준일·단말·통신사·가입유형·신뢰도)만 적용 — 도움말 '현재 N건' 은 이 범위 안의 조건부 수
+      const baseRows = (DATA.detail || []).filter(r => {
         if (boardDate && r.board_date !== boardDate) return false;
-        if (!withCond && isConditional(r)) return false;
         if (r.carrier && !CARRIERS.includes(r.carrier)) return false;  // 알뜰 제외 (미상은 허용)
         if (sel.size && !sel.has(r.model_name)) return false;
         if (carrier && r.carrier !== carrier) return false;
@@ -2129,8 +2397,11 @@
         if ((r.confidence || 0) < minConf) return false;
         return true;
       });
+      const condN = baseRows.filter(isConditional).length;
+      const tableRows = withCond ? baseRows : baseRows.filter(r => !isConditional(r));
       const outlierN = tableRows.filter(isOutlier).length;
       const filteredDetail = withOutlier ? tableRows : tableRows.filter(r => !isOutlier(r));
+      lastStats = { base: baseRows.length, condN, outlierN };
 
       const modelOrder = DATA.models.filter(m => sel.size === 0 || sel.has(m));
       let modelsInData;
@@ -2146,8 +2417,115 @@
       renderKpi(filteredDetail);
       renderDetailTable(tableRows, outlierN);
       renderReport(filteredDetail);
+      window.setHelpLive("sjHelpCond", condN);
+      window.setHelpLive("sjHelpOutlier", outlierN);
+      updateDownloadBtn();
+      renderFilterSummary();
     }
     window.seongjiRender = render;
+
+    /* === 적용 중 필터 상태 (요약 줄 · 엑셀 '요약' 시트 공용) === */
+    let lastStats = { base: 0, condN: 0, outlierN: 0 };
+    function filterState() {
+      const sel = selectedModels(), total = modelSel ? modelSel.total() : (DATA.models || []).length;
+      const modelTxt = (!sel.size || sel.size === total) ? "단말 전체"
+        : (sel.size <= 3 ? Array.from(sel).join(", ") : `단말 ${sel.size}종`);
+      const carrier = document.getElementById("sjFilterCarrier").value;
+      const sub = document.getElementById("sjFilterSub").value;
+      const date = document.getElementById("sjFilterDate").value;
+      const conf = document.getElementById("sjFilterConf").value;
+      return {
+        model: modelTxt,
+        carrier: carrier || "통신사 전체",
+        sub: sub || "가입유형 전체",
+        cond: includeCond() ? "조건부 포함" : "조건부 제외",
+        outlier: includeOutlier() ? "이상치 포함" : "이상치 제외",
+        date: date ? `기준일 ${date}` : "기준일 전체(현재 시세)",
+        conf: `신뢰도 ≥${conf}`,
+      };
+    }
+    function renderFilterSummary() {
+      const f = filterState();
+      const stores = new Set(detailSorted.map(r => r.author || r.source || "?")).size;
+      window.renderFilterSummary("sjFilterSummary",
+        [f.model, f.carrier, f.sub, f.cond, f.outlier, f.date, f.conf],
+        `${detailSorted.length.toLocaleString()}건 / ${stores.toLocaleString()}곳`);
+    }
+    function updateDownloadBtn() {
+      const btn = document.getElementById("sjDownloadExcel");
+      if (btn) btn.textContent = `⬇ 엑셀 다운로드 (${detailSorted.length.toLocaleString()}건)`;
+    }
+    function resetFilters() {
+      document.getElementById("sjFilterDate").value = "";
+      document.getElementById("sjFilterCarrier").value = "";
+      document.getElementById("sjFilterSub").value = "";
+      document.getElementById("sjFilterConf").value = "0.5";
+      ["sjIncludeCond", "sjIncludeOutlier"].forEach(id => {
+        const cb = document.getElementById(id); if (!cb) return;
+        cb.checked = false; window.syncChip(cb);
+      });
+      if (modelSel) modelSel.reset();
+      if (window.closeHelpPops) window.closeHelpPops();
+      render();
+    }
+
+    /* === 엑셀 다운로드 — 표와 같은 행 세트(이상치 포함 · 현금완납가 오름차순) + 요약 시트 === */
+    function downloadExcel() {
+      if (typeof XLSX === "undefined") { alert("엑셀 라이브러리 로딩 실패"); return; }
+      const rows = detailSorted;
+      const YN = b => (b ? "Y" : "N");
+      const header = ["모델", "지역", "매장", "시세표 기준일", "경과일", "통신사", "가입유형", "약정", "용량(GB)",
+        "현금완납가(원)", "차비여부(Y/N)", "출고가", "공통지원금", "추가지원금(최대15%)", "공시경로 실구매가",
+        "공시 대비 차이(성지RB)", "월 납부(요금제 월정액)", "요금제", "조건", "조건부(Y/N)", "이상치(Y/N)",
+        "매장 중앙값", "중앙값 대비 차이", "신뢰도", "판독 소스", "원문 URL", "게시글 제목"];
+      const aoa = [header];
+      rows.forEach(r => {
+        const off = lookupSubsidy(r);
+        const rb = calcSeongjiRB(r, off);
+        const net = off ? (off.retail_price || 0) - (off.subsidy_public || 0) - (off.subsidy_additional || 0) : null;
+        aoa.push([
+          r.model_name || "", r.region || "", r.author || "", r.board_date || "", r.age_days ?? "",
+          r.carrier || "", effSub(r) + (subAssumed(r) ? "(추정)" : ""), r.contract_type || "", r.storage_gb ?? "",
+          r.cash_price ?? "", YN(r.cash_price != null && r.cash_price < 0),
+          off ? (off.retail_price ?? "") : "", off ? (off.subsidy_public ?? "") : "", off ? (off.subsidy_additional ?? "") : "",
+          net ?? "", rb.rawValue ?? "", r.monthly_fee ?? "", r.plan_name || "", r.add_condition || "",
+          YN(isConditional(r)), YN(isOutlier(r)), r.group_median ?? "", r.dev_from_median ?? "",
+          r.confidence ?? "", r.source || "", r.url || "", r.title || "",
+        ]);
+      });
+      const ws = XLSX.utils.aoa_to_sheet(aoa);
+      ws["!cols"] = [{wch:20},{wch:16},{wch:24},{wch:12},{wch:7},{wch:7},{wch:10},{wch:7},{wch:8},
+        {wch:13},{wch:9},{wch:11},{wch:11},{wch:12},{wch:14},{wch:14},{wch:12},{wch:16},{wch:24},{wch:9},{wch:9},
+        {wch:11},{wch:12},{wch:7},{wch:10},{wch:44},{wch:36}];
+      const f = filterState();
+      const detail = DATA.detail || [];
+      const summary = [
+        ["항목", "값"],
+        ["빌드일", DATA.generatedAt || "-"],
+        ["표시 기준", `매장별 최신 시세표 · 최근 ${CURRENT_WINDOW}일`],
+        ["적용 필터 — 단말기", f.model],
+        ["적용 필터 — 통신사", f.carrier],
+        ["적용 필터 — 가입유형", f.sub],
+        ["적용 필터 — 시세표 기준일", f.date],
+        ["적용 필터 — 최소 신뢰도", f.conf],
+        ["적용 필터 — 조건부(결합·카드)", f.cond],
+        ["적용 필터 — 이상치", f.outlier],
+        ["건수 — 전체(현재 시세)", detail.length],
+        ["건수 — 필터 범위", lastStats.base],
+        ["건수 — 조건부(필터 범위)", lastStats.condN],
+        ["건수 — 이상치(필터 범위)", lastStats.outlierN],
+        ["건수 — 표시(시트 행)", rows.length],
+        ["기준 — 조건부", "결합(인터넷+TV)·제휴카드·온누리·이벤트/적용가 등 구매 조건이 붙은 가격. 판정 키워드: 결합, 인터넷, TV, 제휴, 카드, 온누리, 체감, 페스티벌, 이벤트, 적용가, 추가페이백. 기본은 제외."],
+        ["기준 — 이상치", "같은 기종·통신사·가입유형·용량을 파는 매장이 4곳 이상일 때 매장 중앙값에서 30만 원 넘게 벗어난 가격. 비교 가능한 가격의 절반 이상이 벗어난 매장은 표 전체를 이상치로 봄. 기본은 KPI·차트·리포트 제외, 표에는 배지."],
+        ["공시 기준일", SUBSIDY.latestSnapshot || "-"],
+      ];
+      const ws2 = XLSX.utils.aoa_to_sheet(summary);
+      ws2["!cols"] = [{wch:26},{wch:90}];
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "성지폰 단가");
+      XLSX.utils.book_append_sheet(wb, ws2, "요약");
+      XLSX.writeFile(wb, `성지폰_단가_${DATA.generatedAt || "latest"}.xlsx`);
+    }
 
     /* === AI 요약 리포트 (성지폰 사이트 시세) === */
     const SJ_FLAGSHIPS = ["Galaxy S26 Ultra", "Galaxy S26+", "Galaxy S26",
@@ -2299,6 +2677,10 @@
       if (boxLabel && DATA.boxWindowDays) boxLabel.textContent = DATA.boxWindowDays;
       initModelDropdown();
       initMetricToggle();
+      const dl = document.getElementById("sjDownloadExcel");
+      if (dl) dl.addEventListener("click", downloadExcel);
+      const rs = document.getElementById("sjResetBtn");
+      if (rs) rs.addEventListener("click", resetFilters);
       renderMeta();
       renderFeed();
       render();
@@ -2356,22 +2738,26 @@
     const KNOWN_SUBS = ["MNP", "기변", "신규"];
     const effSub = r => KNOWN_SUBS.includes(r.subscription_type) ? r.subscription_type : "MNP";
     const subAssumed = r => !KNOWN_SUBS.includes(r.subscription_type);
-    function condPass(r, mode) {
-      if (mode === "all") return true;
-      if (mode === "cond") return isConditional(r);
-      return !isConditional(r);   // "pure" (기본)
-    }
+    // 가격 조건 체크박스 — 조건부: 켜면 KPI·차트·리포트·표 모두 포함 / 이상치: 표엔 항상(배지), 켜면 KPI·차트·리포트에도 포함
+    const includeCond = () => !!(document.getElementById("kkIncludeCond") || {}).checked;
+    const includeOutlier = () => !!(document.getElementById("kkIncludeOutlier") || {}).checked;
+
+    /* === 단말 멀티셀렉트 (공통 makeMultiSelect — 성지폰 탭과 동일 컴포넌트) === */
+    let modelSel = null;   // { selected:Set, reset(), isAll(), total() }
+    const selectedModels = () => (modelSel ? modelSel.selected : new Set());
 
     function initFilters() {
       const rs = document.getElementById("kkFilterRegion");
       Array.from(new Set(STORES.map(r => r.region).filter(Boolean))).sort()
         .forEach(rg => rs.insertAdjacentHTML("beforeend", `<option value="${esc(rg)}">${esc(rg)}</option>`));
-      const ms = document.getElementById("kkFilterModel");
-      // DATA.models 순서(빌드가 최신 기종순으로 정렬) 유지 — 목록에 없는 모델만 뒤에 붙임
+      // DATA.models 순서(빌드가 최신 기종순으로 정렬) 유지 — 목록에 없는 모델만 뒤에 붙임 (재정렬하지 않음)
       const present = new Set(STORES.map(r => r.model_name).filter(Boolean));
       const ordered = (DATA.models || []).filter(m => present.has(m));
       present.forEach(m => { if (!MODEL_IDX.has(m)) ordered.push(m); });
-      ordered.forEach(mm => ms.insertAdjacentHTML("beforeend", `<option value="${esc(mm)}">${esc(mm)}</option>`));
+      modelSel = window.makeMultiSelect({
+        toggleId: "kkDropdownToggle", menuId: "kkDropdownMenu",
+        items: ordered, label: "단말기", allLabel: "전체 선택", onChange: render,
+      });
     }
 
     function renderMeta() {
@@ -2409,12 +2795,13 @@
         </div>`).join("");
     }
 
-    function renderKpi(rows) {
+    // rows = 표 세트(이상치 배지 포함) · kpiRows = 이상치 체크 여부 반영(기본 제외)
+    function renderKpi(rows, kpiRows) {
       const stores = new Set(rows.map(r => r.author).filter(Boolean)).size;
       const neg = rows.filter(r => (r.cash_price || 0) < 0).length;
-      // 최저가 카드는 이상치(중앙값 대비 30만 초과) 제외 — 표에는 배지로 남김
+      // 최저가 카드 — 이상치(중앙값 대비 30만 초과)는 '이상치 포함' 체크 시에만 후보
       let lowest = null;
-      rows.filter(r => (r.cash_price || 0) > 0 && !isOutlier(r)).forEach(r => { if (!lowest || r.cash_price < lowest.cash_price) lowest = r; });
+      (kpiRows || rows).filter(r => (r.cash_price || 0) > 0).forEach(r => { if (!lowest || r.cash_price < lowest.cash_price) lowest = r; });
       const byRegion = {};
       rows.forEach(r => { if (r.region) byRegion[r.region] = (byRegion[r.region] || 0) + 1; });
       const topRegion = Object.entries(byRegion).sort((a, b) => b[1] - a[1])[0];
@@ -2492,10 +2879,11 @@
       else btn.textContent = `더 보기 (+${p.rows.length.toLocaleString()}건)`;
     }
 
+    let exportRows = [];    // 표와 같은 순서의 전체 행 (엑셀 다운로드용)
     function renderTable(rows, sort) {
       const tbody = document.getElementById("kkTbody");
       const empty = document.getElementById("kkEmptyState");
-      pendingMore = {}; moreSeq = 0;
+      pendingMore = {}; moreSeq = 0; exportRows = [];
       if (!rows.length) { tbody.innerHTML = ""; empty.style.display = "block"; return; }
       empty.style.display = "none";
 
@@ -2509,6 +2897,7 @@
         html += `<tr class="kk-group"><td colspan="10"><span class="kk-meta" style="margin-left:0">매장 ${keys.length}곳 · ${rows.length.toLocaleString()}건 — 매장별 최신 시세표(최근 ${WINDOW}일) · 매장당 ${STORE_CAP}행까지 먼저 표시</span></td></tr>`;
         keys.forEach(key => {
           const g = groups[key].slice().sort((a, b) => modelOrder(a, b) || priceAsc(a, b));
+          exportRows.push(...g);
           const head = g[0];
           const ocr = g.filter(r => r.source === "kakao_ocr").length;
           const asof = asofOf(g);
@@ -2528,6 +2917,7 @@
         const sorted = (sort === "price_asc")
           ? [...rows].sort(priceAsc)
           : [...rows].sort((a, b) => modelOrder(a, b) || priceAsc(a, b));
+        exportRows = sorted;
         sorted.slice(0, FLAT_CHUNK).forEach(r => { html += rowHtml(r, false); });
         if (sorted.length > FLAT_CHUNK) {
           const id = ++moreSeq;
@@ -2698,32 +3088,147 @@
       const region = document.getElementById("kkFilterRegion").value;
       const carrier = document.getElementById("kkFilterCarrier").value;
       const sub = document.getElementById("kkFilterSub").value;
-      const model = document.getElementById("kkFilterModel").value;
       const source = document.getElementById("kkFilterSource").value;
-      const cond = document.getElementById("kkFilterCond").value;
       const sort = document.getElementById("kkFilterSort").value;
-      const rows = STORES.filter(r =>
+      const sel = selectedModels();
+      const withCond = includeCond(), withOutlier = includeOutlier();
+      // 범위 필터(단말·가입유형·지역·데이터 종류). 통신사는 표·KPI 에만 적용(차트·리포트는 3사 비교 목적).
+      const scope = r =>
         (!region || r.region === region) &&
-        (!carrier || r.carrier === carrier) &&
         (!sub || effSub(r) === sub) &&
-        (!model || r.model_name === model) &&
-        (!source || r.source === source) &&
-        condPass(r, cond));
-      // 차트는 3사 비교가 목적이라 통신사 필터를 적용하지 않는다. 이상치(중앙값 대비 30만 초과)는 차트·리포트에서 제외.
+        (!sel.size || sel.has(r.model_name)) &&
+        (!source || r.source === source);
+      const base = STORES.filter(r => scope(r) && (!carrier || r.carrier === carrier));
+      const condN = base.filter(isConditional).length;                       // 도움말 '현재 N건' (조건부 체크 무관)
+      const rows = withCond ? base : base.filter(r => !isConditional(r));    // 표 세트 — 이상치는 배지로 남김
+      const outlierN = rows.filter(isOutlier).length;
+      const kpiRows = withOutlier ? rows : rows.filter(r => !isOutlier(r));  // KPI 최저가
+      // 차트·리포트: 통신사 필터 없이, 조건부·이상치는 체크 시에만 포함
       const chartRows = STORES.filter(r =>
-        (!region || r.region === region) &&
-        (!sub || effSub(r) === sub) &&
-        (!model || r.model_name === model) &&
-        (!source || r.source === source) &&
-        !isOutlier(r) &&
-        condPass(r, cond));
-      renderKpi(rows);
+        scope(r) && (withCond || !isConditional(r)) && (withOutlier || !isOutlier(r)));
+      lastStats = { base: base.length, condN, outlierN };
+      renderKpi(rows, kpiRows);
       drawKkChart(chartRows);
       setupKkHover();
       renderTable(rows, sort);
       renderReport(chartRows);
+      window.setHelpLive("kkHelpCond", condN);
+      window.setHelpLive("kkHelpOutlier", outlierN);
+      updateDownloadBtn();
+      renderFilterSummary();
     }
     window.kakaoRender = render;
+
+    /* === 적용 중 필터 상태 (요약 줄 · 엑셀 '요약' 시트 공용) === */
+    let lastStats = { base: 0, condN: 0, outlierN: 0 };
+    const SOURCE_LABEL = { "kakao_ocr": "시세표 이미지", "kakao": "게시글 텍스트" };
+    const SORT_LABEL = { "store": "매장별", "price_asc": "현금완납가 낮은 순", "model": "모델명 순" };
+    function filterState() {
+      const sel = selectedModels(), total = modelSel ? modelSel.total() : 0;
+      const modelTxt = (!sel.size || sel.size === total) ? "단말 전체"
+        : (sel.size <= 3 ? Array.from(sel).join(", ") : `단말 ${sel.size}종`);
+      const carrier = document.getElementById("kkFilterCarrier").value;
+      const sub = document.getElementById("kkFilterSub").value;
+      const region = document.getElementById("kkFilterRegion").value;
+      const source = document.getElementById("kkFilterSource").value;
+      const sort = document.getElementById("kkFilterSort").value;
+      return {
+        model: modelTxt,
+        carrier: carrier || "통신사 전체",
+        sub: sub || "가입유형 전체",
+        region: region || "지역 전체",
+        cond: includeCond() ? "조건부 포함" : "조건부 제외",
+        outlier: includeOutlier() ? "이상치 포함" : "이상치 제외",
+        source: source ? SOURCE_LABEL[source] || source : "데이터 전체",
+        sort: `정렬 ${SORT_LABEL[sort] || sort}`,
+      };
+    }
+    function renderFilterSummary() {
+      const f = filterState();
+      const stores = new Set(exportRows.map(r => r.author || "?")).size;
+      window.renderFilterSummary("kkFilterSummary",
+        [f.model, f.carrier, f.sub, f.region, f.cond, f.outlier, f.source, f.sort],
+        `${exportRows.length.toLocaleString()}건 / ${stores.toLocaleString()}곳`);
+    }
+    function updateDownloadBtn() {
+      const btn = document.getElementById("kkDownloadExcel");
+      if (btn) btn.textContent = `⬇ 엑셀 다운로드 (${exportRows.length.toLocaleString()}건)`;
+    }
+    function resetFilters() {
+      document.getElementById("kkFilterRegion").value = "";
+      document.getElementById("kkFilterCarrier").value = "";
+      document.getElementById("kkFilterSub").value = "";
+      document.getElementById("kkFilterSource").value = "";
+      document.getElementById("kkFilterSort").value = "store";
+      ["kkIncludeCond", "kkIncludeOutlier"].forEach(id => {
+        const cb = document.getElementById(id); if (!cb) return;
+        cb.checked = false; window.syncChip(cb);
+      });
+      if (modelSel) modelSel.reset();
+      if (window.closeHelpPops) window.closeHelpPops();
+      render();
+    }
+
+    /* === 엑셀 다운로드 — 표와 같은 행·순서 + 매장별 시트 + 요약 시트 === */
+    function downloadExcel() {
+      if (typeof XLSX === "undefined") { alert("엑셀 라이브러리 로딩 실패"); return; }
+      const rows = exportRows;
+      const YN = b => (b ? "Y" : "N");
+      const suspect = new Set(SUMMARY.suspectStores || []);
+      const header = ["지역", "매장", "시세표 기준일", "경과일", "매장 최신 기준일", "모델", "용량(GB)", "통신사", "가입유형",
+        "가격유형", "현금완납가(원)", "차비여부(Y/N)", "요금제", "요금제 월정액", "조건", "조건부(Y/N)", "이상치(Y/N)",
+        "매장 중앙값", "신뢰도", "원문 URL"];
+      const aoa = [header];
+      rows.forEach(r => {
+        const { est } = priceMeta(r);
+        aoa.push([
+          r.region || "", r.author || "", r.board_date || "", r.age_days ?? "", r.store_asof || "",
+          r.model_name || "", r.storage_gb ?? "", r.carrier || "", effSub(r) + (subAssumed(r) ? "(추정)" : ""),
+          est ? "추정" : "현금완납", r.cash_price ?? "", YN(r.cash_price != null && r.cash_price < 0),
+          r.plan_name || "", r.monthly_fee ?? "", r.add_condition || "", YN(isConditional(r)), YN(isOutlier(r)),
+          r.group_median ?? "", r.confidence ?? "", r.url || "",
+        ]);
+      });
+      const ws = XLSX.utils.aoa_to_sheet(aoa);
+      ws["!cols"] = [{wch:16},{wch:26},{wch:12},{wch:7},{wch:13},{wch:20},{wch:8},{wch:7},{wch:10},
+        {wch:9},{wch:13},{wch:9},{wch:16},{wch:12},{wch:24},{wch:9},{wch:9},{wch:11},{wch:7},{wch:44}];
+      const storeAoa = [["매장", "지역", "최신 기준일", "경과일", "행수", "의심매장 여부(Y/N)"]];
+      (SUMMARY.storeList || []).forEach(st => storeAoa.push([
+        st.author || "", st.region || "", st.asof || "", st.age_days ?? "", st.rows ?? "", YN(suspect.has(st.author)),
+      ]));
+      const wsStores = XLSX.utils.aoa_to_sheet(storeAoa);
+      wsStores["!cols"] = [{wch:28},{wch:18},{wch:12},{wch:7},{wch:7},{wch:16}];
+      const f = filterState();
+      const summary = [
+        ["항목", "값"],
+        ["빌드일", DATA.generatedAt || "-"],
+        ["표시 기준", `매장별 최신 시세표 · 최근 ${WINDOW}일`],
+        ["적용 필터 — 단말기", f.model],
+        ["적용 필터 — 통신사", f.carrier],
+        ["적용 필터 — 가입유형", f.sub],
+        ["적용 필터 — 지역", f.region],
+        ["적용 필터 — 데이터 종류", f.source],
+        ["적용 필터 — 정렬", f.sort],
+        ["적용 필터 — 조건부(결합·카드)", f.cond],
+        ["적용 필터 — 이상치", f.outlier],
+        ["건수 — 전체(현재 시세)", STORES.length],
+        ["건수 — 필터 범위", lastStats.base],
+        ["건수 — 조건부(필터 범위)", lastStats.condN],
+        ["건수 — 이상치(필터 범위)", lastStats.outlierN],
+        ["건수 — 표시(시트 행)", rows.length],
+        ["매장", `${SUMMARY.stores || 0}곳 · 의심매장 ${suspect.size}곳${suspect.size ? ` (${Array.from(suspect).join(", ")})` : ""}`],
+        ["기준 — 조건부", "결합(인터넷+TV)·제휴카드·온누리·이벤트/적용가 등 구매 조건이 붙은 가격. 판정 키워드: 결합, 인터넷, TV, 제휴, 카드, 온누리, 체감, 페스티벌, 이벤트, 적용가, 추가페이백. 기본은 제외."],
+        ["기준 — 이상치", "같은 기종·통신사·가입유형·용량을 파는 매장이 4곳 이상일 때 매장 중앙값에서 30만 원 넘게 벗어난 가격. 비교 가능한 가격의 절반 이상이 벗어난 매장은 표 전체를 이상치로 봄. 기본은 KPI·차트·리포트 제외, 표에는 배지."],
+        ["공시 기준일", (window.SUBSIDY_DATA && window.SUBSIDY_DATA.latestSnapshot) || "-"],
+      ];
+      const ws2 = XLSX.utils.aoa_to_sheet(summary);
+      ws2["!cols"] = [{wch:26},{wch:90}];
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "카카오 시세표");
+      XLSX.utils.book_append_sheet(wb, wsStores, "매장별");
+      XLSX.utils.book_append_sheet(wb, ws2, "요약");
+      XLSX.writeFile(wb, `카카오_성지_시세표_${DATA.generatedAt || "latest"}.xlsx`);
+    }
 
     /* === AI 요약 리포트 (카카오 성지) === */
     const FLAGSHIPS = ["Galaxy S26 Ultra", "Galaxy S26+", "Galaxy S26",
@@ -2831,6 +3336,10 @@
       renderMeta();
       renderStoreList();
       document.getElementById("kkTbody").addEventListener("click", onMoreClick);
+      const dl = document.getElementById("kkDownloadExcel");
+      if (dl) dl.addEventListener("click", downloadExcel);
+      const rs = document.getElementById("kkResetBtn");
+      if (rs) rs.addEventListener("click", resetFilters);
       render();
       window.addEventListener("resize", () => {
         if (document.getElementById("view-kakao").classList.contains("active")) render();
