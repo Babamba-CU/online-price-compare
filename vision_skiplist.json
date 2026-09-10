@@ -650,93 +650,108 @@
   "reason": "시세표 미검출/판독실패"
  },
  "_fSqxlT": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_Upxkwxj": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_xhpxkwxj": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_xhYxkwxj": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_MnxkxhX": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_eixiPG": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_PuJqG": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_xekYxiG": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_xcXvQxj": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_UQiXG": {
-  "fails": 1,
-  "last": "2026-09-10",
-  "reason": "시세표 미검출/판독실패"
- },
- "_mgMxnxj": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_ziEJn": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_FvwwG": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_xfTaXn": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_lxeFAX": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_qexgxiG": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_XvwwG": {
-  "fails": 1,
-  "last": "2026-09-10",
+  "fails": 2,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  },
  "_RIqxeG": {
+  "fails": 2,
+  "last": "2026-09-11",
+  "reason": "시세표 미검출/판독실패"
+ },
+ "_xlKexin": {
   "fails": 1,
-  "last": "2026-09-10",
+  "last": "2026-09-11",
+  "reason": "시세표 미검출/판독실패"
+ },
+ "_eisyxj": {
+  "fails": 1,
+  "last": "2026-09-11",
+  "reason": "시세표 미검출/판독실패"
+ },
+ "_HxiFSn": {
+  "fails": 1,
+  "last": "2026-09-11",
+  "reason": "시세표 미검출/판독실패"
+ },
+ "_xjxfkxjn": {
+  "fails": 1,
+  "last": "2026-09-11",
   "reason": "시세표 미검출/판독실패"
  }
 }
