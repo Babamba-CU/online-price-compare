@@ -1,107 +1,107 @@
 {
  "_xnArxon": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_Yxkxehxb": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_NJvin": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_xdbGxkG": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_luMtT": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_nxlMtT": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_BxbxjPxj": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_xokxmxjG": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_vxnGRG": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_mIMtT": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_XZcxkn": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_iDaqn": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_xgxjsWG": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_xfnxgHn": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_JZexlG": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_lxmfxfn": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_xgIexlG": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_Pqdxnn": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_pWqzX": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_mXatG": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_ZVTRX": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_xjxaEgn": {
@@ -285,18 +285,18 @@
   "reason": "시세표 미검출/판독실패"
  },
  "_bISxoG": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_pbyxmn": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_PGxkWG": {
-  "fails": 5,
-  "last": "2026-10-07",
+  "fails": 6,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  },
  "_xicxoWG": {
@@ -1232,6 +1232,41 @@
  "_VctSG": {
   "fails": 1,
   "last": "2026-10-21",
+  "reason": "시세표 미검출/판독실패"
+ },
+ "_TpSju": {
+  "fails": 1,
+  "last": "2026-10-22",
+  "reason": "시세표 미검출/판독실패"
+ },
+ "_jzRhn": {
+  "fails": 1,
+  "last": "2026-10-22",
+  "reason": "시세표 미검출/판독실패"
+ },
+ "_fSqxlT": {
+  "fails": 1,
+  "last": "2026-10-22",
+  "reason": "시세표 미검출/판독실패"
+ },
+ "_Upxkwxj": {
+  "fails": 1,
+  "last": "2026-10-22",
+  "reason": "시세표 미검출/판독실패"
+ },
+ "_xhpxkwxj": {
+  "fails": 1,
+  "last": "2026-10-22",
+  "reason": "시세표 미검출/판독실패"
+ },
+ "_xhYxkwxj": {
+  "fails": 1,
+  "last": "2026-10-22",
+  "reason": "시세표 미검출/판독실패"
+ },
+ "_MnxkxhX": {
+  "fails": 1,
+  "last": "2026-10-22",
   "reason": "시세표 미검출/판독실패"
  }
 }
